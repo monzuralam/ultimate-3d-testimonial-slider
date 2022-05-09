@@ -34,3 +34,8 @@ if (!function_exists('ust_assets')) {
     }
     add_action('wp_enqueue_scripts', 'ust_assets');
 }
+
+/**
+ * Custom Meta box
+ */
+require_once('includes/metabox.php');
