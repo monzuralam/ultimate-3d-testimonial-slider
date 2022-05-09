@@ -36,6 +36,53 @@ if (!function_exists('ust_assets')) {
 }
 
 /**
+ * Register Post Type
+ */
+if( !function_exists('ust_setup_post_type')){
+    function ust_setup_post_type() {
+        $labels = [
+            "name" => __( "Ultimate 3D Slider Testimonials", "ust" ),
+            "singular_name" => __( "Ultimate 3D Slider Testimonial", "ust" ),
+            "menu_name" => __( "Ultimate 3D Slider Testimonial", "ust" ),
+            "all_items" => __( "All Items", "ust" ),
+            "featured_image" => __( "Client Featured Image", "ust" ),
+            "set_featured_image" => __( "Set Client Featured Image", "ust" ),
+            "remove_featured_image" => __( "Remove Client Featured Image", "ust" ),
+            "use_featured_image" => __( "Use Client Featured Image", "ust" ),
+        ];
+    
+        $args = [
+            "label" => __( "Ultimate 3D Slider Testimonials", "ust" ),
+            "labels" => $labels,
+            "description" => "",
+            "public" => true,
+            "publicly_queryable" => true,
+            "show_ui" => true,
+            "show_in_rest" => false,
+            "rest_base" => "",
+            "rest_controller_class" => "WP_REST_Posts_Controller",
+            "has_archive" => false,
+            "show_in_menu" => true,
+            "show_in_nav_menus" => true,
+            "delete_with_user" => false,
+            "exclude_from_search" => false,
+            "capability_type" => "post",
+            "map_meta_cap" => true,
+            "hierarchical" => false,
+            "can_export" => false,
+            "rewrite" => [ "slug" => "ust", "with_front" => true ],
+            "query_var" => true,
+            "menu_icon" => "dashicons-slides",
+            "supports" => [ "title", "editor", "thumbnail" ],
+            "show_in_graphql" => false,
+        ];
+    
+        register_post_type( "ust", $args );
+    }
+    add_action( 'init', 'ust_setup_post_type' );
+}
+
+/**
  * Custom Meta box
  */
 require_once('includes/metabox.php');
