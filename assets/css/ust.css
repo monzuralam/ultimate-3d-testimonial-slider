@@ -1,0 +1,104 @@
+.ucs-container {
+    width: 100%;
+    height: 535px;
+    position: relative;
+}
+
+.ucs-wrapper {
+    width: 400px;
+    height: 316px;
+    margin: 0 auto;
+    position: relative;
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    -o-transform-style: preserve-3d;
+    -ms-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    -webkit-perspective: 1000px;
+    -moz-perspective: 1000px;
+    -o-perspective: 1000px;
+    -ms-perspective: 1000px;
+    perspective: 1000px;
+}
+
+.ucs-wrapper a {
+    background: #fff;
+    width: 400px;
+    height: auto;
+    display: block;
+    position: absolute;
+    padding: 15px;
+    left: 0;
+    top: 0;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    text-decoration: none !important;
+}
+
+.ucs-wrapper a.ucs-transition {
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    -ms-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+.ucs-wrapper a img {
+    width: 80px !important;
+    height: 80px;
+    margin: 0 auto;
+    padding-top: 0;
+    border-radius: 50%;
+    text-align: center;
+}
+
+.ucs-wrapper a div {
+    font-style: italic;
+    text-align: center;
+    line-height: 50px;
+    text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
+    color: #333;
+    font-size: 16px;
+    width: 100%;
+    bottom: -55px;
+    display: block;
+    /* position: absolute; */
+}
+
+.ucs-wrapper .details-content {
+    position: static !important;
+    line-height: 28px !important;
+    font-style: normal !important;
+}
+
+.ucs-wrapper a.ucs-center div {
+    display: block;
+}
+
+.ucs-container nav {
+    width: 58px;
+    position: absolute;
+    z-index: 1000;
+    bottom: 40px;
+    left: 50%;
+    margin-left: -29px;
+}
+
+.ucs-container nav span {
+    text-indent: -9000px;
+    float: left;
+    cursor: pointer;
+    width: 24px;
+    height: 25px;
+    opacity: 0.8;
+    background: transparent url(../images/arrows.png) no-repeat top left;
+}
+
+.ucs-container nav span:hover {
+    opacity: 1;
+}
+
+.ucs-container nav span.ucs-next {
+    background-position: top right;
+    margin-left: 10px;
+}
