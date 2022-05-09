@@ -83,6 +83,17 @@ if( !function_exists('ust_setup_post_type')){
 }
 
 /**
+ * Activate the plugin.
+ */
+function ust_active() { 
+    // Trigger our function that registers the custom post type plugin.
+    ust_setup_post_type(); 
+    // Clear the permalinks after the post type has been registered.
+    flush_rewrite_rules(); 
+}
+register_activation_hook( __FILE__, 'ust_active' );
+
+/**
  * Custom Meta box
  */
 require_once('includes/metabox.php');
