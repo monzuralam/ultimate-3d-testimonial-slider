@@ -3,9 +3,9 @@ if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly.
 }
 
-function ust_shortcode($atts){
+function uts_shortcode($atts){
     $args = array(
-        'post_type' => 'ust',
+        'post_type' => 'uts',
         'post_status' => 'publish',
         'posts_per_page' => -1,
         'order' => 'ASC',
@@ -27,7 +27,7 @@ function ust_shortcode($atts){
                     the_post_thumbnail('large');
                 }else{
                     ?>
-                    <img src="<?php echo esc_url(UST_URL . 'assets/images/quotation.png'); ?>" alt="Quote" class="img-fluid">
+                    <img src="<?php echo esc_url(UTS_URL . 'assets/images/quotation.png'); ?>" alt="Quote" class="img-fluid">
                     <?php
                 }
                 ?>
@@ -36,8 +36,8 @@ function ust_shortcode($atts){
                     <h3><?php _e(sanitize_text_field(get_the_title())); ?></h3>
                     <h4>
                         <?php
-                        $postion = sanitize_text_field(get_post_meta(get_the_ID(), "ust_designation", true));
-                        esc_html_e($postion, 'ust');
+                        $postion = sanitize_text_field(get_post_meta(get_the_ID(), "uts_designation", true));
+                        esc_html_e($postion, 'uts');
                         ?>
                     </h4>
                 </div>
@@ -56,4 +56,4 @@ function ust_shortcode($atts){
 <?php
     return ob_get_clean();
 }
-add_shortcode('ust','ust_shortcode');
+add_shortcode('uts','uts_shortcode');
