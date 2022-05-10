@@ -70,6 +70,19 @@
     line-height: 28px !important;
     font-style: normal !important;
 }
+.ucs-container .details-content h3 {
+    font-size: 30px;
+    font-weight: 700;
+    color: #1a191d;
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    margin-bottom: 10px;
+}
+
+.ucs-container .details-content h4 {
+    font-size: 16px;
+    margin-top: 15px;
+}
 
 .ucs-wrapper a.ucs-center div {
     display: block;
@@ -79,7 +92,7 @@
     width: 58px;
     position: absolute;
     z-index: 1000;
-    bottom: 40px;
+    bottom: 30px;
     left: 50%;
     margin-left: -29px;
 }
