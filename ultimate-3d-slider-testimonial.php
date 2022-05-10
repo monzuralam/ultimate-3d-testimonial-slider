@@ -108,3 +108,8 @@ register_deactivation_hook( __FILE__, 'ust_deactivate' );
  * Custom Meta box
  */
 require_once('includes/metabox.php');
+
+/**
+ * Shortcode
+ */
+require_once('includes/shortcode.php');
