@@ -10,7 +10,7 @@
  * Text Domain:       uts
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * GitHub Plugin URI: https://github.com/monzuralam/ultimate-3d-slider-testimonial
+ * GitHub Plugin URI: https://github.com/monzuralam/ultimate-3d-testimonial-slider
  */
 
 // If this file is called directly, abort.
