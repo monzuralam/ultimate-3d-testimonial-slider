@@ -18,68 +18,28 @@ if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly.
 }
 
-define('UTS_PATH', plugin_dir_path(__FILE__));
-define('UTS_URL', plugin_dir_url(__FILE__));
+/**
+ * define constants
+ */
+define( 'UTS_VERSION', '1.0.0' );
+define( 'UTS_FILE', __FILE__ );
+define( 'UTS_PATH', dirname( UTS_FILE ) );
+define( 'UTS_URL', plugins_url( '', UTS_FILE ) );
+define( 'UTS_ASSETS', UTS_URL . '/assets' );
+define( 'UTS_INCLUDES', UTS_PATH . '/includes' );
 
 /**
  * Enqueue CSS & JS
  */
 if (!function_exists('uts_assets')) {
     function uts_assets(){
-        wp_enqueue_style('uts', UTS_URL . 'assets/css/uts.css', array(), '1.0.0', 'all');
+        wp_enqueue_style('uts', UTS_ASSETS . '/css/uts.css', array(), '1.0.0', 'all');
         wp_enqueue_script('jquery');
-        wp_enqueue_script('modernizr', UTS_URL . 'assets/js/modernizr.min.js', array('jquery'), '1.0.0', false);
-        wp_enqueue_script('gallery', UTS_URL . 'assets/js/jquery.gallery.js', array('jquery'), '1.0.0', true);
-        wp_enqueue_script('uts', UTS_URL . 'assets/js/uts.js', array('jquery','gallery'), '1.0.0', true);
+        wp_enqueue_script('modernizr', UTS_ASSETS . '/js/modernizr.min.js', array('jquery'), '1.0.0', false);
+        wp_enqueue_script('gallery', UTS_ASSETS . '/js/jquery.gallery.js', array('jquery'), '1.0.0', true);
+        wp_enqueue_script('uts', UTS_ASSETS . '/js/uts.js', array('jquery','gallery'), '1.0.0', true);
     }
     add_action('wp_enqueue_scripts', 'uts_assets');
-}
-
-/**
- * Register Post Type
- */
-if( !function_exists('uts_setup_post_type')){
-    function uts_setup_post_type() {
-        $labels = [
-            "name" => __( "Ultimate 3D Testimonial Sliders", "uts" ),
-            "singular_name" => __( "Ultimate 3D Testimonial Slider", "uts" ),
-            "menu_name" => __( "Ultimate 3D Testimonial Slider", "uts" ),
-            "all_items" => __( "All Items", "uts" ),
-            "featured_image" => __( "Client Featured Image", "uts" ),
-            "set_featured_image" => __( "Set Client Featured Image", "uts" ),
-            "remove_featured_image" => __( "Remove Client Featured Image", "uts" ),
-            "use_featured_image" => __( "Use Client Featured Image", "uts" ),
-        ];
-    
-        $args = [
-            "label" => __( "Ultimate 3D Testimonial Sliders", "uts" ),
-            "labels" => $labels,
-            "description" => "",
-            "public" => true,
-            "publicly_queryable" => true,
-            "show_ui" => true,
-            "show_in_rest" => false,
-            "rest_base" => "",
-            "rest_controller_class" => "WP_REST_Posts_Controller",
-            "has_archive" => false,
-            "show_in_menu" => true,
-            "show_in_nav_menus" => true,
-            "delete_with_user" => false,
-            "exclude_from_search" => false,
-            "capability_type" => "post",
-            "map_meta_cap" => true,
-            "hierarchical" => false,
-            "can_export" => false,
-            "rewrite" => [ "slug" => "uts", "with_front" => true ],
-            "query_var" => true,
-            "menu_icon" => "dashicons-slides",
-            "supports" => [ "title", "editor", "thumbnail" ],
-            "show_in_graphql" => false,
-        ];
-    
-        register_post_type( "uts", $args );
-    }
-    add_action( 'init', 'uts_setup_post_type' );
 }
 
 /**
@@ -105,11 +65,21 @@ function uts_deactivate() {
 register_deactivation_hook( __FILE__, 'uts_deactivate' );
 
 /**
+ * Cutsom Post Type
+ */
+require_once UTS_INCLUDES . '/cpt.php';
+
+/**
  * Cutsom Meta box
  */
-require_once('includes/metabox.php');
+require_once UTS_INCLUDES . '/metabox.php';
 
 /**
  * Shortcode
  */
-require_once('includes/shortcode.php');
+require_once UTS_INCLUDES . '/shortcode.php';
+
+/**
+ * Menu
+ */
+require_once UTS_INCLUDES . '/menu.php';
