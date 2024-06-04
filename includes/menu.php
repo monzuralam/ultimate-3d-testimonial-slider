@@ -9,26 +9,20 @@ if (!defined('ABSPATH')) {
 function uts_register_menu() {
     add_submenu_page(
         'edit.php?post_type=uts',
-        __('Shortcode Builder'),
-        __('Shortcode Builder'),
+        __('Getting Started'),
+        __('Getting Started'),
         'manage_options',
-        'shortcode-builder',
-        'uts_shortcode_builder_callback'
+        'getting-started',
+        'uts_getting_started_callback'
     );
 }
 add_action('admin_menu', 'uts_register_menu');
 
 /**
- * Shortcode Builder Callback
+ * Getting Started Callback
  */
-function uts_shortcode_builder_callback() {
+function uts_getting_started_callback() {
 ?>
-    <div class="wrap">
-        <h1 class="wp-heading-inline"><?php echo esc_html__('Shortcode Builder', 'uts'); ?></h1>
-        <a href="" class="page-title-action"><?php echo esc_html__('Add New Shortcode', 'uts'); ?></a>
-        <hr class="wp-header-end">
-        <div class="uts-shortcode-builder"></div>
-        <div class="clear"></div>
-    </div>
+    <div class="wrap"></div>
 <?php
 }
