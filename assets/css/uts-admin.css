@@ -1,0 +1,10 @@
+.uts-shortcode-wrap {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.uts-shortcode-wrap button span{
+    vertical-align: middle;
+    display: block;
+}
