@@ -1,28 +1,60 @@
 <?php
+
+namespace UTS;
+
 if (!defined('ABSPATH')) {
-    exit; // Exit if accessed directly.
+    wp_die(__('You can\'t access this page', 'uts'));
 }
 
 /**
- * Register Menu
+ * Menu
  */
-function uts_register_menu() {
-    add_submenu_page(
-        'edit.php?post_type=uts',
-        __('Getting Started'),
-        __('Getting Started'),
-        'manage_options',
-        'getting-started',
-        'uts_getting_started_callback'
-    );
-}
-add_action('admin_menu', 'uts_register_menu');
+class Menu {
+    /**
+     * The single instance of the class.
+     *
+     * @var Enqueue
+     * @since 1.0.1
+     */
+    protected static $instance = null;
 
-/**
- * Getting Started Callback
- */
-function uts_getting_started_callback() {
+    /**
+     * Constructor
+     */
+    public function __construct() {
+        add_action('admin_menu', array($this, 'register_menu'));
+    }
+
+    /**
+     * Register Menu
+     */
+    public function register_menu() {
+        add_submenu_page(
+            'edit.php?post_type=uts',
+            __('Getting Started'),
+            __('Getting Started'),
+            'manage_options',
+            'getting-started',
+            array($this, 'getting_started')
+        );
+    }
+
+    public function getting_started() {
 ?>
-    <div class="wrap"></div>
+        <div class="wrap"></div>
 <?php
+    }
+
+    /**
+     * Instance
+     */
+    public static function instance(){
+        if( null == self::$instance ){
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
 }
+
+Menu::instance();

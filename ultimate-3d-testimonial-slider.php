@@ -15,82 +15,45 @@
 
 // If this file is called directly, abort.
 if (!defined('ABSPATH')) {
-    exit; // Exit if accessed directly.
+    wp_die(__('You can\'t access this page', 'uts'));
 }
 
 /**
  * define constants
  */
-define( 'UTS_VERSION', '1.0.1' );
-define( 'UTS_FILE', __FILE__ );
-define( 'UTS_PATH', dirname( UTS_FILE ) );
-define( 'UTS_URL', plugins_url( '', UTS_FILE ) );
-define( 'UTS_ASSETS', UTS_URL . '/assets' );
-define( 'UTS_INCLUDES', UTS_PATH . '/includes' );
-
-/**
- * Enqueue CSS & JS
- */
-if (!function_exists('uts_assets')) {
-    function uts_assets(){
-        wp_enqueue_style('uts', UTS_ASSETS . '/css/uts.css', array(), UTS_VERSION, 'all');
-        wp_enqueue_script('jquery');
-        wp_enqueue_script('modernizr', UTS_ASSETS . '/js/modernizr.min.js', array('jquery'), UTS_VERSION, false);
-        wp_enqueue_script('gallery', UTS_ASSETS . '/js/jquery.gallery.js', array('jquery'), UTS_VERSION, true);
-        wp_enqueue_script('uts', UTS_ASSETS . '/js/uts.js', array('jquery','gallery'), UTS_VERSION, true);
-    }
-    add_action('wp_enqueue_scripts', 'uts_assets');
-}
-
-/**
- * Admin Assets
- * @since 1.0.1
- * @author  Monzur Alam
- */
-function uts_admin_assets(){
-    wp_enqueue_style('uts-admin', UTS_ASSETS . '/css/uts-admin.css', array(), UTS_VERSION, 'all');
-    wp_enqueue_script('uts-admin', UTS_ASSETS . '/js/uts-admin.js', array('jquery'), UTS_VERSION, true);
-}
-add_action('admin_enqueue_scripts', 'uts_admin_assets');
+define('UTS_VERSION', '1.0.1');
+define('UTS_FILE', __FILE__);
+define('UTS_PATH', dirname(UTS_FILE));
+define('UTS_URL', plugins_url('', UTS_FILE));
+define('UTS_ASSETS', UTS_URL . '/assets');
+define('UTS_INCLUDES', UTS_PATH . '/includes');
 
 /**
  * Activate the plugin.
  */
-function uts_active() { 
+function uts_active() {
     // Trigger our function that registers the cutsom post type plugin.
-    uts_setup_post_type(); 
-    // Clear the permalinks after the post type has been registered.
-    flush_rewrite_rules(); 
+    UTS\Cpt::active();
 }
-register_activation_hook( __FILE__, 'uts_active' );
+register_activation_hook(__FILE__, 'uts_active');
 
 /**
  * Deactivation hook.
  */
 function uts_deactivate() {
     // Unregister the post type, so the rules are no longer in memory.
-    unregister_post_type( 'uts' );
+    unregister_post_type('uts');
     // Clear the permalinks to remove our post type's rules from the database.
     flush_rewrite_rules();
 }
-register_deactivation_hook( __FILE__, 'uts_deactivate' );
+register_deactivation_hook(__FILE__, 'uts_deactivate');
 
 /**
- * Cutsom Post Type
+ * The core plugin class that is used to define internationalization,
+ * admin-specific hooks, and public-facing site hooks.
+ *
+ * @since 1.0.0
  */
-require_once UTS_INCLUDES . '/cpt.php';
-
-/**
- * Cutsom Meta box
- */
-require_once UTS_INCLUDES . '/metabox.php';
-
-/**
- * Shortcode
- */
-require_once UTS_INCLUDES . '/shortcode.php';
-
-/**
- * Menu
- */
-require_once UTS_INCLUDES . '/menu.php';
+add_action('plugins_loaded', function () {
+    include_once UTS_INCLUDES . '/Main.php';
+});

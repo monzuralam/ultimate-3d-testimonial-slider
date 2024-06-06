@@ -1,30 +1,51 @@
 <?php
+
+namespace UTS;
+
+// don't call the file directly
 if (!defined('ABSPATH')) {
-    exit; // Exit if accessed directly.
+    wp_die(__('You can\'t access this page', 'uts'));
 }
 
 /**
- * Register Post Type
+ * Cpt
  */
-if( !function_exists('uts_setup_post_type')){
-    function uts_setup_post_type() {
+class Cpt {
+    /**
+     * The single instance of the class.
+     *
+     * @var Cpt
+     * @since 1.0.1
+     */
+    private static $instance = null;
+
+    public function __construct() {
+        add_action('init', array($this, 'setup_post_type'));
+    }
+
+    /**
+     * Register Post Type
+     *
+     * @return void
+     */
+    public function setup_post_type() {
 
         /**
          * Post Type: Ultimate Testimonial Slider
          */
         $labels = [
-            "name" => __( "Ultimate 3D Testimonial Sliders", "uts" ),
-            "singular_name" => __( "Ultimate 3D Testimonial Slider", "uts" ),
-            "menu_name" => __( "Ultimate 3D Testimonial Slider", "uts" ),
-            "all_items" => __( "All Items", "uts" ),
-            "featured_image" => __( "Client Featured Image", "uts" ),
-            "set_featured_image" => __( "Set Client Featured Image", "uts" ),
-            "remove_featured_image" => __( "Remove Client Featured Image", "uts" ),
-            "use_featured_image" => __( "Use Client Featured Image", "uts" ),
+            "name" => __("Ultimate 3D Testimonial Sliders", "uts"),
+            "singular_name" => __("Ultimate 3D Testimonial Slider", "uts"),
+            "menu_name" => __("Ultimate 3D Testimonial Slider", "uts"),
+            "all_items" => __("All Items", "uts"),
+            "featured_image" => __("Client Featured Image", "uts"),
+            "set_featured_image" => __("Set Client Featured Image", "uts"),
+            "remove_featured_image" => __("Remove Client Featured Image", "uts"),
+            "use_featured_image" => __("Use Client Featured Image", "uts"),
         ];
-    
+
         $args = [
-            "label" => __( "Ultimate 3D Testimonial Sliders", "uts" ),
+            "label" => __("Ultimate 3D Testimonial Sliders", "uts"),
             "labels" => $labels,
             "description" => "",
             "public" => true,
@@ -42,32 +63,32 @@ if( !function_exists('uts_setup_post_type')){
             "map_meta_cap" => true,
             "hierarchical" => false,
             "can_export" => false,
-            "rewrite" => [ "slug" => "uts", "with_front" => true ],
+            "rewrite" => ["slug" => "uts", "with_front" => true],
             "query_var" => true,
             "menu_icon" => "dashicons-slides",
-            "supports" => [ "title", "editor", "thumbnail" ],
+            "supports" => ["title", "editor", "thumbnail"],
             "show_in_graphql" => false,
         ];
-    
-        register_post_type( "uts", $args );
+
+        register_post_type("uts", $args);
 
         /**
          * Post Type: Shortcode Builder.
          */
-    
+
         $labels = [
-            "name" => esc_html__( "Shortcode Builder", "uts" ),
-            "singular_name" => esc_html__( "Shortcode Builder", "uts" ),
-            "menu_name" => esc_html__( "Shortcode Builder", "uts" ),
-            "all_items" => esc_html__( "Shortcode Builder", "uts" ),
-            "add_new" => esc_html__( "Add Shortcode", "uts" ),
-            "add_new_item" => esc_html__( "Add Shortcode", "uts" ),
-            "edit_item" => esc_html__( "Edit Shortcode", "uts" ),
-            "new_item" => esc_html__( "New Shortcode", "uts" ),
+            "name" => esc_html__("Shortcode Builder", "uts"),
+            "singular_name" => esc_html__("Shortcode Builder", "uts"),
+            "menu_name" => esc_html__("Shortcode Builder", "uts"),
+            "all_items" => esc_html__("Shortcode Builder", "uts"),
+            "add_new" => esc_html__("Add Shortcode", "uts"),
+            "add_new_item" => esc_html__("Add Shortcode", "uts"),
+            "edit_item" => esc_html__("Edit Shortcode", "uts"),
+            "new_item" => esc_html__("New Shortcode", "uts"),
         ];
-    
+
         $args = [
-            "label" => esc_html__( "Shortcode Builder", "uts" ),
+            "label" => esc_html__("Shortcode Builder", "uts"),
             "labels" => $labels,
             "description" => "",
             "public" => true,
@@ -86,13 +107,35 @@ if( !function_exists('uts_setup_post_type')){
             "map_meta_cap" => true,
             "hierarchical" => false,
             "can_export" => false,
-            "rewrite" => [ "slug" => "shortcode-builder", "with_front" => true ],
+            "rewrite" => ["slug" => "shortcode-builder", "with_front" => true],
             "query_var" => true,
-            "supports" => [ "title" ],
+            "supports" => ["title"],
             "show_in_graphql" => false,
         ];
-    
-        register_post_type( "shortcode-builder", $args );       
+
+        register_post_type("shortcode-builder", $args);
     }
-    add_action( 'init', 'uts_setup_post_type' );
+
+    /**
+     * Active
+     *
+     * @return void
+     */
+    public static function active() {
+        self::$instance->setup_post_type();
+        flush_rewrite_rules();
+    }
+
+    /**
+     * Instance
+     */
+    public static function instance() {
+        if (null == self::$instance) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
 }
+
+Cpt::instance();
