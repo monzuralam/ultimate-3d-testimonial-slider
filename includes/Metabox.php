@@ -39,7 +39,7 @@ class Metabox {
             'shortcode-builder' => [
                 'id'        => 'uts_shortcode_metabox',
                 'title'     => __('Shortcode', 'ust'),
-                'callback'  => 'shortcode_metabox',
+                'callback'  => array($this, 'shortcode_metabox'),
                 'context'   =>  'side',
             ]
         ];
