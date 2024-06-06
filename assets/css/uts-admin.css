@@ -8,3 +8,80 @@ button.uts-copy-shortcode span{
     vertical-align: middle;
     display: block;
 }
+
+/* shortcode generator tabs */
+.shortcode-generator-metabox{
+    padding: 15px 9px;
+    position: relative;
+}
+
+.shortcode-generator-metabox .uts-tab-content {
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.shortcode-generator-metabox .uts-tab-content .uts-tab-content-wrapper {
+    display: none;
+}
+
+.shortcode-generator-metabox .uts-tab-content .uts-tab-content-wrapper.active {
+    display: block;
+}
+
+.shortcode-generator-metabox .uts-tab-nav{
+    padding: 0;
+    display: flex;
+    border-bottom: 1px solid #dee2e6;
+    margin: 0;
+}
+
+.shortcode-generator-metabox .uts-tab-nav li {
+    cursor: pointer;
+    display: inline-block;
+    margin-bottom: -2px;
+}
+
+.shortcode-generator-metabox .uts-tab-nav li a {
+    display: flex !important;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 10px;
+    border: 1px solid #ccc;
+    border-bottom: 0px;
+    position: relative;
+    font-size: 15px;
+    color: #ffffff;
+    background-color: #5d3dfd;
+    padding: 10px 25px;
+    display: inline-block;
+    text-decoration: none;
+    z-index: 2;
+    transition: all 0.3s ease-in-out;
+}
+
+.shortcode-generator-metabox .uts-tab-nav li a:focus{
+    box-shadow: 0 0 0 0 transparent;
+    outline: 0;
+}
+
+.shortcode-generator-metabox .uts-tab-nav li.active a {
+    background-color: #fff;
+    color: #5d3dfd;
+}
+
+.shortcode-generator-metabox .uts-tab-nav li a:after {
+    content: "";
+    height: 100%;
+    width: 100%;
+    background-color: #5d3dfd;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: -1;
+    transition: all 0.3s ease-in-out;
+}
+
+.shortcode-generator-metabox .uts-tab-nav li.active a:after {
+    height: 10%;
+}

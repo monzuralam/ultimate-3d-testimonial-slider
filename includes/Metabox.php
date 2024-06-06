@@ -31,28 +31,40 @@ class Metabox {
         // Define the screens (post types) and corresponding callbacks
         $meta_boxes = [
             'uts' => [
-                'id'        => 'uts_custom_metabox',
-                'title'     => __('Client Additional', 'ust'),
-                'callback'  => array($this, 'custom_metabox'),
-                'context'   =>  'normal',
+                [
+                    'id'        => 'uts_custom_metabox',
+                    'title'     => __('Client Additional', 'ust'),
+                    'callback'  => array($this, 'custom_metabox'),
+                    'context'   => 'normal',
+                ]
             ],
             'shortcode-builder' => [
-                'id'        => 'uts_shortcode_metabox',
-                'title'     => __('Shortcode', 'ust'),
-                'callback'  => array($this, 'shortcode_metabox'),
-                'context'   =>  'side',
+                [
+                    'id'        => 'uts_shortcode_metabox',
+                    'title'     => __('Shortcode', 'ust'),
+                    'callback'  => array($this, 'shortcode_metabox'),
+                    'context'   => 'side',
+                ],
+                [
+                    'id'        => 'uts_shortcode_generator_metabox',
+                    'title'     => __('Shortcode Generator', 'ust'),
+                    'callback'  => array($this, 'shortcode_generator_metabox'),
+                    'context'   => 'normal',
+                ]
             ]
         ];
 
         // Register the meta boxes for each screen
-        foreach ($meta_boxes as $screen => $meta_box) {
-            add_meta_box(
-                $meta_box['id'],          // Unique ID
-                $meta_box['title'],       // Box title
-                $meta_box['callback'],    // Content callback, must be of type callable
-                $screen,                  // Post type
-                $meta_box['context']      // Context: 'normal', 'advanced', or 'side'
-            );
+        foreach ($meta_boxes as $screen => $meta_box_array) {
+            foreach ($meta_box_array as $meta_box) {
+                add_meta_box(
+                    $meta_box['id'],          // Unique ID
+                    $meta_box['title'],       // Box title
+                    $meta_box['callback'],    // Content callback, must be of type callable
+                    $screen,                  // Post type
+                    $meta_box['context']      // Context: 'normal', 'advanced', or 'side'
+                );
+            }
         }
     }
 
@@ -83,6 +95,24 @@ class Metabox {
             </button>
         </div>
     <?php
+    }
+
+    public function shortcode_generator_metabox($post){
+        $active_tab = '';
+        ?>
+        <div class="shortcode-generator-metabox">
+            <ul class="uts-tab-nav">
+                <li class="tab active"><a href="#layout"><span class="dashicons dashicons-layout"></span><?php echo esc_html__('Layout', 'uts'); ?></a></li>
+                <li class="tab"><a href="#filtering"><span class="dashicons dashicons-filter"></span><?php echo esc_html__('Filtering', 'uts'); ?></a></li>
+                <li class="tab"><a href="#styling"><span class="dashicons dashicons-edit-large"></span><?php echo esc_html__('Styling', 'uts'); ?></a></li>
+            </ul>
+            <div class="uts-tab-content">
+                <div id="layout" class="uts-tab-content-wrapper active"></div>
+                <div id="filtering" class="uts-tab-content-wrapper"></div>
+                <div id="styling" class="uts-tab-content-wrapper"></div>
+            </div>
+        </div>
+        <?php
     }
 
     /**
