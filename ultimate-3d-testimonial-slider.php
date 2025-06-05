@@ -33,11 +33,12 @@ define( 'UTS_INCLUDES', UTS_PATH . '/includes' );
  */
 if (!function_exists('uts_assets')) {
     function uts_assets(){
+        wp_enqueue_style('swiper', UTS_ASSETS . '/css/swiper.min.css', array(), UTS_VERSION, 'all');
         wp_enqueue_style('uts', UTS_ASSETS . '/css/uts.css', array(), UTS_VERSION, 'all');
+        
         wp_enqueue_script('jquery');
-        wp_enqueue_script('modernizr', UTS_ASSETS . '/js/modernizr.min.js', array('jquery'), UTS_VERSION, false);
-        wp_enqueue_script('gallery', UTS_ASSETS . '/js/jquery.gallery.js', array('jquery'), UTS_VERSION, true);
-        wp_enqueue_script('uts', UTS_ASSETS . '/js/uts.js', array('jquery','gallery'), UTS_VERSION, true);
+        wp_enqueue_script('swiper', UTS_ASSETS . '/js/swiper.min.js', array('jquery'), UTS_VERSION, true);
+        wp_enqueue_script('uts', UTS_ASSETS . '/js/uts.js', array('jquery'), UTS_VERSION, true);
     }
     add_action('wp_enqueue_scripts', 'uts_assets');
 }

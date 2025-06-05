@@ -16,7 +16,7 @@ function uts_register_menu() {
         'uts_getting_started_callback'
     );
 }
-add_action('admin_menu', 'uts_register_menu');
+// add_action('admin_menu', 'uts_register_menu');
 
 /**
  * Getting Started Callback
