@@ -1,0 +1,33 @@
+.uts-settings {
+	max-width: 760px;
+	margin-top: 20px;
+
+	h1 {
+		margin-bottom: 8px;
+	}
+
+	&__intro {
+		margin: 0 0 20px;
+		color: #50575e;
+	}
+
+	.components-notice {
+		margin: 0 0 16px;
+	}
+
+	&__tabs .components-tab-panel__tabs {
+		border-bottom: 1px solid #e0e0e0;
+		padding: 0 8px;
+	}
+
+	&__fields {
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+		padding: 24px;
+	}
+
+	&__footer {
+		justify-content: space-between;
+	}
+}

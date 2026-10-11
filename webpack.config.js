@@ -6,5 +6,6 @@ module.exports = {
 	entry: {
 		frontend: path.resolve( __dirname, 'src/frontend/index.js' ),
 		admin: path.resolve( __dirname, 'src/admin/index.js' ),
+		settings: path.resolve( __dirname, 'src/settings/index.js' ),
 	},
 };
