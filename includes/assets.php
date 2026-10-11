@@ -26,6 +26,10 @@ if (!function_exists('uts_register_build')) {
 
         $asset = require $asset_file;
 
+        if (in_array('react-jsx-runtime', $asset['dependencies'], true)) {
+            uts_register_jsx_runtime_fallback();
+        }
+
         if (file_exists(UTS_BUILD . '/' . $entry . '.css')) {
             wp_register_style($handle, UTS_BUILD_URL . '/' . $entry . '.css', array(), $asset['version'], 'all');
             wp_style_add_data($handle, 'rtl', 'replace');
@@ -34,6 +38,39 @@ if (!function_exists('uts_register_build')) {
         wp_register_script($handle, UTS_BUILD_URL . '/' . $entry . '.js', $asset['dependencies'], $asset['version'], true);
 
         return true;
+    }
+}
+
+/**
+ * Provide the `react-jsx-runtime` script on WordPress < 6.6.
+ *
+ * @wordpress/scripts compiles JSX for the automatic runtime, so React builds
+ * depend on `react-jsx-runtime`, which core only registers since 6.6. Without
+ * it WordPress skips the script entirely. This registers a tiny stand-in that
+ * maps jsx()/jsxs() onto wp.element.createElement (available since 5.0).
+ *
+ * @since 1.1.0
+ * @author Monzur Alam
+ */
+if (!function_exists('uts_register_jsx_runtime_fallback')) {
+    function uts_register_jsx_runtime_fallback() {
+        if (wp_script_is('react-jsx-runtime', 'registered')) {
+            return;
+        }
+
+        wp_register_script('react-jsx-runtime', false, array('wp-element'), UTS_VERSION, true);
+        wp_add_inline_script(
+            'react-jsx-runtime',
+            '(function (el) {' .
+                'function jsx(type, props, key) {' .
+                    'var config = {};' .
+                    'for (var name in props) { if (Object.prototype.hasOwnProperty.call(props, name)) { config[name] = props[name]; } }' .
+                    'if (key !== undefined) { config.key = key; }' .
+                    'return el.createElement(type, config);' .
+                '}' .
+                'window.ReactJSXRuntime = { jsx: jsx, jsxs: jsx, Fragment: el.Fragment };' .
+            '})(window.wp.element);'
+        );
     }
 }
 
