@@ -192,6 +192,24 @@ if ( ! function_exists( 'uts_get_settings' ) ) {
 }
 
 /**
+ * Get a saved shortcode instance (`[uts id="5"]`).
+ *
+ * Public API: themes and snippets may call it. Returns the instance in any
+ * status, so check `status` before using it on the frontend.
+ *
+ * @since 1.1.0
+ * @author Monzur Alam
+ *
+ * @param int $id Instance ID.
+ * @return array|null { id, title, settings, status, author_id, created_at, updated_at }, or null.
+ */
+if ( ! function_exists( 'uts_get_shortcode' ) ) {
+	function uts_get_shortcode( $id ) {
+		return \UTS\DB::get( $id );
+	}
+}
+
+/**
  * Render the [uts] shortcode.
  *
  * Public API since 1.0.1, kept for back-compat: themes may call it directly,

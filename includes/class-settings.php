@@ -190,16 +190,21 @@ class Settings {
 	 * @since 1.1.0
 	 * @author Monzur Alam
 	 *
-	 * @param mixed $value Raw option value.
+	 * @param mixed $value   Raw option value.
+	 * @param bool  $partial Only return the keys present in $value, without
+	 *                       filling in defaults (saved shortcode instances
+	 *                       store only the options they change). Default false.
 	 * @return array
 	 */
-	public static function sanitize( $value ) {
+	public static function sanitize( $value, $partial = false ) {
 		$value     = is_array( $value ) ? $value : array();
 		$sanitized = array();
 
 		foreach ( self::schema() as $key => $property ) {
 			if ( ! array_key_exists( $key, $value ) ) {
-				$sanitized[ $key ] = $property['default'];
+				if ( ! $partial ) {
+					$sanitized[ $key ] = $property['default'];
+				}
 				continue;
 			}
 

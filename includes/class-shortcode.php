@@ -60,8 +60,21 @@ class Shortcode {
 		// Ignore empty attributes (e.g. count="") so the setting applies.
 		$atts = array_filter( (array) $atts, 'strlen' );
 
-		$settings  = Settings::sanitize( shortcode_atts( Settings::get(), $atts, 'uts' ) );
-		$category  = isset( $atts['category'] ) ? sanitize_text_field( $atts['category'] ) : '';
+		// Saved instance ([uts id="5"]): its options sit between the global
+		// settings and the shortcode's own attributes.
+		$instance = array();
+		if ( isset( $atts['id'] ) ) {
+			$item = DB::get( $atts['id'] );
+			if ( ! $item || 'publish' !== $item['status'] ) {
+				return current_user_can( 'edit_posts' ) ? '<!-- uts: shortcode ' . absint( $atts['id'] ) . ' not found -->' : '';
+			}
+			$instance = $item['settings'];
+			unset( $atts['id'] );
+		}
+
+		$defaults  = array_merge( Settings::get(), array_diff_key( $instance, array( 'category' => true ) ) );
+		$settings  = Settings::sanitize( shortcode_atts( $defaults, $atts, 'uts' ) );
+		$category  = isset( $atts['category'] ) ? sanitize_text_field( $atts['category'] ) : ( isset( $instance['category'] ) ? $instance['category'] : '' );
 		$type      = $settings['type'];
 		$is_slider = 'slider' === $type;
 

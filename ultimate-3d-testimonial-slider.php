@@ -43,6 +43,11 @@ require_once UTS_INCLUDES . '/functions.php';
 require_once UTS_INCLUDES . '/class-plugin.php';
 
 /**
+ * Saved shortcodes table
+ */
+require_once UTS_INCLUDES . '/class-db.php';
+
+/**
  * Assets
  */
 require_once UTS_INCLUDES . '/class-assets.php';

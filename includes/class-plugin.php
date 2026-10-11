@@ -99,6 +99,7 @@ class Plugin {
 	 */
 	private function component_classes() {
 		return array(
+			'UTS\DB',
 			'UTS\CPT',
 			'UTS\Assets',
 			'UTS\Settings',
@@ -138,6 +139,9 @@ class Plugin {
 		$cpt->register_types();
 		// Clear the permalinks after the post type has been registered.
 		flush_rewrite_rules();
+		// Create the saved shortcodes table. Other sites on a network get theirs
+		// on their next load (DB::maybe_upgrade()).
+		DB::install();
 		// Show Getting Started once, on the next admin page load.
 		add_option( 'uts_activation_redirect', true );
 	}
