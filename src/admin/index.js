@@ -1,26 +1,76 @@
 /**
- * Admin: copies the shortcode from the shortcode-builder metabox.
+ * Admin: shortcode copy buttons and the Getting Started live preview.
  */
+import './tailwind.css';
 import './main.scss';
 
-document.addEventListener( 'click', ( event ) => {
-	const button = event.target.closest( '.uts-copy-shortcode' );
+const copyText = ( input ) => {
+	input.select();
 
-	if ( ! button ) {
-		return;
+	if ( window.navigator.clipboard ) {
+		return window.navigator.clipboard.writeText( input.value );
 	}
 
-	const input = button.previousElementSibling;
+	input.ownerDocument.execCommand( 'copy' );
+	return Promise.resolve();
+};
+
+// Copy a shortcode and briefly show a check mark.
+document.addEventListener( 'click', ( event ) => {
+	const button = event.target.closest( '.uts-copy-shortcode' );
+	const input = button && button.parentElement.querySelector( 'input' );
 
 	if ( ! input ) {
 		return;
 	}
 
-	input.select();
+	const icon = button.querySelector( '.dashicons' );
 
-	if ( window.navigator.clipboard ) {
-		window.navigator.clipboard.writeText( input.value );
-	} else {
-		input.ownerDocument.execCommand( 'copy' );
+	copyText( input ).then( () => {
+		if ( ! icon ) {
+			return;
+		}
+
+		icon.classList.replace( 'dashicons-admin-page', 'dashicons-yes' );
+		setTimeout(
+			() =>
+				icon.classList.replace(
+					'dashicons-yes',
+					'dashicons-admin-page'
+				),
+			1500
+		);
+	} );
+} );
+
+// Switch the live preview between slider, grid and list.
+document.addEventListener( 'click', ( event ) => {
+	const tab = event.target.closest( '[data-uts-preview]' );
+
+	if ( ! tab ) {
+		return;
 	}
+
+	const layout = tab.dataset.utsPreview;
+
+	document
+		.querySelectorAll( '[data-uts-preview]' )
+		.forEach( ( item ) =>
+			item.setAttribute(
+				'aria-selected',
+				String( item.dataset.utsPreview === layout )
+			)
+		);
+
+	document
+		.querySelectorAll( '[data-uts-preview-panel]' )
+		.forEach( ( panel ) => {
+			panel.hidden = panel.dataset.utsPreviewPanel !== layout;
+
+			// Swiper measures on init; re-measure once the panel is visible.
+			const slider = panel.querySelector( '.swiper' );
+			if ( ! panel.hidden && slider && slider.swiper ) {
+				slider.swiper.update();
+			}
+		} );
 } );

@@ -1,0 +1,26 @@
+/**
+ * Tailwind for the plugin's admin pages only (never the frontend).
+ *
+ * - No Preflight: it would reset the whole wp-admin.
+ * - prefix(uts): classes are written `uts:flex`, `uts:md:grid-cols-3`, so they
+ *   can't collide with WordPress or other plugins.
+ * - important: Tailwind v4 output lives in cascade layers, which always lose
+ *   to WordPress's unlayered admin CSS; !important flips that.
+ */
+@layer theme, base, components, utilities;
+
+@import "tailwindcss/theme.css" layer(theme) prefix(uts);
+@import "tailwindcss/utilities.css" layer(utilities) prefix(uts) important;
+
+@source not "../../node_modules";
+@source "../../includes/**/*.php";
+@source "../settings/**/*.js";
+@source "./**/*.js";
+
+@theme {
+	--color-wp-blue: #2271b1;
+	--color-wp-blue-dark: #135e96;
+	--color-wp-border: #c3c4c7;
+	--color-wp-muted: #646970;
+	--color-wp-bg: #f0f0f1;
+}

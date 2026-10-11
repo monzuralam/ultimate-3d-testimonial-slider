@@ -23,7 +23,9 @@
     "build"
   ],
   "devDependencies": {
-    "@wordpress/scripts": "^35.0.0"
+    "@tailwindcss/postcss": "^4.3.3",
+    "@wordpress/scripts": "^35.0.0",
+    "tailwindcss": "^4.3.3"
   },
   "dependencies": {
     "@wordpress/api-fetch": "^7.57.0",

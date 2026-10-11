@@ -81,3 +81,8 @@ require_once UTS_INCLUDES . '/shortcode.php';
  * Menu
  */
 require_once UTS_INCLUDES . '/menu.php';
+
+/**
+ * Getting Started page
+ */
+require_once UTS_INCLUDES . '/getting-started.php';

@@ -45,7 +45,7 @@ if (!function_exists('uts_setup_post_type')) {
             "rewrite" => ["slug" => "uts", "with_front" => true],
             "query_var" => true,
             "menu_icon" => "dashicons-slides",
-            "supports" => ["title", "editor", "thumbnail"],
+            "supports" => ["title", "editor", "thumbnail", "page-attributes"],
             "show_in_graphql" => false,
         ];
 
