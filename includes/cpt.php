@@ -51,49 +51,6 @@ if (!function_exists('uts_setup_post_type')) {
 
         register_post_type("uts", $args);
 
-        /**
-         * Post Type: Shortcode Builder.
-         */
-
-        $labels = [
-            "name" => esc_html__("Shortcode Builder", "uts"),
-            "singular_name" => esc_html__("Shortcode Builder", "uts"),
-            "menu_name" => esc_html__("Shortcode Builder", "uts"),
-            "all_items" => esc_html__("Shortcode Builder", "uts"),
-            "add_new" => esc_html__("Add Shortcode", "uts"),
-            "add_new_item" => esc_html__("Add Shortcode", "uts"),
-            "edit_item" => esc_html__("Edit Shortcode", "uts"),
-            "new_item" => esc_html__("New Shortcode", "uts"),
-        ];
-
-        $args = [
-            "label" => esc_html__("Shortcode Builder", "uts"),
-            "labels" => $labels,
-            "description" => "",
-            "public" => true,
-            "publicly_queryable" => true,
-            "show_ui" => true,
-            "show_in_rest" => true,
-            "rest_base" => "",
-            "rest_controller_class" => "WP_REST_UTS_Shortcode_Builder_Controller",
-            "rest_namespace" => "wp/v2",
-            "has_archive" => false,
-            "show_in_menu" => "edit.php?post_type=uts",
-            "show_in_nav_menus" => true,
-            "delete_with_user" => false,
-            "exclude_from_search" => false,
-            "capability_type" => "post",
-            "map_meta_cap" => true,
-            "hierarchical" => false,
-            "can_export" => false,
-            "rewrite" => ["slug" => "shortcode-builder", "with_front" => true],
-            "query_var" => true,
-            "supports" => ["title"],
-            "show_in_graphql" => false,
-        ];
-
-        // register_post_type("shortcode-builder", $args);
-
         // register taxonomy
         register_taxonomy(
             "uts_category",

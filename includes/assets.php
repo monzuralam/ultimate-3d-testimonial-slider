@@ -83,7 +83,7 @@ if (!function_exists('uts_admin_assets')) {
     function uts_admin_assets() {
         $screen = get_current_screen();
 
-        if (!$screen || !in_array($screen->post_type, array('uts', 'shortcode-builder'), true)) {
+        if (!$screen || 'uts' !== $screen->post_type) {
             return;
         }
 

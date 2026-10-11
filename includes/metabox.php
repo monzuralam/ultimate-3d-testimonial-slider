@@ -13,12 +13,6 @@ if( !function_exists('uts_custom_metabox')){
                 'callback'  => 'uts_custom_metabox_cb',
                 'context'   =>  'normal',
             ],
-            'shortcode-builder' => [
-                'id'        => 'uts_shortcode_metabox',
-                'title'     => __('Shortcode', 'uts'),
-                'callback'  => 'uts_shortcode_cb',
-                'context'   =>  'side',
-            ]
         ];
         
         // Register the meta boxes for each screen
@@ -43,26 +37,6 @@ if( !function_exists('uts_custom_metabox_cb') ){
         ?>
         <label for="uts_designation"><?php esc_html_e('Position & Company Name', 'uts'); ?></label>
         <input type="text" name="uts_designation" id="uts_designation" class="regular-text" value="<?php echo esc_attr($designation); ?>" placeholder="<?php esc_attr_e('CEO, Company Name', 'uts'); ?>">
-        <?php
-    }
-}
-
-/**
- * Shortcode Metabox Callback
- * @since 1.0.1
- * @author Monzur Alam
- */
-if( !function_exists('uts_shortcode_cb') ){
-    function uts_shortcode_cb( $post ){
-        // Display the shortcode with the post ID
-        $shortcode = sprintf('[uts id="%d"]', $post->ID);
-        ?>
-        <div class="uts-shortcode-wrap">
-            <input type="text" value="<?php echo esc_attr($shortcode) ?>" readonly />
-            <button type="button" class="button uts-copy-shortcode" title="<?php echo esc_attr__('Copy', 'uts'); ?>">
-                <span class="dashicons dashicons-admin-page"></span>
-            </button>
-        </div>
         <?php
     }
 }
