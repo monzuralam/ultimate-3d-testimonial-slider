@@ -87,11 +87,6 @@ require_once UTS_INCLUDES . '/shortcode.php';
 require_once UTS_INCLUDES . '/menu.php';
 
 /**
- * REST API (shortcode preview)
- */
-require_once UTS_INCLUDES . '/rest.php';
-
-/**
  * Testimonials list columns and filters
  */
 require_once UTS_INCLUDES . '/admin-columns.php';

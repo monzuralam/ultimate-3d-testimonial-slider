@@ -15,7 +15,6 @@
 @source not "../../node_modules";
 @source "../../includes/**/*.php";
 @source "../settings/**/*.js";
-@source "../playground/**/*.js";
 @source "./**/*.js";
 
 @theme {

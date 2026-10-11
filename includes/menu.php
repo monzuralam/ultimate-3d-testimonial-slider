@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
  * @since 1.1.0
  * @author Monzur Alam
  *
- * @param string $key docs|support|review|github
+ * @param string $key docs|support|review|github|video
  * @return string
  */
 if (!function_exists('uts_link')) {
@@ -19,6 +19,8 @@ if (!function_exists('uts_link')) {
             'support' => 'https://wordpress.org/support/plugin/ultimate-3d-testimonial-slider/',
             'review'  => 'https://wordpress.org/support/plugin/ultimate-3d-testimonial-slider/reviews/#new-post',
             'github'  => 'https://github.com/monzuralam/ultimate-3d-testimonial-slider',
+            // Getting Started tutorial: paste a YouTube URL here (empty = "coming soon" placeholder).
+            'video'   => '',
         );
 
         return isset($links[$key]) ? $links[$key] : '';

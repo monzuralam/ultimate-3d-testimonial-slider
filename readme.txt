@@ -151,12 +151,11 @@ Please visit the plugin support forum on WordPress.org for assistance.
 * **New:** Settings page (Testimonials > Settings) for the default layout, count, excerpt length, image size, slider effect, autoplay, loop, speed, arrows, dots, visibility of image/name/designation, grid columns, colors and corner radius
 * **New:** Slide, fade and cards slider effects, autoplay, loop and navigation arrows
 * **New:** Every setting can be overridden as a shortcode attribute
-* **New:** Getting Started dashboard with a setup checklist, a step-by-step "How to use" guide and a full shortcode reference
-* **New:** Shortcode playground: try layouts, effects and categories on your real testimonials, copy the matching shortcode, or save the options as your defaults
+* **New:** Getting Started dashboard with a video tutorial, a live preview of your testimonials, a setup checklist, a step-by-step "How to use" guide and a full shortcode reference
 * **New:** Photo, Position & Company and Order columns in the testimonials list, plus a "Without photo" filter
 * **New:** Order field (Page Attributes) on testimonials to control the display order
 * **Improvement:** Sliders don't autoplay for visitors who prefer reduced motion
-* **Removed:** The unfinished shortcode builder (replaced by the playground)
+* **Removed:** The unfinished shortcode builder code (a new builder is planned)
 * **New:** Multiple sliders on the same page
 * **Improvement:** Assets are built with @wordpress/scripts; jQuery is no longer required and Swiper is updated to 11
 * **Improvement:** CSS and JS load only on pages that use the shortcode, and admin assets only on the plugin's screens

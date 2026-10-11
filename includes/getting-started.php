@@ -25,35 +25,9 @@ if (!function_exists('uts_getting_started_load')) {
  */
 if (!function_exists('uts_getting_started_assets')) {
     function uts_getting_started_assets() {
-        // The playground renders real slider markup, so it needs the frontend build too.
-        if (!uts_register_build('uts', 'frontend') || !uts_register_build('uts-playground', 'playground')) {
-            return;
+        if (uts_register_build('uts', 'frontend')) {
+            uts_enqueue_frontend();
         }
-
-        $categories = array();
-        $terms      = get_terms(array('taxonomy' => 'uts_category', 'hide_empty' => true));
-        foreach (is_array($terms) ? $terms : array() as $term) {
-            $categories[] = array(
-                'value' => $term->slug,
-                'label' => $term->name,
-            );
-        }
-
-        wp_add_inline_script(
-            'uts-playground',
-            'window.utsPlaygroundData = ' . wp_json_encode(array(
-                'schema'     => uts_settings_schema(),
-                'settings'   => uts_get_settings(),
-                'categories' => $categories,
-                'canManage'  => current_user_can('manage_options'),
-            )) . ';',
-            'before'
-        );
-
-        uts_enqueue_frontend();
-        wp_enqueue_style('wp-components');
-        wp_enqueue_script('uts-playground');
-        wp_set_script_translations('uts-playground', 'uts');
     }
 }
 
@@ -185,6 +159,68 @@ if (!function_exists('uts_copy_field')) {
 }
 
 /**
+ * YouTube video ID from a URL (watch, youtu.be, embed or shorts links).
+ *
+ * @since 1.1.0
+ * @author Monzur Alam
+ *
+ * @param string $url YouTube URL.
+ * @return string Video ID, or '' if the URL isn't a YouTube video.
+ */
+if (!function_exists('uts_youtube_id')) {
+    function uts_youtube_id($url) {
+        if (preg_match('~(?:youtube(?:-nocookie)?\.com/(?:watch\?(?:.*&)?v=|embed/|shorts/|live/)|youtu\.be/)([A-Za-z0-9_-]{11})~', (string) $url, $matches)) {
+            return $matches[1];
+        }
+
+        return '';
+    }
+}
+
+/**
+ * Tutorial video in the welcome card.
+ *
+ * Shows a placeholder until a URL is set in uts_link('video') (or via the
+ * `uts_getting_started_video` filter). With a URL, only the thumbnail loads;
+ * the youtube-nocookie player is created on click (see src/admin/index.js),
+ * so nothing is requested from YouTube until the user plays it.
+ *
+ * @since 1.1.0
+ * @author Monzur Alam
+ */
+if (!function_exists('uts_getting_started_video')) {
+    function uts_getting_started_video() {
+        $video_id = uts_youtube_id(apply_filters('uts_getting_started_video', uts_link('video')));
+        $title    = __('Watch: set up your testimonial slider in a few minutes', 'uts');
+        ?>
+        <div class="uts:mt-6 uts:aspect-video uts:w-full uts:max-w-4xl uts:overflow-hidden uts:rounded-lg uts:bg-gray-900">
+            <?php if ('' !== $video_id) { ?>
+                <button type="button" class="uts-video uts:group uts:relative uts:block uts:size-full uts:cursor-pointer uts:border-0 uts:bg-transparent uts:p-0"
+                    data-uts-video="<?php echo esc_attr($video_id); ?>"
+                    data-uts-video-title="<?php echo esc_attr($title); ?>"
+                    aria-label="<?php echo esc_attr__('Play video:', 'uts') . ' ' . esc_attr($title); ?>">
+                    <img src="<?php echo esc_url('https://i.ytimg.com/vi/' . $video_id . '/hqdefault.jpg'); ?>" alt="" loading="lazy" class="uts:size-full uts:object-cover uts:opacity-90 uts:transition-opacity uts:group-hover:opacity-100">
+                    <span class="uts:absolute uts:inset-0 uts:flex uts:items-center uts:justify-center">
+                        <span class="uts:flex uts:size-18 uts:items-center uts:justify-center uts:rounded-full uts:bg-white/95 uts:shadow-lg uts:transition-transform uts:group-hover:scale-110">
+                            <span class="dashicons dashicons-controls-play uts:ml-1 uts:size-9 uts:text-4xl uts:text-wp-blue" aria-hidden="true"></span>
+                        </span>
+                    </span>
+                </button>
+            <?php } else { ?>
+                <div class="uts:relative uts:flex uts:size-full uts:flex-col uts:items-center uts:justify-center uts:gap-4 uts:bg-linear-to-br uts:from-wp-blue uts:to-indigo-900 uts:p-6 uts:text-center">
+                    <span class="uts:flex uts:size-18 uts:items-center uts:justify-center uts:rounded-full uts:bg-white/15 uts:ring-1 uts:ring-white/30">
+                        <span class="dashicons dashicons-controls-play uts:ml-1 uts:size-9 uts:text-4xl uts:text-white" aria-hidden="true"></span>
+                    </span>
+                    <p class="uts:m-0 uts:text-xl uts:font-semibold uts:text-white"><?php esc_html_e('Video tutorial coming soon', 'uts'); ?></p>
+                    <p class="uts:m-0 uts:max-w-md uts:text-white/80"><?php esc_html_e('A short walkthrough of adding testimonials and placing the slider. Until then, the "How to use" guide below covers every step.', 'uts'); ?></p>
+                </div>
+            <?php } ?>
+        </div>
+        <?php
+    }
+}
+
+/**
  * Print a card wrapper start.
  *
  * @since 1.1.0
@@ -290,18 +326,44 @@ if (!function_exists('uts_getting_started_callback')) {
                                 </a>
                             <?php } ?>
                         </div>
+
+                        <?php uts_getting_started_video(); ?>
                     </section>
 
-                    <?php // Shortcode playground ?>
+                    <?php // Live preview ?>
                     <?php uts_card_open('', 'uts:overflow-hidden'); ?>
-                        <div class="uts:mb-5">
-                            <h2 class="uts:m-0 uts:text-lg uts:font-semibold uts:text-gray-900"><?php esc_html_e('Try it: live preview', 'uts'); ?></h2>
-                            <p class="uts:m-0 uts:mt-1 uts:text-wp-muted"><?php esc_html_e('Change the options to see your real testimonials update, then copy the shortcode. Nothing is saved unless you choose "Use as my defaults".', 'uts'); ?></p>
+                        <div class="uts:mb-5 uts:flex uts:flex-wrap uts:items-center uts:justify-between uts:gap-3">
+                            <div>
+                                <h2 class="uts:m-0 uts:text-lg uts:font-semibold uts:text-gray-900"><?php esc_html_e('Live preview', 'uts'); ?></h2>
+                                <p class="uts:m-0 uts:mt-1 uts:text-wp-muted"><?php esc_html_e('Your testimonials with your current settings.', 'uts'); ?></p>
+                            </div>
+                            <?php if ($status['published'] > 0) { ?>
+                                <div class="uts:inline-flex uts:rounded-md uts:border uts:border-wp-border uts:p-0.5" role="tablist" aria-label="<?php esc_attr_e('Preview layout', 'uts'); ?>">
+                                    <?php
+                                    $layouts = array(
+                                        'slider' => __('Slider', 'uts'),
+                                        'grid'   => __('Grid', 'uts'),
+                                        'list'   => __('List', 'uts'),
+                                    );
+                                    foreach ($layouts as $layout => $label) {
+                                        $selected = 'slider' === $layout;
+                                        ?>
+                                        <button type="button" role="tab" data-uts-preview="<?php echo esc_attr($layout); ?>" aria-selected="<?php echo $selected ? 'true' : 'false'; ?>"
+                                            class="uts:cursor-pointer uts:rounded uts:border-0 uts:px-4 uts:py-1.5 uts:text-sm uts:font-medium uts:aria-selected:bg-wp-blue uts:aria-selected:text-white uts:bg-transparent uts:text-gray-700">
+                                            <?php echo esc_html($label); ?>
+                                        </button>
+                                    <?php } ?>
+                                </div>
+                            <?php } ?>
                         </div>
 
                         <?php if ($status['published'] > 0) { ?>
-                            <div id="uts-playground-root">
-                                <p class="uts:m-0 uts:text-wp-muted"><span class="spinner is-active uts:float-none uts:m-0 uts:mr-2"></span><?php esc_html_e('Loading the preview…', 'uts'); ?></p>
+                            <div class="uts:rounded-md uts:bg-wp-bg uts:p-4 uts:md:p-8">
+                                <?php foreach (array_keys($layouts) as $layout) { ?>
+                                    <div data-uts-preview-panel="<?php echo esc_attr($layout); ?>" role="tabpanel" <?php echo 'slider' === $layout ? '' : 'hidden'; ?>>
+                                        <?php echo do_shortcode('[uts type="' . esc_attr($layout) . '" count="6"]'); // phpcs:ignore WordPress.Security.EscapeOutput -- shortcode output is escaped. ?>
+                                    </div>
+                                <?php } ?>
                             </div>
                         <?php } else { ?>
                             <div class="uts:flex uts:flex-col uts:items-center uts:rounded-md uts:border uts:border-dashed uts:border-wp-border uts:bg-wp-bg uts:px-6 uts:py-12 uts:text-center">
