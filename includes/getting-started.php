@@ -25,9 +25,35 @@ if (!function_exists('uts_getting_started_load')) {
  */
 if (!function_exists('uts_getting_started_assets')) {
     function uts_getting_started_assets() {
-        if (uts_register_build('uts', 'frontend')) {
-            uts_enqueue_frontend();
+        // The playground renders real slider markup, so it needs the frontend build too.
+        if (!uts_register_build('uts', 'frontend') || !uts_register_build('uts-playground', 'playground')) {
+            return;
         }
+
+        $categories = array();
+        $terms      = get_terms(array('taxonomy' => 'uts_category', 'hide_empty' => true));
+        foreach (is_array($terms) ? $terms : array() as $term) {
+            $categories[] = array(
+                'value' => $term->slug,
+                'label' => $term->name,
+            );
+        }
+
+        wp_add_inline_script(
+            'uts-playground',
+            'window.utsPlaygroundData = ' . wp_json_encode(array(
+                'schema'     => uts_settings_schema(),
+                'settings'   => uts_get_settings(),
+                'categories' => $categories,
+                'canManage'  => current_user_can('manage_options'),
+            )) . ';',
+            'before'
+        );
+
+        uts_enqueue_frontend();
+        wp_enqueue_style('wp-components');
+        wp_enqueue_script('uts-playground');
+        wp_set_script_translations('uts-playground', 'uts');
     }
 }
 
@@ -206,8 +232,11 @@ if (!function_exists('uts_getting_started_callback')) {
                     /* translators: 1: testimonials with a photo, 2: all testimonials */
                     ? sprintf(__('%1$s of %2$s testimonials have a photo. Without one, a quote icon is shown.', 'uts'), number_format_i18n($status['with_photo']), number_format_i18n($status['published']))
                     : __('Set a featured image on each testimonial.', 'uts'),
-                'url'   => admin_url('edit.php?post_type=uts'),
-                'link'  => __('View Testimonials', 'uts'),
+                'url'   => $status['published'] > $status['with_photo'] ? admin_url('edit.php?post_type=uts&uts_photo=missing') : admin_url('edit.php?post_type=uts'),
+                'link'  => $status['published'] > $status['with_photo']
+                    /* translators: %s: number of testimonials without a photo */
+                    ? sprintf(__('Show the %s without a photo', 'uts'), number_format_i18n($status['published'] - $status['with_photo']))
+                    : __('View Testimonials', 'uts'),
             ),
             array(
                 'done'  => $status['settings_saved'],
@@ -263,40 +292,16 @@ if (!function_exists('uts_getting_started_callback')) {
                         </div>
                     </section>
 
-                    <?php // Live preview ?>
+                    <?php // Shortcode playground ?>
                     <?php uts_card_open('', 'uts:overflow-hidden'); ?>
-                        <div class="uts:mb-5 uts:flex uts:flex-wrap uts:items-center uts:justify-between uts:gap-3">
-                            <div>
-                                <h2 class="uts:m-0 uts:text-lg uts:font-semibold uts:text-gray-900"><?php esc_html_e('Live preview', 'uts'); ?></h2>
-                                <p class="uts:m-0 uts:mt-1 uts:text-wp-muted"><?php esc_html_e('Your testimonials with your current settings.', 'uts'); ?></p>
-                            </div>
-                            <?php if ($status['published'] > 0) { ?>
-                                <div class="uts:inline-flex uts:rounded-md uts:border uts:border-wp-border uts:p-0.5" role="tablist" aria-label="<?php esc_attr_e('Preview layout', 'uts'); ?>">
-                                    <?php
-                                    $layouts = array(
-                                        'slider' => __('Slider', 'uts'),
-                                        'grid'   => __('Grid', 'uts'),
-                                        'list'   => __('List', 'uts'),
-                                    );
-                                    foreach ($layouts as $layout => $label) {
-                                        $selected = 'slider' === $layout;
-                                        ?>
-                                        <button type="button" role="tab" data-uts-preview="<?php echo esc_attr($layout); ?>" aria-selected="<?php echo $selected ? 'true' : 'false'; ?>"
-                                            class="uts:cursor-pointer uts:rounded uts:border-0 uts:px-4 uts:py-1.5 uts:text-sm uts:font-medium uts:aria-selected:bg-wp-blue uts:aria-selected:text-white uts:bg-transparent uts:text-gray-700">
-                                            <?php echo esc_html($label); ?>
-                                        </button>
-                                    <?php } ?>
-                                </div>
-                            <?php } ?>
+                        <div class="uts:mb-5">
+                            <h2 class="uts:m-0 uts:text-lg uts:font-semibold uts:text-gray-900"><?php esc_html_e('Try it: live preview', 'uts'); ?></h2>
+                            <p class="uts:m-0 uts:mt-1 uts:text-wp-muted"><?php esc_html_e('Change the options to see your real testimonials update, then copy the shortcode. Nothing is saved unless you choose "Use as my defaults".', 'uts'); ?></p>
                         </div>
 
                         <?php if ($status['published'] > 0) { ?>
-                            <div class="uts:rounded-md uts:bg-wp-bg uts:p-4 uts:md:p-8">
-                                <?php foreach (array_keys($layouts) as $layout) { ?>
-                                    <div data-uts-preview-panel="<?php echo esc_attr($layout); ?>" role="tabpanel" <?php echo 'slider' === $layout ? '' : 'hidden'; ?>>
-                                        <?php echo do_shortcode('[uts type="' . esc_attr($layout) . '" count="6"]'); // phpcs:ignore WordPress.Security.EscapeOutput -- shortcode output is escaped. ?>
-                                    </div>
-                                <?php } ?>
+                            <div id="uts-playground-root">
+                                <p class="uts:m-0 uts:text-wp-muted"><span class="spinner is-active uts:float-none uts:m-0 uts:mr-2"></span><?php esc_html_e('Loading the preview…', 'uts'); ?></p>
                             </div>
                         <?php } else { ?>
                             <div class="uts:flex uts:flex-col uts:items-center uts:rounded-md uts:border uts:border-dashed uts:border-wp-border uts:bg-wp-bg uts:px-6 uts:py-12 uts:text-center">
@@ -307,37 +312,59 @@ if (!function_exists('uts_getting_started_callback')) {
                         <?php } ?>
                     </section>
 
-                    <?php // Setup checklist ?>
-                    <?php uts_card_open(); ?>
-                        <div class="uts:mb-4 uts:flex uts:items-center uts:justify-between uts:gap-4">
-                            <h2 class="uts:m-0 uts:text-lg uts:font-semibold uts:text-gray-900"><?php esc_html_e('Setup checklist', 'uts'); ?></h2>
-                            <span class="uts:text-sm uts:font-medium uts:text-wp-muted">
-                                <?php
-                                /* translators: 1: done steps, 2: all steps */
-                                printf(esc_html__('%1$s of %2$s done', 'uts'), (int) $done, count($checklist));
-                                ?>
-                            </span>
-                        </div>
-                        <div class="uts:mb-5 uts:h-2 uts:overflow-hidden uts:rounded-full uts:bg-wp-bg">
-                            <div class="uts:h-full uts:rounded-full uts:bg-green-600" style="width: <?php echo esc_attr(round($done / count($checklist) * 100)); ?>%"></div>
-                        </div>
-                        <ol class="uts:m-0 uts:flex uts:list-none uts:flex-col uts:divide-y uts:divide-wp-bg uts:p-0">
-                            <?php foreach ($checklist as $item) { ?>
-                                <li class="uts:m-0 uts:flex uts:flex-wrap uts:items-center uts:gap-x-4 uts:gap-y-2 uts:py-3">
-                                    <span class="dashicons <?php echo $item['done'] ? 'dashicons-yes-alt uts:text-green-600' : 'dashicons-marker uts:text-wp-border'; ?> uts:size-6 uts:text-2xl" aria-hidden="true"></span>
-                                    <div class="uts:min-w-48 uts:flex-1">
-                                        <p class="uts:m-0 uts:font-semibold uts:text-gray-900 <?php echo $item['done'] ? 'uts:line-through uts:decoration-gray-400' : ''; ?>">
-                                            <?php echo esc_html($item['title']); ?>
-                                            <span class="screen-reader-text"><?php echo $item['done'] ? esc_html__('(done)', 'uts') : esc_html__('(to do)', 'uts'); ?></span>
-                                        </p>
-                                        <p class="uts:m-0 uts:text-wp-muted"><?php echo esc_html($item['text']); ?></p>
-                                    </div>
-                                    <?php if ('' !== $item['url']) { ?>
-                                        <a class="button" href="<?php echo esc_url($item['url']); ?>"><?php echo esc_html($item['link']); ?></a>
-                                    <?php } ?>
-                                </li>
+                    <?php
+                    // Setup checklist: full card while there is work left, one line once complete.
+                    $all_done = count($checklist) === $done;
+                    uts_card_open();
+                    ?>
+                        <details <?php echo $all_done ? '' : 'open'; ?> class="uts-checklist">
+                            <summary class="uts:flex uts:flex-wrap uts:items-center uts:justify-between uts:gap-x-4 uts:gap-y-1 <?php echo $all_done ? 'uts:cursor-pointer' : 'uts:pointer-events-none uts:list-none'; ?>">
+                                <?php if ($all_done) { ?>
+                                    <span class="uts:flex uts:items-center uts:gap-2 uts:text-[15px] uts:font-semibold uts:text-gray-900">
+                                        <span class="dashicons dashicons-yes-alt uts:size-6 uts:text-2xl uts:text-green-600" aria-hidden="true"></span>
+                                        <?php esc_html_e('All set! Your testimonials are live.', 'uts'); ?>
+                                    </span>
+                                    <span class="uts:text-sm uts:font-medium uts:text-wp-blue">
+                                        <span class="uts-checklist__show"><?php esc_html_e('Show checklist', 'uts'); ?></span>
+                                        <span class="uts-checklist__hide"><?php esc_html_e('Hide checklist', 'uts'); ?></span>
+                                    </span>
+                                <?php } else { ?>
+                                    <h2 class="uts:m-0 uts:text-lg uts:font-semibold uts:text-gray-900"><?php esc_html_e('Setup checklist', 'uts'); ?></h2>
+                                    <span class="uts:text-sm uts:font-medium uts:text-wp-muted">
+                                        <?php
+                                        /* translators: 1: done steps, 2: all steps */
+                                        printf(esc_html__('%1$s of %2$s done', 'uts'), (int) $done, count($checklist));
+                                        ?>
+                                    </span>
+                                <?php } ?>
+                            </summary>
+                            <?php if (!$all_done) { ?>
+                                <div class="uts:mt-4 uts:mb-2 uts:h-2 uts:overflow-hidden uts:rounded-full uts:bg-wp-bg" role="progressbar" aria-valuemin="0" aria-valuemax="<?php echo count($checklist); ?>" aria-valuenow="<?php echo (int) $done; ?>" aria-label="<?php esc_attr_e('Setup progress', 'uts'); ?>">
+                                    <div class="uts:h-full uts:rounded-full uts:bg-green-600" style="width: <?php echo esc_attr(round($done / count($checklist) * 100)); ?>%"></div>
+                                </div>
                             <?php } ?>
-                        </ol>
+                            <ol class="uts:m-0 uts:mt-2 uts:flex uts:list-none uts:flex-col uts:divide-y uts:divide-wp-bg uts:p-0">
+                                <?php foreach ($checklist as $item) { ?>
+                                    <li class="uts:m-0 uts:flex uts:flex-wrap uts:items-center uts:gap-x-4 uts:gap-y-2 uts:py-3">
+                                        <span class="dashicons <?php echo $item['done'] ? 'dashicons-yes-alt uts:text-green-600' : 'dashicons-marker uts:text-wp-border'; ?> uts:size-6 uts:text-2xl" aria-hidden="true"></span>
+                                        <div class="uts:min-w-48 uts:flex-1">
+                                            <p class="uts:m-0 uts:flex uts:flex-wrap uts:items-center uts:gap-2 uts:font-semibold uts:text-gray-900">
+                                                <?php echo esc_html($item['title']); ?>
+                                                <?php if ($item['done']) { ?>
+                                                    <span class="uts:rounded-full uts:bg-green-50 uts:px-2 uts:py-0.5 uts:text-xs uts:font-medium uts:text-green-700"><?php esc_html_e('Done', 'uts'); ?></span>
+                                                <?php } else { ?>
+                                                    <span class="screen-reader-text"><?php esc_html_e('(to do)', 'uts'); ?></span>
+                                                <?php } ?>
+                                            </p>
+                                            <p class="uts:m-0 uts:text-wp-muted"><?php echo esc_html($item['text']); ?></p>
+                                        </div>
+                                        <?php if ('' !== $item['url']) { ?>
+                                            <a class="button <?php echo $item['done'] ? '' : 'button-primary'; ?>" href="<?php echo esc_url($item['url']); ?>"><?php echo esc_html($item['link']); ?></a>
+                                        <?php } ?>
+                                    </li>
+                                <?php } ?>
+                            </ol>
+                        </details>
                     </section>
 
                     <?php // How to use ?>

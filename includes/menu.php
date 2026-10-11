@@ -58,6 +58,38 @@ if (!function_exists('uts_register_menu')) {
 }
 
 /**
+ * Open Getting Started once after the plugin is activated.
+ *
+ * Skipped for bulk/network activation, AJAX, CLI and users who can't see the page.
+ *
+ * @since 1.1.0
+ * @author Monzur Alam
+ */
+if (!function_exists('uts_activation_redirect')) {
+    function uts_activation_redirect() {
+        if (!get_option('uts_activation_redirect')) {
+            return;
+        }
+
+        delete_option('uts_activation_redirect');
+
+        if (
+            wp_doing_ajax()
+            || (defined('WP_CLI') && WP_CLI)
+            || is_network_admin()
+            || isset($_GET['activate-multi']) // phpcs:ignore WordPress.Security.NonceVerification
+            || !current_user_can('edit_posts')
+        ) {
+            return;
+        }
+
+        wp_safe_redirect(admin_url('edit.php?post_type=uts&page=uts-getting-started'));
+        exit;
+    }
+    add_action('admin_init', 'uts_activation_redirect');
+}
+
+/**
  * Shared header (plugin name, version and tabs) for the plugin's admin pages.
  *
  * The `.wp-header-end` marker makes WordPress put admin notices below it.
@@ -91,7 +123,7 @@ if (!function_exists('uts_admin_header')) {
                     $is_active = $key === $active;
                     ?>
                     <a href="<?php echo esc_url($tab[1]); ?>"
-                        class="uts:-mb-px uts:border-b-2 uts:py-4 uts:text-sm uts:font-medium uts:no-underline uts:focus:shadow-none <?php echo $is_active ? 'uts:border-wp-blue uts:text-wp-blue' : 'uts:border-transparent uts:text-gray-700 uts:hover:text-wp-blue'; ?>"
+                        class="uts:-mb-px uts:border-b-2 uts:py-4 uts:text-sm uts:font-medium uts:no-underline <?php echo $is_active ? 'uts:border-wp-blue uts:text-wp-blue' : 'uts:border-transparent uts:text-gray-700 uts:hover:text-wp-blue'; ?>"
                         <?php echo $is_active ? 'aria-current="page"' : ''; ?>>
                         <?php echo esc_html($tab[0]); ?>
                     </a>

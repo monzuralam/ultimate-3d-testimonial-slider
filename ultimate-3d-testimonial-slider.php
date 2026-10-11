@@ -39,7 +39,9 @@ function uts_active() {
     // Trigger our function that registers the cutsom post type plugin.
     uts_setup_post_type(); 
     // Clear the permalinks after the post type has been registered.
-    flush_rewrite_rules(); 
+    flush_rewrite_rules();
+    // Show Getting Started once, on the next admin page load (see uts_activation_redirect()).
+    add_option('uts_activation_redirect', true);
 }
 register_activation_hook( __FILE__, 'uts_active' );
 
@@ -83,6 +85,16 @@ require_once UTS_INCLUDES . '/shortcode.php';
  * Menu
  */
 require_once UTS_INCLUDES . '/menu.php';
+
+/**
+ * REST API (shortcode preview)
+ */
+require_once UTS_INCLUDES . '/rest.php';
+
+/**
+ * Testimonials list columns and filters
+ */
+require_once UTS_INCLUDES . '/admin-columns.php';
 
 /**
  * Getting Started page

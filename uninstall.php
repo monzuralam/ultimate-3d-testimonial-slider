@@ -12,3 +12,4 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
 }
 
 delete_option('uts_settings');
+delete_option('uts_activation_redirect');

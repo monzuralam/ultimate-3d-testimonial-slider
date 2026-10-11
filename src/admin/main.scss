@@ -39,7 +39,49 @@
 	transform: rotate(180deg);
 }
 
-/* Keep the preview's slider inside the card. */
-.uts-getting-started [data-uts-preview-panel] .ucs-container {
-	margin-bottom: 0;
+/* Testimonials list: Photo column. */
+.wp-list-table {
+
+	.column-uts_photo {
+		width: 52px;
+	}
+
+	.column-uts_order {
+		width: 70px;
+	}
 }
+
+.uts-list-photo {
+	display: block;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+.uts-list-photo--missing {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #f0f0f1;
+	color: #a7aaad;
+}
+
+/* Getting Started: checklist summary (no default marker, Show/Hide label). */
+.uts-checklist > summary {
+	list-style: none;
+
+	&::-webkit-details-marker {
+		display: none;
+	}
+}
+
+.uts-checklist .uts-checklist__hide,
+.uts-checklist[open] .uts-checklist__show {
+	display: none;
+}
+
+.uts-checklist[open] .uts-checklist__hide {
+	display: inline;
+}
+

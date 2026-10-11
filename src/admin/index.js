@@ -1,5 +1,5 @@
 /**
- * Admin: shortcode copy buttons and the Getting Started live preview.
+ * Admin: shortcode copy buttons, plus the admin styles (Tailwind + SCSS).
  */
 import './tailwind.css';
 import './main.scss';
@@ -41,36 +41,4 @@ document.addEventListener( 'click', ( event ) => {
 			1500
 		);
 	} );
-} );
-
-// Switch the live preview between slider, grid and list.
-document.addEventListener( 'click', ( event ) => {
-	const tab = event.target.closest( '[data-uts-preview]' );
-
-	if ( ! tab ) {
-		return;
-	}
-
-	const layout = tab.dataset.utsPreview;
-
-	document
-		.querySelectorAll( '[data-uts-preview]' )
-		.forEach( ( item ) =>
-			item.setAttribute(
-				'aria-selected',
-				String( item.dataset.utsPreview === layout )
-			)
-		);
-
-	document
-		.querySelectorAll( '[data-uts-preview-panel]' )
-		.forEach( ( panel ) => {
-			panel.hidden = panel.dataset.utsPreviewPanel !== layout;
-
-			// Swiper measures on init; re-measure once the panel is visible.
-			const slider = panel.querySelector( '.swiper' );
-			if ( ! panel.hidden && slider && slider.swiper ) {
-				slider.swiper.update();
-			}
-		} );
 } );

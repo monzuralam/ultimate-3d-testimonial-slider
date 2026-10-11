@@ -77,10 +77,24 @@ const effectOptions = ( config ) => {
 	}
 };
 
+// Respect the visitor's "reduce motion" setting: no autoplay.
+const prefersReducedMotion = () =>
+	!! window.matchMedia &&
+	window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches;
+
 const initSlider = ( element ) => {
 	const config = readConfig( element );
 
-	new Swiper( element, {
+	// Re-initializing (e.g. the admin preview) replaces the old instance.
+	if ( element.swiper ) {
+		element.swiper.destroy( true, true );
+	}
+
+	if ( prefersReducedMotion() ) {
+		config.autoplay = false;
+	}
+
+	return new Swiper( element, {
 		modules: [
 			Autoplay,
 			EffectCards,
@@ -112,4 +126,18 @@ const initSlider = ( element ) => {
 	} );
 };
 
-document.querySelectorAll( '.ucs-container.slider' ).forEach( initSlider );
+/**
+ * Initialize every slider inside `root`. Public as `window.utsSlider.init()`
+ * for markup added after page load (the admin preview, AJAX-loaded content).
+ *
+ * @param {Element|Document} root Element to search in. Defaults to the document.
+ * @return {Swiper[]} The slider instances.
+ */
+const init = ( root = document ) =>
+	Array.from( root.querySelectorAll( '.ucs-container.slider' ) ).map(
+		initSlider
+	);
+
+window.utsSlider = { init };
+
+init();
