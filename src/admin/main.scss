@@ -8,3 +8,73 @@
 	vertical-align: middle;
 	display: block;
 }
+
+/* Getting Started page */
+.uts-getting-started {
+	max-width: 960px;
+
+	&__intro {
+		font-size: 14px;
+	}
+
+	.uts-card {
+		background: #fff;
+		border: 1px solid #c3c4c7;
+		border-radius: 4px;
+		padding: 16px 20px;
+		margin: 0 0 20px;
+
+		h2 {
+			margin: 0 0 8px;
+			font-size: 15px;
+		}
+	}
+
+	&__steps {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+		gap: 16px;
+		margin: 20px 0;
+		padding: 0;
+		list-style: none;
+		counter-reset: uts-step;
+
+		.uts-card {
+			display: flex;
+			flex-direction: column;
+			align-items: flex-start;
+			margin: 0;
+			counter-increment: uts-step;
+
+			h2::before {
+				content: counter(uts-step) ". ";
+			}
+
+			.button {
+				margin-top: auto;
+			}
+		}
+	}
+
+	&__examples {
+		margin: 12px 0;
+
+		td {
+			vertical-align: middle;
+		}
+
+		td:first-child {
+			width: 45%;
+		}
+
+		.uts-shortcode-wrap {
+			padding: 0;
+			gap: 6px;
+
+			input {
+				flex: 1;
+				font-family: monospace;
+			}
+		}
+	}
+}
