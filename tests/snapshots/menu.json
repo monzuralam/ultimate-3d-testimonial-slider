@@ -1,0 +1,27 @@
+{
+    "admin_menu_callbacks": [
+        "priority 10, 1 arg(s)"
+    ],
+    "pages": {
+        "uts-getting-started": {
+            "menu_title": "Getting Started",
+            "capability": "edit_posts",
+            "page_title": "Getting Started",
+            "hook": "admin_page_uts-getting-started",
+            "page_callbacks": 1,
+            "load_callbacks": 1
+        },
+        "uts-settings": {
+            "menu_title": "Settings",
+            "capability": "manage_options",
+            "page_title": "Testimonial Settings",
+            "hook": "admin_page_uts-settings",
+            "page_callbacks": 1,
+            "load_callbacks": 1
+        }
+    },
+    "settings_page_html": "<div class=\"uts-admin-header uts:flex uts:flex-wrap uts:items-center uts:gap-x-8 uts:gap-y-1 uts:border-b uts:border-wp-border uts:bg-white uts:px-5 uts:md:px-8\">\n<div class=\"uts:flex uts:items-center uts:gap-3 uts:py-3\">\n<span class=\"dashicons dashicons-slides uts:text-wp-blue uts:text-[26px] uts:size-[26px]\" aria-hidden=\"true\"></span>\n<span class=\"uts:text-lg uts:font-semibold uts:text-gray-900\">Ultimate 3D Testimonial Slider</span>\n<span class=\"uts:rounded-full uts:border uts:border-wp-border uts:px-2 uts:py-0.5 uts:text-xs uts:text-wp-muted\">v1.1.0</span>\n</div>\n<nav class=\"uts:flex uts:flex-1 uts:flex-wrap uts:gap-x-6\" aria-label=\"Plugin pages\">\n<a href=\"http://learn.test/wp-admin/edit.php?post_type=uts&#038;page=uts-getting-started\"\nclass=\"uts:-mb-px uts:border-b-2 uts:py-4 uts:text-sm uts:font-medium uts:no-underline uts:border-transparent uts:text-gray-700 uts:hover:text-wp-blue\"\n>\nGetting Started </a>\n<a href=\"http://learn.test/wp-admin/edit.php?post_type=uts&#038;page=uts-settings\"\nclass=\"uts:-mb-px uts:border-b-2 uts:py-4 uts:text-sm uts:font-medium uts:no-underline uts:border-wp-blue uts:text-wp-blue\"\naria-current=\"page\">\nSettings </a>\n<a href=\"http://learn.test/wp-admin/edit.php?post_type=uts\"\nclass=\"uts:-mb-px uts:border-b-2 uts:py-4 uts:text-sm uts:font-medium uts:no-underline uts:border-transparent uts:text-gray-700 uts:hover:text-wp-blue\"\n>\nAll Testimonials </a>\n<a href=\"http://learn.test/wp-admin/edit-tags.php?taxonomy=uts_category&#038;post_type=uts\"\nclass=\"uts:-mb-px uts:border-b-2 uts:py-4 uts:text-sm uts:font-medium uts:no-underline uts:border-transparent uts:text-gray-700 uts:hover:text-wp-blue\"\n>\nCategories </a>\n</nav>\n<a href=\"https://wordpress.org/support/plugin/ultimate-3d-testimonial-slider/\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"uts:flex uts:items-center uts:gap-1 uts:py-3 uts:text-sm uts:font-medium uts:text-wp-blue uts:no-underline\">\n<span class=\"dashicons dashicons-sos\" aria-hidden=\"true\"></span>\nGet Help </a>\n</div>\n<hr class=\"wp-header-end uts:hidden\">\n<div class=\"wrap\"><div id=\"uts-settings-root\"></div></div>\n",
+    "admin_init_callbacks": [
+        "priority 10, 1 arg(s)"
+    ]
+}

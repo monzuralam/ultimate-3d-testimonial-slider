@@ -33,65 +33,62 @@ define( 'UTS_BUILD', UTS_PATH . '/build' );
 define( 'UTS_BUILD_URL', UTS_URL . '/build' );
 
 /**
- * Activate the plugin.
+ * Shared helpers (loaded first)
  */
-function uts_active() { 
-    // Trigger our function that registers the cutsom post type plugin.
-    uts_setup_post_type(); 
-    // Clear the permalinks after the post type has been registered.
-    flush_rewrite_rules();
-    // Show Getting Started once, on the next admin page load (see uts_activation_redirect()).
-    add_option('uts_activation_redirect', true);
-}
-register_activation_hook( __FILE__, 'uts_active' );
+require_once UTS_INCLUDES . '/functions.php';
 
 /**
- * Deactivation hook.
+ * Plugin bootstrap
  */
-function uts_deactivate() {
-    // Unregister the post type, so the rules are no longer in memory.
-    unregister_post_type( 'uts' );
-    // Clear the permalinks to remove our post type's rules from the database.
-    flush_rewrite_rules();
-}
-register_deactivation_hook( __FILE__, 'uts_deactivate' );
+require_once UTS_INCLUDES . '/class-plugin.php';
 
 /**
  * Assets
  */
-require_once UTS_INCLUDES . '/assets.php';
+require_once UTS_INCLUDES . '/class-assets.php';
 
 /**
  * Settings
  */
-require_once UTS_INCLUDES . '/settings.php';
+require_once UTS_INCLUDES . '/class-settings.php';
 
 /**
  * Cutsom Post Type
  */
-require_once UTS_INCLUDES . '/cpt.php';
+require_once UTS_INCLUDES . '/class-cpt.php';
 
 /**
  * Cutsom Meta box
  */
-require_once UTS_INCLUDES . '/metabox.php';
+require_once UTS_INCLUDES . '/class-metabox.php';
 
 /**
  * Shortcode
  */
-require_once UTS_INCLUDES . '/shortcode.php';
+require_once UTS_INCLUDES . '/class-shortcode.php';
 
 /**
  * Menu
  */
-require_once UTS_INCLUDES . '/menu.php';
+require_once UTS_INCLUDES . '/class-menu.php';
 
 /**
  * Testimonials list columns and filters
  */
-require_once UTS_INCLUDES . '/admin-columns.php';
+require_once UTS_INCLUDES . '/class-admin-columns.php';
 
 /**
  * Getting Started page
  */
-require_once UTS_INCLUDES . '/getting-started.php';
+require_once UTS_INCLUDES . '/class-getting-started.php';
+
+/**
+ * Activation and deactivation
+ */
+register_activation_hook( __FILE__, array( 'UTS\Plugin', 'activate' ) );
+register_deactivation_hook( __FILE__, array( 'UTS\Plugin', 'deactivate' ) );
+
+/**
+ * Start the plugin
+ */
+UTS\Plugin::instance()->boot();

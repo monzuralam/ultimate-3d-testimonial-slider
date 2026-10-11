@@ -1,0 +1,309 @@
+{
+    "hooks": {
+        "wp_enqueue_scripts": [
+            "priority 10, 1 arg(s)"
+        ],
+        "admin_enqueue_scripts": [
+            "priority 10, 1 arg(s)"
+        ]
+    },
+    "cases": {
+        "frontend: singular post with [uts]": {
+            "scripts": {
+                "uts": {
+                    "src": "http://learn.test/wp-content/plugins/ultimate-3d-testimonial-slider/build/frontend.js",
+                    "deps": [],
+                    "ver": "{BUILD_HASH frontend}",
+                    "args": null,
+                    "group": 1,
+                    "enqueued": true
+                },
+                "react-jsx-runtime": {
+                    "src": "/wp-includes/js/dist/vendor/react-jsx-runtime.js",
+                    "deps": [
+                        "react"
+                    ],
+                    "ver": "{VER}",
+                    "args": 1,
+                    "enqueued": false
+                }
+            },
+            "enqueued_scripts": [
+                "uts"
+            ],
+            "styles": {
+                "uts": {
+                    "src": "http://learn.test/wp-content/plugins/ultimate-3d-testimonial-slider/build/frontend.css",
+                    "deps": [],
+                    "ver": "{BUILD_HASH frontend}",
+                    "args": "all",
+                    "rtl": "replace",
+                    "enqueued": true
+                }
+            },
+            "enqueued_styles": [
+                "uts"
+            ]
+        },
+        "frontend: singular post without [uts]": {
+            "scripts": {
+                "uts": {
+                    "src": "http://learn.test/wp-content/plugins/ultimate-3d-testimonial-slider/build/frontend.js",
+                    "deps": [],
+                    "ver": "{BUILD_HASH frontend}",
+                    "args": null,
+                    "group": 1,
+                    "enqueued": false
+                },
+                "react-jsx-runtime": {
+                    "src": "/wp-includes/js/dist/vendor/react-jsx-runtime.js",
+                    "deps": [
+                        "react"
+                    ],
+                    "ver": "{VER}",
+                    "args": 1,
+                    "enqueued": false
+                }
+            },
+            "enqueued_scripts": [],
+            "styles": {
+                "uts": {
+                    "src": "http://learn.test/wp-content/plugins/ultimate-3d-testimonial-slider/build/frontend.css",
+                    "deps": [],
+                    "ver": "{BUILD_HASH frontend}",
+                    "args": "all",
+                    "rtl": "replace",
+                    "enqueued": false
+                }
+            },
+            "enqueued_styles": []
+        },
+        "frontend: archive (not singular)": {
+            "scripts": {
+                "uts": {
+                    "src": "http://learn.test/wp-content/plugins/ultimate-3d-testimonial-slider/build/frontend.js",
+                    "deps": [],
+                    "ver": "{BUILD_HASH frontend}",
+                    "args": null,
+                    "group": 1,
+                    "enqueued": false
+                },
+                "react-jsx-runtime": {
+                    "src": "/wp-includes/js/dist/vendor/react-jsx-runtime.js",
+                    "deps": [
+                        "react"
+                    ],
+                    "ver": "{VER}",
+                    "args": 1,
+                    "enqueued": false
+                }
+            },
+            "enqueued_scripts": [],
+            "styles": {
+                "uts": {
+                    "src": "http://learn.test/wp-content/plugins/ultimate-3d-testimonial-slider/build/frontend.css",
+                    "deps": [],
+                    "ver": "{BUILD_HASH frontend}",
+                    "args": "all",
+                    "rtl": "replace",
+                    "enqueued": false
+                }
+            },
+            "enqueued_styles": []
+        },
+        "admin: testimonials list (edit-uts)": {
+            "scripts": {
+                "uts-admin": {
+                    "src": "http://learn.test/wp-content/plugins/ultimate-3d-testimonial-slider/build/admin.js",
+                    "deps": [],
+                    "ver": "{BUILD_HASH admin}",
+                    "args": null,
+                    "group": 1,
+                    "enqueued": true
+                },
+                "react-jsx-runtime": {
+                    "src": "/wp-includes/js/dist/vendor/react-jsx-runtime.js",
+                    "deps": [
+                        "react"
+                    ],
+                    "ver": "{VER}",
+                    "args": 1,
+                    "enqueued": false
+                }
+            },
+            "enqueued_scripts": [
+                "uts-admin"
+            ],
+            "styles": {
+                "uts-admin": {
+                    "src": "http://learn.test/wp-content/plugins/ultimate-3d-testimonial-slider/build/admin.css",
+                    "deps": [],
+                    "ver": "{BUILD_HASH admin}",
+                    "args": "all",
+                    "rtl": "replace",
+                    "enqueued": true
+                }
+            },
+            "enqueued_styles": [
+                "uts-admin"
+            ]
+        },
+        "admin: add testimonial (uts)": {
+            "scripts": {
+                "uts-admin": {
+                    "src": "http://learn.test/wp-content/plugins/ultimate-3d-testimonial-slider/build/admin.js",
+                    "deps": [],
+                    "ver": "{BUILD_HASH admin}",
+                    "args": null,
+                    "group": 1,
+                    "enqueued": true
+                },
+                "react-jsx-runtime": {
+                    "src": "/wp-includes/js/dist/vendor/react-jsx-runtime.js",
+                    "deps": [
+                        "react"
+                    ],
+                    "ver": "{VER}",
+                    "args": 1,
+                    "enqueued": false
+                }
+            },
+            "enqueued_scripts": [
+                "uts-admin"
+            ],
+            "styles": {
+                "uts-admin": {
+                    "src": "http://learn.test/wp-content/plugins/ultimate-3d-testimonial-slider/build/admin.css",
+                    "deps": [],
+                    "ver": "{BUILD_HASH admin}",
+                    "args": "all",
+                    "rtl": "replace",
+                    "enqueued": true
+                }
+            },
+            "enqueued_styles": [
+                "uts-admin"
+            ]
+        },
+        "admin: dashboard": {
+            "scripts": {
+                "react-jsx-runtime": {
+                    "src": "/wp-includes/js/dist/vendor/react-jsx-runtime.js",
+                    "deps": [
+                        "react"
+                    ],
+                    "ver": "{VER}",
+                    "args": 1,
+                    "enqueued": false
+                }
+            },
+            "enqueued_scripts": [],
+            "enqueued_styles": []
+        },
+        "admin: posts list (edit-post)": {
+            "scripts": {
+                "react-jsx-runtime": {
+                    "src": "/wp-includes/js/dist/vendor/react-jsx-runtime.js",
+                    "deps": [
+                        "react"
+                    ],
+                    "ver": "{VER}",
+                    "args": 1,
+                    "enqueued": false
+                }
+            },
+            "enqueued_scripts": [],
+            "enqueued_styles": []
+        }
+    },
+    "react_jsx_runtime": {
+        "core_registered": true,
+        "with_core": {
+            "scripts": {
+                "uts-settings": {
+                    "src": "http://learn.test/wp-content/plugins/ultimate-3d-testimonial-slider/build/settings.js",
+                    "deps": [
+                        "react-jsx-runtime",
+                        "wp-api-fetch",
+                        "wp-components",
+                        "wp-compose",
+                        "wp-dom-ready",
+                        "wp-element",
+                        "wp-i18n"
+                    ],
+                    "ver": "{BUILD_HASH settings}",
+                    "args": null,
+                    "group": 1,
+                    "enqueued": false
+                },
+                "react-jsx-runtime": {
+                    "src": "/wp-includes/js/dist/vendor/react-jsx-runtime.js",
+                    "deps": [
+                        "react"
+                    ],
+                    "ver": "{VER}",
+                    "args": 1,
+                    "enqueued": false
+                }
+            },
+            "enqueued_scripts": [],
+            "styles": {
+                "uts-settings": {
+                    "src": "http://learn.test/wp-content/plugins/ultimate-3d-testimonial-slider/build/settings.css",
+                    "deps": [],
+                    "ver": "{BUILD_HASH settings}",
+                    "args": "all",
+                    "rtl": "replace",
+                    "enqueued": false
+                }
+            },
+            "enqueued_styles": []
+        },
+        "fallback": {
+            "scripts": {
+                "uts-settings": {
+                    "src": "http://learn.test/wp-content/plugins/ultimate-3d-testimonial-slider/build/settings.js",
+                    "deps": [
+                        "react-jsx-runtime",
+                        "wp-api-fetch",
+                        "wp-components",
+                        "wp-compose",
+                        "wp-dom-ready",
+                        "wp-element",
+                        "wp-i18n"
+                    ],
+                    "ver": "{BUILD_HASH settings}",
+                    "args": null,
+                    "group": 1,
+                    "enqueued": false
+                },
+                "react-jsx-runtime": {
+                    "src": false,
+                    "deps": [
+                        "wp-element"
+                    ],
+                    "ver": "{UTS_VERSION}",
+                    "args": null,
+                    "group": 1,
+                    "after": [
+                        false,
+                        "(function (el) {function jsx(type, props, key) {var config = {};for (var name in props) { if (Object.prototype.hasOwnProperty.call(props, name)) { config[name] = props[name]; } }if (key !== undefined) { config.key = key; }return el.createElement(type, config);}window.ReactJSXRuntime = { jsx: jsx, jsxs: jsx, Fragment: el.Fragment };})(window.wp.element);"
+                    ],
+                    "enqueued": false
+                }
+            },
+            "enqueued_scripts": [],
+            "styles": {
+                "uts-settings": {
+                    "src": "http://learn.test/wp-content/plugins/ultimate-3d-testimonial-slider/build/settings.css",
+                    "deps": [],
+                    "ver": "{BUILD_HASH settings}",
+                    "args": "all",
+                    "rtl": "replace",
+                    "enqueued": false
+                }
+            },
+            "enqueued_styles": []
+        }
+    }
+}

@@ -1,0 +1,45 @@
+{
+    "headers": {
+        "cb": "<input type=\"checkbox\" />",
+        "uts_photo": "Photo",
+        "title": "Title",
+        "taxonomy-uts_category": "Category",
+        "uts_designation": "Position & Company",
+        "uts_order": "Order",
+        "date": "Date"
+    },
+    "sortable": {
+        "uts_order": "menu_order"
+    },
+    "views": {
+        "uts_photo_missing": "<a href=\"http://learn.test/wp-admin/edit.php?post_type=uts&#038;post_status=publish&#038;uts_photo=missing\">Without photo <span class=\"count\">(2)</span></a>"
+    },
+    "posts": {
+        "with_photo": {
+            "id": 8,
+            "title": "Monzur Alam",
+            "cells": {
+                "cb": "",
+                "uts_photo": "<img width=\"40\" height=\"40\" src=\"http://learn.test/wp-content/uploads/2025/06/02-150x150.webp\" class=\"uts-list-photo wp-post-image\" alt=\"\" decoding=\"async\" loading=\"lazy\" />",
+                "title": "",
+                "taxonomy-uts_category": "",
+                "uts_designation": "CEO, WP Sticky Anything",
+                "uts_order": "0",
+                "date": ""
+            }
+        },
+        "without_photo": {
+            "id": 24,
+            "title": "Monir",
+            "cells": {
+                "cb": "",
+                "uts_photo": "<span class=\"uts-list-photo uts-list-photo--missing\" title=\"No photo\"><span class=\"dashicons dashicons-format-quote\" aria-hidden=\"true\"></span><span class=\"screen-reader-text\">No photo</span></span>",
+                "title": "",
+                "taxonomy-uts_category": "",
+                "uts_designation": "CEO, MDevs",
+                "uts_order": "0",
+                "date": ""
+            }
+        }
+    }
+}

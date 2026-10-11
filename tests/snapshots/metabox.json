@@ -1,0 +1,38 @@
+{
+    "add_meta_boxes_callbacks": [
+        "priority 10, 1 arg(s)"
+    ],
+    "save_hooks": {
+        "save_post_uts": 1,
+        "save_post": 0
+    },
+    "boxes": {
+        "uts_custom_metabox": {
+            "screen": "uts",
+            "context": "normal",
+            "priority": "default",
+            "title": "Client Additional",
+            "args": null,
+            "callback": "callable"
+        }
+    },
+    "forms": {
+        "uts_custom_metabox": {
+            "with designation": "<input type=\"hidden\" id=\"uts_metabox_nonce_field\" name=\"uts_metabox_nonce_field\" value=\"{NONCE}\" /><input type=\"hidden\" name=\"_wp_http_referer\" value=\"\" /> <label for=\"uts_designation\">Position &amp; Company Name</label>\n<input type=\"text\" name=\"uts_designation\" id=\"uts_designation\" class=\"regular-text\" value=\"CEO, WP Sticky Anything\" placeholder=\"CEO, Company Name\">\n",
+            "without designation": "<input type=\"hidden\" id=\"uts_metabox_nonce_field\" name=\"uts_metabox_nonce_field\" value=\"{NONCE}\" /><input type=\"hidden\" name=\"_wp_http_referer\" value=\"\" /> <label for=\"uts_designation\">Position &amp; Company Name</label>\n<input type=\"text\" name=\"uts_designation\" id=\"uts_designation\" class=\"regular-text\" value=\"\" placeholder=\"CEO, Company Name\">\n"
+        }
+    },
+    "saves": {
+        "no nonce": [],
+        "bad nonce": [],
+        "valid nonce, no field": [],
+        "valid nonce, value cleaned": [
+            {
+                "post": "post",
+                "key": "uts_designation",
+                "value": "CEO Acme O'Brien"
+            }
+        ],
+        "valid nonce, cannot edit": []
+    }
+}
