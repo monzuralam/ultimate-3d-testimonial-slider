@@ -45,12 +45,17 @@ function uts_shortcode($atts) {
     // Type
     $type = isset($atts['type']) && !empty($atts['type']) ? sanitize_text_field($atts['type']) : 'slider';
 
-    // print_r($args);
+    // Unique ID per instance; the first keeps the original ID for custom CSS.
+    static $instances = array();
+    $instances[$type] = isset($instances[$type]) ? $instances[$type] + 1 : 1;
+    $container_id = 'ucs-container-' . $type . ($instances[$type] > 1 ? '-' . $instances[$type] : '');
+
+    uts_enqueue_frontend();
 
     $query = new WP_Query($args);
     ob_start();
 ?>
-    <section id="ucs-container-<?php echo esc_attr($type); ?>" class="ucs-container <?php echo esc_attr($type);
+    <section id="<?php echo esc_attr($container_id); ?>" class="ucs-container <?php echo esc_attr($type);
                                                                                     echo 'slider' === $type ? ' swiper' : ''; ?>">
         <div class="<?php echo 'slider' === $type ? 'swiper-wrapper' : 'ucs-wrapper'; ?>">
             <?php

@@ -1,5 +1,5 @@
 /**
- * Frontend: initializes the Swiper coverflow slider.
+ * Frontend: initializes a Swiper coverflow slider on every slider container.
  */
 import Swiper from 'swiper';
 import { EffectCoverflow, Pagination } from 'swiper/modules';
@@ -9,9 +9,7 @@ import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 import './main.scss';
 
-const element = document.getElementById( 'ucs-container-slider' );
-
-if ( element ) {
+const initSlider = ( element ) => {
 	new Swiper( element, {
 		modules: [ EffectCoverflow, Pagination ],
 		effect: 'coverflow',
@@ -30,4 +28,6 @@ if ( element ) {
 			clickable: true,
 		},
 	} );
-}
+};
+
+document.querySelectorAll( '.ucs-container.slider' ).forEach( initSlider );
