@@ -9,13 +9,13 @@ if( !function_exists('uts_custom_metabox')){
         $meta_boxes = [
             'uts' => [
                 'id'        => 'uts_custom_metabox',
-                'title'     => __('Client Additional', 'ust'),
+                'title'     => __('Client Additional', 'uts'),
                 'callback'  => 'uts_custom_metabox_cb',
                 'context'   =>  'normal',
             ],
             'shortcode-builder' => [
                 'id'        => 'uts_shortcode_metabox',
-                'title'     => __('Shortcode', 'ust'),
+                'title'     => __('Shortcode', 'uts'),
                 'callback'  => 'uts_shortcode_cb',
                 'context'   =>  'side',
             ]
@@ -41,8 +41,8 @@ if( !function_exists('uts_custom_metabox_cb') ){
     
         $designation = get_post_meta( $post->ID, 'uts_designation', true );
         ?>
-        <label for="uts_designation"><?php _e('Position & Company Name','ust'); ?></label>
-        <input type="text" name="uts_designation" id="uts_designation" class="regular-text" value="<?php echo esc_attr($designation); ?>" placeholder="<?php _e('CEO, Company Name') ?>">
+        <label for="uts_designation"><?php esc_html_e('Position & Company Name', 'uts'); ?></label>
+        <input type="text" name="uts_designation" id="uts_designation" class="regular-text" value="<?php echo esc_attr($designation); ?>" placeholder="<?php esc_attr_e('CEO, Company Name', 'uts'); ?>">
         <?php
     }
 }
@@ -73,13 +73,21 @@ if( !function_exists('uts_custom_metabox_save_postdata') ){
             return;
         }
     
-        if( !wp_verify_nonce( $_POST['uts_metabox_nonce_field'], 'uts_metabox_nonce') ){
+        if( !wp_verify_nonce( sanitize_key( wp_unslash( $_POST['uts_metabox_nonce_field'] ) ), 'uts_metabox_nonce') ){
             return;
         }
-    
+
+        if( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ){
+            return;
+        }
+
+        if( !current_user_can( 'edit_post', $post_id ) ){
+            return;
+        }
+
         if( isset( $_POST['uts_designation'])){
-            update_post_meta( $post_id, 'uts_designation', sanitize_text_field( $_POST['uts_designation']) );
+            update_post_meta( $post_id, 'uts_designation', sanitize_text_field( wp_unslash( $_POST['uts_designation'] ) ) );
         }
     }
-    add_action( 'save_post', 'uts_custom_metabox_save_postdata' );
+    add_action( 'save_post_uts', 'uts_custom_metabox_save_postdata' );
 }
