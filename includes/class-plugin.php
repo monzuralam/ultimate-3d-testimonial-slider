@@ -108,6 +108,7 @@ class Plugin {
 			'UTS\Admin_Columns',
 			'UTS\Getting_Started',
 			'UTS\Menu',
+			'UTS\REST',
 		);
 	}
 

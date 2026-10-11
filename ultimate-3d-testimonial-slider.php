@@ -48,6 +48,11 @@ require_once UTS_INCLUDES . '/class-plugin.php';
 require_once UTS_INCLUDES . '/class-db.php';
 
 /**
+ * REST API
+ */
+require_once UTS_INCLUDES . '/class-rest.php';
+
+/**
  * Assets
  */
 require_once UTS_INCLUDES . '/class-assets.php';

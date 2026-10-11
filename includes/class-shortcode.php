@@ -64,7 +64,18 @@ class Shortcode {
 		// settings and the shortcode's own attributes.
 		$instance = array();
 		if ( isset( $atts['id'] ) ) {
-			$item = DB::get( $atts['id'] );
+			/**
+			 * Filters the saved instance used by [uts id="…"] (null if not found).
+			 *
+			 * Only a `publish` instance is rendered; the REST preview uses this
+			 * to render drafts.
+			 *
+			 * @since 1.1.0
+			 *
+			 * @param array|null $item Instance from DB::get().
+			 * @param int        $id   Requested ID.
+			 */
+			$item = apply_filters( 'uts_shortcode_instance', DB::get( $atts['id'] ), absint( $atts['id'] ) );
 			if ( ! $item || 'publish' !== $item['status'] ) {
 				return current_user_can( 'edit_posts' ) ? '<!-- uts: shortcode ' . absint( $atts['id'] ) . ' not found -->' : '';
 			}
