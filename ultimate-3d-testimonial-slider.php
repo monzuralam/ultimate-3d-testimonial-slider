@@ -58,6 +58,11 @@ register_deactivation_hook( __FILE__, 'uts_deactivate' );
 require_once UTS_INCLUDES . '/assets.php';
 
 /**
+ * Settings
+ */
+require_once UTS_INCLUDES . '/settings.php';
+
+/**
  * Cutsom Post Type
  */
 require_once UTS_INCLUDES . '/cpt.php';
