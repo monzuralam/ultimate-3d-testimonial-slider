@@ -1,0 +1,30 @@
+{
+  "name": "ultimate-3d-testimonial-slider",
+  "version": "1.0.1",
+  "description": "3D testimonial slider, grid and list for WordPress.",
+  "author": "Monzur Alam",
+  "license": "GPL-2.0-or-later",
+  "private": true,
+  "scripts": {
+    "build": "wp-scripts build",
+    "start": "wp-scripts start",
+    "lint:js": "wp-scripts lint-js src",
+    "lint:css": "wp-scripts lint-style \"src/**/*.scss\"",
+    "format": "wp-scripts format src",
+    "plugin-zip": "npm run build && wp-scripts plugin-zip"
+  },
+  "files": [
+    "ultimate-3d-testimonial-slider.php",
+    "index.php",
+    "readme.txt",
+    "includes",
+    "assets",
+    "build"
+  ],
+  "devDependencies": {
+    "@wordpress/scripts": "^35.0.0"
+  },
+  "dependencies": {
+    "swiper": "^11.2.10"
+  }
+}
