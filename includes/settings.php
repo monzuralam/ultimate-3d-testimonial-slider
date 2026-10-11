@@ -186,7 +186,8 @@ if (!function_exists('uts_sanitize_settings')) {
 
             switch ($property['type']) {
                 case 'boolean':
-                    $sanitized[$key] = (bool) $raw;
+                    // Handles 'false'/'0' strings from shortcode attributes.
+                    $sanitized[$key] = rest_sanitize_boolean($raw);
                     break;
 
                 case 'integer':

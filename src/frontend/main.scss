@@ -1,4 +1,6 @@
-* {
+/* Reset only inside the plugin's markup, not the whole page. */
+.ucs-container,
+.ucs-container * {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
@@ -32,7 +34,7 @@
 .ucs-container .details-content h3 {
 	font-size: 24px;
 	font-weight: 700;
-	color: #1a191d;
+	color: var(--uts-text, #1a191d);
 	line-height: 1.2;
 	letter-spacing: 0.02em;
 	margin-bottom: 10px;
@@ -56,10 +58,30 @@
 	width: calc((100% - 20px) / 3);
 	position: relative;
 	display: block;
-	background: #fff;
+	background: var(--uts-bg, #fff);
+	color: var(--uts-text, inherit);
+	border-radius: var(--uts-radius, 0);
 	padding: 15px;
 	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 	text-align: center;
+}
+
+/* slider effects */
+.ucs-container.uts-effect-fade .ucs-item,
+.ucs-container.uts-effect-cards .ucs-item {
+	width: 100%;
+}
+
+.ucs-container.uts-effect-cards {
+	max-width: 420px;
+	margin-left: auto;
+	margin-right: auto;
+	overflow: visible;
+}
+
+.ucs-container.slider .swiper-button-prev,
+.ucs-container.slider .swiper-button-next {
+	margin-top: -40px;
 }
 
 /* list style */
@@ -68,7 +90,9 @@
 }
 
 .ucs-container.list .ucs-item {
-	background: #fff;
+	background: var(--uts-bg, #fff);
+	color: var(--uts-text, inherit);
+	border-radius: var(--uts-radius, 0);
 	width: 100%;
 	padding: 15px;
 	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
@@ -96,12 +120,14 @@
 /* grid style */
 .ucs-container.grid .ucs-wrapper {
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: repeat(var(--uts-columns, 3), 1fr);
 	gap: 20px;
 }
 
 .ucs-container.grid .ucs-item {
-	background: #fff;
+	background: var(--uts-bg, #fff);
+	color: var(--uts-text, inherit);
+	border-radius: var(--uts-radius, 0);
 	padding: 15px;
 	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 	text-align: center;
@@ -115,7 +141,7 @@
 @media screen and (max-width: 991px) {
 
 	.ucs-container.grid .ucs-wrapper {
-		grid-template-columns: repeat(2, 1fr);
+		grid-template-columns: repeat(var(--uts-columns-md, 2), 1fr);
 	}
 }
 
