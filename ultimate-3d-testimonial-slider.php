@@ -4,7 +4,9 @@
  * Plugin Name:       Ultimate 3D Testimonial Slider
  * Plugin URI:        https://wordpress.org/plugins/ultimate-3d-testimonial-slider
  * Description:       Easily create responsive 3D carousel slider for testimonial and insert into any page or page via shortcode.
- * Version:           1.0.1
+ * Version:           1.1.0
+ * Requires at least: 5.8
+ * Requires PHP:      5.6
  * Author:            Monzur Alam
  * Author URI:        https://profiles.wordpress.org/monzuralam
  * Text Domain:       uts
@@ -21,7 +23,7 @@ if (!defined('ABSPATH')) {
 /**
  * define constants
  */
-define( 'UTS_VERSION', '1.0.1' );
+define( 'UTS_VERSION', '1.1.0' );
 define( 'UTS_FILE', __FILE__ );
 define( 'UTS_PATH', dirname( UTS_FILE ) );
 define( 'UTS_URL', plugins_url( '', UTS_FILE ) );
