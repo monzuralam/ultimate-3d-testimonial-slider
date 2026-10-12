@@ -256,6 +256,34 @@ try {
 	$check( 'usage empty again after the posts are deleted', array() === $request( 'GET', '/shortcodes/' . $id . '/usage' )->get_data() );
 
 	// ------------------------------------------------------------------
+	WP_CLI::line( '-- uts_keep_data (uninstall choice) via /wp/v2/settings' );
+	$keep_before = get_option( 'uts_keep_data', '__missing__' );
+	$fresh_keep  = function () {
+		// Read like a new page load: drop the cached option first.
+		wp_cache_delete( 'uts_keep_data', 'options' );
+		wp_cache_delete( 'alloptions', 'options' );
+		$settings = rest_do_request( new WP_REST_Request( 'GET', '/wp/v2/settings' ) )->get_data();
+		return isset( $settings['uts_keep_data'] ) ? $settings['uts_keep_data'] : 'missing';
+	};
+	delete_option( 'uts_keep_data' );
+	$check( 'default (never saved) reads true', true === $fresh_keep() && true === UTS\Settings::keep_data() );
+	foreach ( array( false, true ) as $value ) {
+		$req = new WP_REST_Request( 'POST', '/wp/v2/settings' );
+		$req->set_body_params( array( 'uts_keep_data' => $value ) );
+		$code = rest_do_request( $req )->get_status();
+		$read = $fresh_keep();
+		$check( 'save ' . var_export( $value, true ) . ' -> stored as ' . var_export( get_option( 'uts_keep_data' ), true ) . ', fresh read ' . var_export( $read, true ), 200 === $code && $value === $read && $value === UTS\Settings::keep_data() && $value === rest_sanitize_boolean( get_option( 'uts_keep_data', true ) ) );
+	}
+	$req = new WP_REST_Request( 'POST', '/wp/v2/settings' );
+	$req->set_body_params( array( 'uts_keep_data' => 'yes' ) );
+	$check( 'invalid value -> 400', 400 === rest_do_request( $req )->get_status() );
+	if ( '__missing__' === $keep_before ) {
+		delete_option( 'uts_keep_data' );
+	} else {
+		update_option( 'uts_keep_data', $keep_before );
+	}
+
+	// ------------------------------------------------------------------
 	WP_CLI::line( '-- Delete' );
 	$trashed = $request( 'DELETE', '/shortcodes/' . $dup_item['id'] );
 	$check( 'DELETE -> trashed item', 200 === $status( $trashed ) && 'trash' === $trashed->get_data()['status'] );

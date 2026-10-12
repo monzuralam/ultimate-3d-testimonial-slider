@@ -1,10 +1,15 @@
 <?php
 /**
- * Remove plugin data on uninstall: options and the saved shortcodes table.
+ * Uninstall: keep or remove the plugin data, as chosen on the Settings page
+ * (Advanced → "Keep data when the plugin is deleted", option `uts_keep_data`).
  *
- * Testimonial posts are kept so content isn't lost. Runs without the plugin
- * loaded, so it doesn't use the plugin's classes. On multisite every site
- * has its own table and options.
+ * - Keep (default): the settings, saved sliders table and schema version stay,
+ *   so reinstalling the plugin brings everything back.
+ * - Remove: the saved sliders table and every plugin option are deleted.
+ *
+ * Testimonial posts are kept either way, so content isn't lost. Runs without
+ * the plugin loaded, so it doesn't use the plugin's classes. On multisite
+ * each site has its own data and its own choice.
  *
  * @since 1.1.0
  * @author Monzur Alam
@@ -14,7 +19,7 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
 }
 
 /**
- * Remove the plugin's data from the current site.
+ * Keep or remove the plugin's data on the current site.
  *
  * @since 1.1.0
  * @author Monzur Alam
@@ -22,11 +27,19 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
 function uts_uninstall_site() {
     global $wpdb;
 
+    // One-time flag, never worth keeping.
+    delete_option('uts_activation_redirect');
+
+    // Missing option = never changed = keep (the default).
+    if (rest_sanitize_boolean(get_option('uts_keep_data', true))) {
+        return;
+    }
+
     $wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}uts_shortcodes"); // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
     delete_option('uts_settings');
-    delete_option('uts_activation_redirect');
     delete_option('uts_db_version');
+    delete_option('uts_keep_data');
 }
 
 if (is_multisite()) {

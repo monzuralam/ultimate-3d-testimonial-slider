@@ -25,6 +25,7 @@
             "background_color": "",
             "border_radius": 0
         },
+        "uts_keep_data": true,
         "title": "Learn WordPress",
         "description": "",
         "url": "http://learn.test",

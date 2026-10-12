@@ -73,14 +73,30 @@ export const preview = ( attributes, signal ) =>
 		signal,
 	} );
 
+/**
+ * Plugin options from /wp/v2/settings.
+ *
+ * @return {Promise<{settings: Object, keepData: boolean}>} uts_settings and uts_keep_data.
+ */
 export const getSettings = () =>
-	apiFetch( { path: '/wp/v2/settings' } ).then(
-		( response ) => response.uts_settings
-	);
+	apiFetch( { path: '/wp/v2/settings' } ).then( ( response ) => ( {
+		settings: response.uts_settings,
+		keepData: false !== response.uts_keep_data,
+	} ) );
 
-export const saveSettings = ( settings ) =>
+/**
+ * Save the plugin options.
+ *
+ * @param {Object}  settings uts_settings (every key).
+ * @param {boolean} keepData uts_keep_data.
+ * @return {Promise<{settings: Object, keepData: boolean}>} Stored values.
+ */
+export const saveSettings = ( settings, keepData ) =>
 	apiFetch( {
 		path: '/wp/v2/settings',
 		method: 'POST',
-		data: { uts_settings: settings },
-	} ).then( ( response ) => response.uts_settings );
+		data: { uts_settings: settings, uts_keep_data: keepData },
+	} ).then( ( response ) => ( {
+		settings: response.uts_settings,
+		keepData: false !== response.uts_keep_data,
+	} ) );

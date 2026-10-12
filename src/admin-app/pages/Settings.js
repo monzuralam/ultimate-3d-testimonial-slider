@@ -6,9 +6,11 @@ import {
 	Button,
 	Card,
 	CardFooter,
+	Notice as InlineNotice,
 	Notice,
 	Spinner,
 	TabPanel,
+	ToggleControl,
 } from '@wordpress/components';
 import { useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
@@ -21,21 +23,33 @@ import { TABS } from '../fields';
 
 const isEqual = ( a, b ) => JSON.stringify( a ) === JSON.stringify( b );
 
+// Settings-only tab; the Builder shares TABS and must not get it.
+const TABS_WITH_ADVANCED = [
+	...TABS,
+	{ name: 'advanced', title: __( 'Advanced', 'uts' ), fields: [] },
+];
+
 const Settings = () => {
 	const { setDirty } = useApp();
 	const [ settings, setSettings ] = useState( null );
 	const [ saved, setSaved ] = useState( null );
+	const [ keepData, setKeepData ] = useState( true );
+	const [ savedKeepData, setSavedKeepData ] = useState( true );
 	const [ isSaving, setIsSaving ] = useState( false );
 	const [ notice, setNotice ] = useState( null );
 
-	const isDirty = !! settings && ! isEqual( settings, saved );
+	const isDirty =
+		!! settings &&
+		( ! isEqual( settings, saved ) || keepData !== savedKeepData );
 
 	useEffect( () => {
 		getSettings()
 			.then( ( loaded ) => {
-				const merged = { ...data.defaults, ...loaded };
+				const merged = { ...data.defaults, ...loaded.settings };
 				setSettings( merged );
 				setSaved( merged );
+				setKeepData( loaded.keepData );
+				setSavedKeepData( loaded.keepData );
 			} )
 			.catch( ( error ) =>
 				setNotice( { status: 'error', message: error.message } )
@@ -53,12 +67,14 @@ const Settings = () => {
 		setIsSaving( true );
 		setNotice( null );
 
-		saveSettings( settings )
+		saveSettings( settings, keepData )
 			.then( ( stored ) => {
-				setSettings( stored );
-				setSaved( stored );
+				setSettings( stored.settings );
+				setSaved( stored.settings );
+				setKeepData( stored.keepData );
+				setSavedKeepData( stored.keepData );
 				// Other screens (Builder, Getting Started) read the globals from here.
-				data.settings = stored;
+				data.settings = stored.settings;
 				data.status.settings_saved = true;
 				setNotice( {
 					status: 'success',
@@ -71,23 +87,62 @@ const Settings = () => {
 			.finally( () => setIsSaving( false ) );
 	};
 
-	const renderTab = ( tab ) => (
+	const renderAdvanced = () => (
 		<div className="uts-settings__fields">
-			{ tab.fields
-				.filter(
-					( field ) => ! field.showIf || field.showIf( settings )
-				)
-				.map( ( field ) => (
-					<Field
-						key={ field.key }
-						field={ field }
-						schema={ data.schema[ field.key ] }
-						value={ settings[ field.key ] }
-						onChange={ ( value ) => update( field.key, value ) }
-					/>
-				) ) }
+			<ToggleControl
+				label={ __( 'Keep data when the plugin is deleted', 'uts' ) }
+				help={
+					keepData
+						? __(
+								'Deleting the plugin keeps your settings and saved sliders, so reinstalling brings them back.',
+								'uts'
+							)
+						: __(
+								'Deleting the plugin removes your settings and saved sliders permanently.',
+								'uts'
+							)
+				}
+				checked={ keepData }
+				onChange={ setKeepData }
+				__nextHasNoMarginBottom
+			/>
+			{ ! keepData && (
+				<InlineNotice status="warning" isDismissible={ false }>
+					{ __(
+						'When the plugin is deleted from the Plugins screen, its settings and saved sliders are removed and cannot be restored. Deactivating the plugin does not remove anything.',
+						'uts'
+					) }
+				</InlineNotice>
+			) }
+			<p className="uts:m-0 uts:text-wp-muted">
+				{ __(
+					'Your testimonials are never deleted: they are normal posts and stay either way.',
+					'uts'
+				) }
+			</p>
 		</div>
 	);
+
+	const renderTab = ( tab ) =>
+		'advanced' === tab.name ? (
+			renderAdvanced()
+		) : (
+			<div className="uts-settings__fields">
+				{ tab.fields
+					.filter(
+						( field ) => ! field.showIf || field.showIf( settings )
+					)
+					.map( ( field ) => (
+						<Field
+							key={ field.key }
+							field={ field }
+							schema={ data.schema[ field.key ] }
+							value={ settings[ field.key ] }
+							onChange={ ( value ) => update( field.key, value ) }
+						/>
+					) ) }
+			</div>
+		);
 
 	return (
 		<div className="uts-settings">
@@ -110,7 +165,10 @@ const Settings = () => {
 
 			{ settings && (
 				<Card>
-					<TabPanel className="uts-settings__tabs" tabs={ TABS }>
+					<TabPanel
+						className="uts-settings__tabs"
+						tabs={ TABS_WITH_ADVANCED }
+					>
 						{ renderTab }
 					</TabPanel>
 					<CardFooter className="uts-settings__footer">

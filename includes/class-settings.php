@@ -23,6 +23,13 @@ defined( 'ABSPATH' ) || exit;
 class Settings {
 
 	/**
+	 * Option: keep the plugin data on uninstall (true) or remove it (false).
+	 *
+	 * @var string
+	 */
+	const KEEP_DATA_OPTION = 'uts_keep_data';
+
+	/**
 	 * Hook the setting registration.
 	 *
 	 * @since 1.1.0
@@ -268,6 +275,51 @@ class Settings {
 				),
 			)
 		);
+
+		// Separate from uts_settings on purpose: those keys are also shortcode
+		// attributes and saved-slider options, this one isn't.
+		\register_setting(
+			'uts',
+			self::KEEP_DATA_OPTION,
+			array(
+				'type'              => 'boolean',
+				'description'       => __( 'Keep the plugin data (settings and saved sliders) when the plugin is deleted.', 'uts' ),
+				'default'           => true,
+				'sanitize_callback' => array( 'UTS\Settings', 'sanitize_keep_data' ),
+				'show_in_rest'      => true,
+			)
+		);
+	}
+
+	/**
+	 * Store `uts_keep_data` as '1' / '0'.
+	 *
+	 * A boolean false would be saved as '' by update_option(), which the REST
+	 * API then rejects as "not a boolean" and returns as null on the next load
+	 * (so the Settings page would show "keep" while uninstall removes data).
+	 *
+	 * @since 1.1.0
+	 * @author Monzur Alam
+	 *
+	 * @param mixed $value Raw value.
+	 * @return string '1' or '0'.
+	 */
+	public static function sanitize_keep_data( $value ) {
+		return rest_sanitize_boolean( $value ) ? '1' : '0';
+	}
+
+	/**
+	 * Whether uninstalling keeps the plugin data (default true).
+	 *
+	 * uninstall.php reads the option directly, since it runs without the plugin loaded.
+	 *
+	 * @since 1.1.0
+	 * @author Monzur Alam
+	 *
+	 * @return bool
+	 */
+	public static function keep_data() {
+		return rest_sanitize_boolean( get_option( self::KEEP_DATA_OPTION, true ) );
 	}
 
 	/**
