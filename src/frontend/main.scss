@@ -66,17 +66,29 @@
 	text-align: center;
 }
 
-/* slider effects */
+/* slider effects: one testimonial at a time */
 .ucs-container.uts-effect-fade .ucs-item,
-.ucs-container.uts-effect-cards .ucs-item {
+.ucs-container.uts-effect-cards .ucs-item,
+.ucs-container.uts-effect-cube .ucs-item,
+.ucs-container.uts-effect-flip .ucs-item,
+.ucs-container.uts-effect-creative .ucs-item {
 	width: 100%;
 }
 
-.ucs-container.uts-effect-cards {
+/* Card-sized 3D effects: a centered box, and room for the 3D motion. */
+.ucs-container.uts-effect-cards,
+.ucs-container.uts-effect-cube,
+.ucs-container.uts-effect-flip {
 	max-width: 420px;
 	margin-left: auto;
 	margin-right: auto;
 	overflow: visible;
+}
+
+/* No card shadow on the cube (it shows through while turning). */
+.ucs-container.uts-effect-cube .ucs-item {
+	box-shadow: none;
+	border: 1px solid #e0e0e0;
 }
 
 .ucs-container.slider .swiper-button-prev,

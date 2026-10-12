@@ -65,6 +65,9 @@ export const TABS = [
 					slide: __( 'Slide', 'uts' ),
 					fade: __( 'Fade', 'uts' ),
 					cards: __( 'Cards', 'uts' ),
+					cube: __( '3D cube', 'uts' ),
+					flip: __( 'Flip', 'uts' ),
+					creative: __( 'Creative (slide & zoom)', 'uts' ),
 				},
 			},
 			{

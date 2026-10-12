@@ -87,7 +87,7 @@ class Getting_Started {
 			'category'          => __('Only show testimonials from this category (use the category slug).', 'uts'),
 			'excerpt_length'    => __('Words of the testimonial to show. 0 shows the full text.', 'uts'),
 			'image_size'        => __('Image size: thumbnail, medium, large or full.', 'uts'),
-			'effect'            => __('Slider effect: coverflow, slide, fade or cards.', 'uts'),
+			'effect'            => __('Slider effect: coverflow, slide, fade, cards, cube, flip or creative.', 'uts'),
 			'speed'             => __('Transition speed in milliseconds.', 'uts'),
 			'autoplay'          => __('Move to the next slide automatically: true or false.', 'uts'),
 			'autoplay_delay'    => __('Time between slides when autoplay is on, in milliseconds.', 'uts'),

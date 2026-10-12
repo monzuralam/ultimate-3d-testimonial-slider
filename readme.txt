@@ -18,7 +18,7 @@ Ultimate 3D Testimonial Slider is create awesome client's testimonial showcase f
 ### Features of the Ultimate 3D Testimonial Slider
 * Quick to set up, with a Getting Started guide
 * Lightweight: no jQuery, assets load only on pages that use the shortcode
-* 3D coverflow, slide, fade and cards slider effects
+* 3D coverflow, slide, fade, cards, 3D cube, flip and creative slider effects
 * Slider, grid and list layouts
 * Settings page for the default layout, autoplay, loop, speed, arrows, dots, colors and more
 * Every setting can be overridden per shortcode
@@ -47,7 +47,7 @@ The `[uts]` shortcode accepts the following optional attributes:
 | `count`    | Number of testimonials to display. `0` shows all.            | All       | `[uts count="3"]`                           |
 | `category` | Filter testimonials by category slug.                        | *None*    | `[uts category="client-feedback"]`          |
 | `type`     | Layout type for displaying testimonials.                     | `slider`  | `[uts type="grid"]`, `[uts type="list"]`    |
-| `effect`   | Slider effect: `coverflow`, `slide`, `fade` or `cards`.      | `coverflow` | `[uts effect="fade"]`                     |
+| `effect`   | Slider effect: `coverflow`, `slide`, `fade`, `cards`, `cube`, `flip` or `creative`. | `coverflow` | `[uts effect="fade"]`                     |
 | `autoplay` | Play the slider automatically (`autoplay_delay` in ms).      | `false`   | `[uts autoplay="true" autoplay_delay="5000"]` |
 | `loop`     | Loop back to the first slide.                                | `false`   | `[uts loop="true"]`                         |
 | `navigation` / `pagination` | Show arrows / dots.                         | `false` / `true` | `[uts navigation="true" pagination="false"]` |
@@ -149,7 +149,7 @@ Please visit the plugin support forum on WordPress.org for assistance.
 
 = 1.1.0 =
 * **New:** Settings page (Testimonials > Settings) for the default layout, count, excerpt length, image size, slider effect, autoplay, loop, speed, arrows, dots, visibility of image/name/designation, grid columns, colors and corner radius
-* **New:** Slide, fade and cards slider effects, autoplay, loop and navigation arrows
+* **New:** Slide, fade, cards, cube, flip and creative slider effects, autoplay, loop and navigation arrows
 * **New:** Every setting can be overridden as a shortcode attribute
 * **New:** Getting Started dashboard with a video tutorial, a live preview of your testimonials, a setup checklist, a step-by-step "How to use" guide and a full shortcode reference
 * **New:** Photo, Position & Company and Order columns in the testimonials list, plus a "Without photo" filter

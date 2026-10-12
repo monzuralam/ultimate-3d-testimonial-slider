@@ -76,7 +76,7 @@ class Settings {
 			// Slider.
 			'effect'            => array(
 				'type'    => 'string',
-				'enum'    => array( 'coverflow', 'slide', 'fade', 'cards' ),
+				'enum'    => array( 'coverflow', 'slide', 'fade', 'cards', 'cube', 'flip', 'creative' ),
 				'default' => 'coverflow',
 			),
 			'autoplay'          => array(

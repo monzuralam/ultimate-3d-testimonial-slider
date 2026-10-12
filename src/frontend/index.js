@@ -7,7 +7,10 @@ import {
 	Autoplay,
 	EffectCards,
 	EffectCoverflow,
+	EffectCreative,
+	EffectCube,
 	EffectFade,
+	EffectFlip,
 	Navigation,
 	Pagination,
 } from 'swiper/modules';
@@ -15,7 +18,10 @@ import {
 import 'swiper/css';
 import 'swiper/css/effect-cards';
 import 'swiper/css/effect-coverflow';
+import 'swiper/css/effect-creative';
+import 'swiper/css/effect-cube';
 import 'swiper/css/effect-fade';
+import 'swiper/css/effect-flip';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import './main.scss';
@@ -53,6 +59,30 @@ const effectOptions = ( config ) => {
 			return {
 				slidesPerView: 1,
 				cardsEffect: { slideShadows: false },
+			};
+
+		case 'cube':
+			// 3D cube turning to the next card.
+			return {
+				slidesPerView: 1,
+				cubeEffect: { shadow: false, slideShadows: false },
+			};
+
+		case 'flip':
+			// Card flips over to show the next one.
+			return {
+				slidesPerView: 1,
+				flipEffect: { slideShadows: false },
+			};
+
+		case 'creative':
+			// Current card slides off and back while the next one comes in.
+			return {
+				slidesPerView: 1,
+				creativeEffect: {
+					prev: { shadow: false, translate: [ '-120%', 0, -500 ] },
+					next: { shadow: false, translate: [ '120%', 0, -500 ] },
+				},
 			};
 
 		case 'slide':
@@ -99,7 +129,10 @@ const initSlider = ( element ) => {
 			Autoplay,
 			EffectCards,
 			EffectCoverflow,
+			EffectCreative,
+			EffectCube,
 			EffectFade,
+			EffectFlip,
 			Navigation,
 			Pagination,
 		],

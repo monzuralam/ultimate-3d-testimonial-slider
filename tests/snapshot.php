@@ -871,7 +871,7 @@ if ( ! function_exists( 'uts_snapshot_settings' ) ) {
 			),
 			'bad enums'                 => array(
 				'type'       => 'carousel',
-				'effect'     => 'cube',
+				'effect'     => 'wobble',
 				'image_size' => 'huge',
 			),
 			'boolean strings'           => array(
@@ -925,7 +925,7 @@ if ( ! function_exists( 'uts_snapshot_settings' ) ) {
 				'default' => 7,
 			);
 			$schema['count']['default'] = 5;
-			$schema['effect']['enum'][] = 'cube';
+			$schema['effect']['enum'][] = 'wobble';
 			return $schema;
 		};
 		add_filter( 'uts_settings_schema', $filter );
@@ -934,11 +934,11 @@ if ( ! function_exists( 'uts_snapshot_settings' ) ) {
 		$out['with_schema_filter']['defaults']     = isset( $page['data']['defaults'] ) ? $page['data']['defaults'] : null;
 		$out['with_schema_filter']['sanitize']     = array(
 			'empty array' => sanitize_option( 'uts_settings', array() ),
-			'extra/cube'  => sanitize_option(
+			'extra/wobble' => sanitize_option(
 				'uts_settings',
 				array(
 					'snapshot_extra' => '99',
-					'effect'         => 'cube',
+					'effect'         => 'wobble',
 				)
 			),
 		);
