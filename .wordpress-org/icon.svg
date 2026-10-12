@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#1e40af"/>
+    <stop offset="0.55" stop-color="#3730a3"/>
+    <stop offset="1" stop-color="#5b21b6"/>
+  </linearGradient>
+  <linearGradient id="avatarGrad" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#6366f1"/><stop offset="1" stop-color="#a855f7"/>
+  </linearGradient>
+  <linearGradient id="avatarGrad2" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#38bdf8"/><stop offset="1" stop-color="#6366f1"/>
+  </linearGradient>
+  <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%">
+    <feDropShadow dx="0" dy="18" stdDeviation="20" flood-color="#0f172a" flood-opacity="0.45"/>
+  </filter>
+  <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#a5b4fc" stop-opacity="0.55"/>
+    <stop offset="1" stop-color="#a5b4fc" stop-opacity="0"/>
+  </radialGradient>
+</defs>
+<rect width="256" height="256" fill="url(#bg)"/>
+<circle cx="128" cy="128" r="130" fill="url(#glow)"/>
+<g transform="translate(30 92) skewY(12)" opacity="0.7"><rect width="70" height="104" rx="14" fill="#fff"/></g>
+<g transform="translate(156 106.9) skewY(-12)" opacity="0.7"><rect width="70" height="104" rx="14" fill="#fff"/></g>
+<g filter="url(#shadow)"><rect x="66" y="58" width="124" height="148" rx="20" fill="#fff"/></g>
+<g transform="translate(91 84) scale(1.25)" fill="#4f46e5"><g><circle cx="13" cy="33" r="13"/><path d="M1 33 C1 15 9 4 23 0 L25 6 C16 10 12 17 12 25 Z"/></g><g transform="translate(33 0)"><circle cx="13" cy="33" r="13"/><path d="M1 33 C1 15 9 4 23 0 L25 6 C16 10 12 17 12 25 Z"/></g></g>
+<g fill="#f59e0b"><polygon points="86.00,167.50 88.25,172.91 94.08,173.37 89.64,177.18 91.00,182.88 86.00,179.82 81.00,182.88 82.36,177.18 77.92,173.37 83.75,172.91"/><polygon points="107.00,167.50 109.25,172.91 115.08,173.37 110.64,177.18 112.00,182.88 107.00,179.82 102.00,182.88 103.36,177.18 98.92,173.37 104.75,172.91"/><polygon points="128.00,167.50 130.25,172.91 136.08,173.37 131.64,177.18 133.00,182.88 128.00,179.82 123.00,182.88 124.36,177.18 119.92,173.37 125.75,172.91"/><polygon points="149.00,167.50 151.25,172.91 157.08,173.37 152.64,177.18 154.00,182.88 149.00,179.82 144.00,182.88 145.36,177.18 140.92,173.37 146.75,172.91"/><polygon points="170.00,167.50 172.25,172.91 178.08,173.37 173.64,177.18 175.00,182.88 170.00,179.82 165.00,182.88 166.36,177.18 161.92,173.37 167.75,172.91"/></g>
+</svg>

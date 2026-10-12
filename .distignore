@@ -9,3 +9,4 @@ package-lock.json
 webpack.config.js
 *.zip
 tests
+.wordpress-org
