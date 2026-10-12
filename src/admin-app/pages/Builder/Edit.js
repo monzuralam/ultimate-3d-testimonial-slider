@@ -243,6 +243,14 @@ const Edit = ( { id } ) => {
 		);
 	};
 
+	// A saved slider has one layout, so options for the other layouts are
+	// hidden here (unlike Settings, where the layout is only a default).
+	// Changed values stay saved and come back when the layout is switched back.
+	const isSlider = 'slider' === effective.type;
+	const isVisible = ( field ) =>
+		( 'grid_columns' !== field.key || 'grid' === effective.type ) &&
+		( ! field.showIf || field.showIf( effective ) );
+
 	const renderTab = ( tab ) => (
 		<div className="uts-settings__fields">
 			{ 'general' === tab.name && (
@@ -269,11 +277,16 @@ const Edit = ( { id } ) => {
 					__nextHasNoMarginBottom
 				/>
 			) }
-			{ tab.fields
-				.filter(
-					( field ) => ! field.showIf || field.showIf( effective )
-				)
-				.map( renderField ) }
+			{ 'slider' === tab.name && ! isSlider ? (
+				<p className="uts-builder-note uts:m-0 uts:rounded-md uts:bg-wp-bg uts:p-4 uts:text-wp-muted">
+					{ __(
+						'These options only apply to the Slider layout. Set Layout to "3D slider" on the General tab to change the effect, autoplay, arrows and dots.',
+						'uts'
+					) }
+				</p>
+			) : (
+				tab.fields.filter( isVisible ).map( renderField )
+			) }
 		</div>
 	);
 
