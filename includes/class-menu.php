@@ -217,6 +217,7 @@ class Menu {
 
 		$status               = Getting_Started::setup_status();
 		$status['shortcodes'] = DB::count();
+		$status['next_title'] = DB::default_title( DB::next_id() );
 
 		return array(
 			'version'       => UTS_VERSION,

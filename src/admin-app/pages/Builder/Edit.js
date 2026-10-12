@@ -56,10 +56,17 @@ const snapshot = ( item ) =>
  */
 const Edit = ( { id } ) => {
 	const { navigate, setDirty } = useApp();
-	const [ item, setItem ] = useState(
-		id ? null : { ...EMPTY, settings: {} }
+	// New sliders start with the name the server would give them ("UTS #4").
+	// Left as is, it's sent empty so the server names it after its real ID.
+	const [ prefill ] = useState( () =>
+		id ? '' : data.status?.next_title || ''
 	);
-	const [ saved, setSaved ] = useState( id ? null : snapshot( EMPTY ) );
+	const [ item, setItem ] = useState(
+		id ? null : { ...EMPTY, title: prefill, settings: {} }
+	);
+	const [ saved, setSaved ] = useState(
+		id ? null : snapshot( { ...EMPTY, title: prefill } )
+	);
 	const [ notice, setNotice ] = useState( () => {
 		const carried = carryNotice;
 		carryNotice = null;
@@ -94,7 +101,7 @@ const Edit = ( { id } ) => {
 	}, [ isDirty, setDirty ] );
 
 	if ( ! item ) {
-		return notice ? (
+		return notice?.fatal ? (
 			<>
 				<Notice status="error" isDismissible={ false }>
 					{ notice.message }
@@ -131,19 +138,13 @@ const Edit = ( { id } ) => {
 		} );
 
 	const save = ( status ) => {
-		if ( '' === item.title.trim() ) {
-			setNotice( {
-				status: 'error',
-				message: __( 'Please give the slider a name.', 'uts' ),
-			} );
-			return;
-		}
-
 		setIsSaving( true );
 		setNotice( null );
 
+		const title = item.title.trim();
 		const payload = {
-			title: item.title.trim(),
+			// Empty (or the untouched prefill) = "UTS #{id}", set by the server.
+			title: ! id && title === prefill ? '' : title,
 			status,
 			settings: item.settings,
 		};
@@ -294,17 +295,75 @@ const Edit = ( { id } ) => {
 
 	return (
 		<div className="uts-builder-edit">
-			<p className="uts:mt-0 uts:mb-2">
-				<a
-					href={ routeUrl( { page: 'uts-builder' } ) }
-					onClick={ back }
-				>
-					{ __( '← All sliders', 'uts' ) }
-				</a>
-			</p>
-			<h1 className="uts:mt-0 uts:mb-4">
+			<h1 className="screen-reader-text">
 				{ id ? __( 'Edit Slider', 'uts' ) : __( 'New Slider', 'uts' ) }
 			</h1>
+
+			<div className="uts-builder-bar uts:mb-6 uts:flex uts:flex-wrap uts:items-center uts:justify-between uts:gap-3 uts:rounded-lg uts:border uts:border-solid uts:border-wp-border uts:bg-white uts:p-3 uts:md:sticky uts:md:top-8 uts:md:z-10">
+				<div className="uts:flex uts:min-w-0 uts:flex-1 uts:items-center uts:gap-3">
+					<Button
+						variant="secondary"
+						href={ routeUrl( { page: 'uts-builder' } ) }
+						onClick={ back }
+					>
+						{ __( '← Back', 'uts' ) }
+					</Button>
+					<div className="uts:w-full uts:max-w-xs">
+						<TextControl
+							label={ __( 'Slider name', 'uts' ) }
+							hideLabelFromVision
+							placeholder={ __( 'e.g. Homepage slider', 'uts' ) }
+							value={ item.title }
+							maxLength={ 191 }
+							onChange={ ( title ) =>
+								setItem( ( current ) => ( {
+									...current,
+									title,
+								} ) )
+							}
+							__next40pxDefaultSize
+							__nextHasNoMarginBottom
+						/>
+					</div>
+					{ id > 0 && (
+						<span
+							className={ `uts:rounded-full uts:px-2 uts:py-0.5 uts:text-xs uts:font-medium ${
+								'publish' === item.status
+									? 'uts:bg-green-100 uts:text-green-800'
+									: 'uts:bg-wp-bg uts:text-wp-muted'
+							}` }
+						>
+							{ 'publish' === item.status
+								? __( 'Published', 'uts' )
+								: __( 'Draft', 'uts' ) }
+						</span>
+					) }
+				</div>
+				<div className="uts:flex uts:gap-2">
+					<Button
+						variant="secondary"
+						disabled={ isSaving }
+						onClick={ () => save( 'draft' ) }
+					>
+						{ 'publish' === item.status && id
+							? __( 'Switch to Draft', 'uts' )
+							: __( 'Save Draft', 'uts' ) }
+					</Button>
+					<Button
+						variant="primary"
+						isBusy={ isSaving }
+						disabled={
+							isSaving ||
+							( !! id && ! isDirty && 'publish' === item.status )
+						}
+						onClick={ () => save( 'publish' ) }
+					>
+						{ id && 'publish' !== item.status
+							? __( 'Publish', 'uts' )
+							: __( 'Save', 'uts' ) }
+					</Button>
+				</div>
+			</div>
 
 			{ notice && (
 				<Notice
@@ -323,27 +382,6 @@ const Edit = ( { id } ) => {
 
 			<div className="uts:grid uts:grid-cols-1 uts:gap-6 uts:xl:grid-cols-[420px_minmax(0,1fr)]">
 				<div className="uts:flex uts:min-w-0 uts:flex-col uts:gap-6">
-					<Card>
-						<TextControl
-							label={ __( 'Name', 'uts' ) }
-							help={ __(
-								'Only shown here, to tell your sliders apart.',
-								'uts'
-							) }
-							placeholder={ __( 'e.g. Homepage slider', 'uts' ) }
-							value={ item.title }
-							maxLength={ 191 }
-							onChange={ ( title ) =>
-								setItem( ( current ) => ( {
-									...current,
-									title,
-								} ) )
-							}
-							__next40pxDefaultSize
-							__nextHasNoMarginBottom
-						/>
-					</Card>
-
 					<WPCard>
 						<CardBody className="uts:pb-0!">
 							<p className="uts:m-0 uts:text-wp-muted">
@@ -365,53 +403,9 @@ const Edit = ( { id } ) => {
 							{ renderTab }
 						</TabPanel>
 					</WPCard>
-
-					<Card>
-						<div className="uts:flex uts:flex-wrap uts:items-center uts:justify-between uts:gap-3">
-							<span className="uts:text-wp-muted">
-								{ id
-									? sprintf(
-											/* translators: %s: Published or Draft */ __(
-												'Status: %s',
-												'uts'
-											),
-											'publish' === item.status
-												? __( 'Published', 'uts' )
-												: __( 'Draft', 'uts' )
-										)
-									: __( 'Not saved yet', 'uts' ) }
-							</span>
-							<div className="uts:flex uts:gap-2">
-								<Button
-									variant="secondary"
-									disabled={ isSaving }
-									onClick={ () => save( 'draft' ) }
-								>
-									{ 'publish' === item.status && id
-										? __( 'Switch to Draft', 'uts' )
-										: __( 'Save Draft', 'uts' ) }
-								</Button>
-								<Button
-									variant="primary"
-									isBusy={ isSaving }
-									disabled={
-										isSaving ||
-										( !! id &&
-											! isDirty &&
-											'publish' === item.status )
-									}
-									onClick={ () => save( 'publish' ) }
-								>
-									{ id && 'publish' === item.status
-										? __( 'Update', 'uts' )
-										: __( 'Publish', 'uts' ) }
-								</Button>
-							</div>
-						</div>
-					</Card>
 				</div>
 
-				<div className="uts:flex uts:min-w-0 uts:flex-col uts:gap-6 uts:xl:sticky uts:xl:top-12 uts:xl:self-start">
+				<div className="uts:flex uts:min-w-0 uts:flex-col uts:gap-6 uts:xl:sticky uts:xl:top-28 uts:xl:self-start">
 					<Card title={ __( 'Live preview', 'uts' ) }>
 						<Preview attributes={ { ...changed } } />
 					</Card>

@@ -144,7 +144,6 @@ try {
 		'list per_page 101'             => array( 'GET', '/shortcodes', array( 'per_page' => 101 ) ),
 		'list unknown status'           => array( 'GET', '/shortcodes', array( 'status' => 'bogus' ) ),
 		'list unknown orderby'          => array( 'GET', '/shortcodes', array( 'orderby' => 'id; DROP TABLE x' ) ),
-		'update with empty title'       => array( 'PATCH', '/shortcodes/' . $fixture, array( 'title' => ' ' ) ),
 		'update with unknown status'    => array( 'PATCH', '/shortcodes/' . $fixture, array( 'status' => 'nope' ) ),
 	);
 	foreach ( $bad as $label => $route ) {
@@ -234,7 +233,13 @@ try {
 	// ------------------------------------------------------------------
 	WP_CLI::line( '-- Status' );
 	$st = $request( 'GET', '/status' )->get_data();
-	$check( 'status keys', array( 'published', 'with_photo', 'settings_saved', 'page_id', 'shortcodes' ) === array_keys( $st ), implode( ',', array_keys( $st ) ) );
+	$check( 'status keys', array( 'published', 'with_photo', 'settings_saved', 'page_id', 'shortcodes', 'next_title' ) === array_keys( $st ), implode( ',', array_keys( $st ) ) );
+	$check( 'next_title is "UTS #" + next ID', 'UTS #' . UTS\DB::next_id() === $st['next_title'], $st['next_title'] );
+	$untitled      = $request( 'POST', '/shortcodes', array( 'title' => '' ) )->get_data();
+	$uts_created[] = (int) $untitled['id'];
+	$check( 'POST without a name -> "UTS #{id}"', 'UTS #' . $untitled['id'] === $untitled['title'], $untitled['title'] );
+	$renamed = $request( 'PATCH', '/shortcodes/' . $untitled['id'], array( 'title' => '  ' ) );
+	$check( 'PATCH with an empty name -> "UTS #{id}"', 200 === $status( $renamed ) && 'UTS #' . $untitled['id'] === $renamed->get_data()['title'] );
 	$check( 'status counts builder instances', isset( $st['shortcodes']['draft'] ) && $st['shortcodes']['draft'] >= 1 );
 
 	// ------------------------------------------------------------------

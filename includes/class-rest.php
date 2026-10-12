@@ -448,6 +448,7 @@ class REST {
 	public function status() {
 		$status               = Getting_Started::setup_status();
 		$status['shortcodes'] = DB::count();
+		$status['next_title'] = DB::default_title( DB::next_id() );
 
 		return rest_ensure_response( $status );
 	}

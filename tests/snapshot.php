@@ -805,7 +805,9 @@ if ( ! function_exists( 'uts_snapshot_settings_page_data' ) ) {
 
 		$before = wp_scripts()->get_data( 'uts-admin-app', 'before' );
 		$raw    = is_array( $before ) ? implode( "\n", array_filter( $before ) ) : '';
-		$data   = null;
+		// The suggested name follows the table's AUTO_INCREMENT, which every test insert moves.
+		$raw  = preg_replace( '/"next_title":"UTS #\d+"/', '"next_title":"UTS #N"', $raw );
+		$data = null;
 		if ( preg_match( '/^window\.utsAdmin = (.*);$/s', $raw, $matches ) ) {
 			$app  = json_decode( $matches[1], true );
 			// The settings-related part of the app's boot data.

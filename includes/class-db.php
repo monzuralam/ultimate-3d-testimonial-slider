@@ -259,6 +259,44 @@ KEY status (status)
 	}
 
 	/**
+	 * Default name of an instance: "UTS #{id}".
+	 *
+	 * @since 1.1.0
+	 * @author Monzur Alam
+	 *
+	 * @param int $id Instance ID.
+	 * @return string
+	 */
+	public static function default_title( $id ) {
+		/* translators: %d: saved slider ID (the same number as in its [uts id] shortcode) */
+		return sprintf( __( 'UTS #%d', 'uts' ), (int) $id );
+	}
+
+	/**
+	 * Best guess of the next instance ID, used to pre-fill the default name.
+	 * The real name is set from the real ID on save.
+	 *
+	 * Uses the table's AUTO_INCREMENT (IDs of permanently deleted rows are
+	 * not reused), or the highest ID + 1 when that is higher (MySQL 8 may
+	 * report a cached, older AUTO_INCREMENT).
+	 *
+	 * @since 1.1.0
+	 * @author Monzur Alam
+	 *
+	 * @return int
+	 */
+	public static function next_id() {
+		global $wpdb;
+
+		$table = self::table();
+
+		$max  = 1 + (int) $wpdb->get_var( "SELECT MAX(id) FROM {$table}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery
+		$auto = (int) $wpdb->get_var( $wpdb->prepare( 'SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = %s', $table ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+
+		return max( $max, $auto );
+	}
+
+	/**
 	 * Create an instance.
 	 *
 	 * @since 1.1.0
@@ -281,17 +319,20 @@ KEY status (status)
 			'updated_at' => $now,
 		);
 
-		if ( '' === $row['title'] ) {
-			$row['title'] = __( 'Untitled slider', 'uts' );
-		}
-
 		$inserted = $wpdb->insert( self::table(), $row, array( '%s', '%s', '%s', '%d', '%s', '%s' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 		if ( false === $inserted ) {
 			return new \WP_Error( 'uts_db_insert', __( 'The slider could not be saved.', 'uts' ) );
 		}
 
-		return (int) $wpdb->insert_id;
+		$id = (int) $wpdb->insert_id;
+
+		// No name given: "UTS #{id}", so the name matches its [uts id] shortcode.
+		if ( '' === $row['title'] ) {
+			$wpdb->update( self::table(), array( 'title' => self::default_title( $id ) ), array( 'id' => $id ), array( '%s' ), array( '%d' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		}
+
+		return $id;
 	}
 
 	/**
@@ -320,10 +361,8 @@ KEY status (status)
 
 		if ( array_key_exists( 'title', $data ) ) {
 			$title = self::sanitize_title( $data['title'] );
-			if ( '' === $title ) {
-				return new \WP_Error( 'uts_empty_title', __( 'The slider needs a title.', 'uts' ), array( 'status' => 400 ) );
-			}
-			$row['title'] = $title;
+			// An emptied name falls back to "UTS #{id}".
+			$row['title'] = '' === $title ? self::default_title( $id ) : $title;
 			$formats[]    = '%s';
 		}
 

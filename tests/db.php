@@ -119,7 +119,14 @@ try {
 
 	$empty = DB::insert( array( 'title' => '   ' ) );
 	$uts_created[] = $empty;
-	$check( 'empty title becomes "Untitled slider"', 'Untitled slider' === DB::get( $empty )['title'] );
+	$check( 'empty title becomes "UTS #{id}"', 'UTS #' . $empty === DB::get( $empty )['title'], DB::get( $empty )['title'] );
+	$predicted = DB::next_id();
+	$check( 'next_id() is above the highest ID', $predicted > max( array_filter( $uts_created, 'is_int' ) ) );
+	DB::delete( $empty, true );
+	$check( 'next_id() skips IDs of deleted rows', DB::next_id() === $predicted, DB::next_id() . ' vs ' . $predicted );
+	$empty         = DB::insert( array( 'title' => '' ) );
+	$uts_created[] = $empty;
+	$check( 'next_id() matches the next insert', $predicted === $empty, $empty . ' vs ' . $predicted );
 	$check( 'get() of unknown ID is null', null === DB::get( 999999999 ) && null === DB::get( 0 ) && null === DB::get( 'abc' ) );
 	$check( 'uts_get_shortcode() wrapper', uts_get_shortcode( $id ) === DB::get( $id ) );
 
@@ -137,7 +144,8 @@ try {
 	$bad_status = DB::update( $id, array( 'status' => 'nope' ) );
 	$check( 'invalid status -> 400 error', is_wp_error( $bad_status ) && 400 === $bad_status->get_error_data()['status'] );
 	$no_title = DB::update( $id, array( 'title' => ' ' ) );
-	$check( 'empty title on update -> 400 error', is_wp_error( $no_title ) && 400 === $no_title->get_error_data()['status'] );
+	$check( 'emptied title on update becomes "UTS #{id}"', true === $no_title && 'UTS #' . $id === DB::get( $id )['title'], DB::get( $id )['title'] );
+	DB::update( $id, array( 'title' => 'Homepage slider 2' ) ); // Later checks search for this name.
 	$missing = DB::update( 999999999, array( 'title' => 'x' ) );
 	$check( 'update unknown ID -> 404 error', is_wp_error( $missing ) && 404 === $missing->get_error_data()['status'] );
 
