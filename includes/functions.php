@@ -77,51 +77,6 @@ if (!function_exists('uts_register_build')) {
 }
 
 /**
- * Format a default value for display.
- *
- * @since 1.1.0
- * @author Monzur Alam
- *
- * @param mixed $value Default value.
- * @return string
- */
-if (!function_exists('uts_format_default')) {
-    function uts_format_default($value) {
-        if (is_bool($value)) {
-            return $value ? 'true' : 'false';
-        }
-        if ('' === $value || null === $value) {
-            return '—';
-        }
-        return (string) $value;
-    }
-}
-
-/**
- * Print one copyable shortcode field.
- *
- * src/admin handles the copy button.
- *
- * @since 1.1.0
- * @author Monzur Alam
- *
- * @param string $shortcode Shortcode text.
- */
-if (!function_exists('uts_copy_field')) {
-    function uts_copy_field($shortcode) {
-        ?>
-        <div class="uts-shortcode-wrap uts:flex uts:items-center uts:gap-1.5 uts:p-0">
-            <input type="text" class="uts:min-w-0 uts:flex-1 uts:font-mono uts:text-[13px]" value="<?php echo esc_attr($shortcode); ?>" readonly aria-label="<?php esc_attr_e('Shortcode', 'uts'); ?>" />
-            <button type="button" class="button uts-copy-shortcode" title="<?php echo esc_attr__('Copy', 'uts'); ?>">
-                <span class="dashicons dashicons-admin-page" aria-hidden="true"></span>
-                <span class="screen-reader-text"><?php esc_html_e('Copy shortcode', 'uts'); ?></span>
-            </button>
-        </div>
-        <?php
-    }
-}
-
-/**
  * YouTube video ID from a URL (watch, youtu.be, embed or shorts links).
  *
  * @since 1.1.0
@@ -137,24 +92,6 @@ if (!function_exists('uts_youtube_id')) {
         }
 
         return '';
-    }
-}
-
-/**
- * Print a card wrapper start.
- *
- * @since 1.1.0
- * @author Monzur Alam
- *
- * @param string $title Card title (optional).
- * @param string $extra Extra classes.
- */
-if (!function_exists('uts_card_open')) {
-    function uts_card_open($title = '', $extra = '') {
-        echo '<section class="uts:rounded-lg uts:border uts:border-wp-border uts:bg-white uts:p-5 uts:md:p-7 ' . esc_attr($extra) . '">';
-        if ('' !== $title) {
-            echo '<h2 class="uts:m-0 uts:mb-4 uts:text-lg uts:font-semibold uts:text-gray-900">' . esc_html($title) . '</h2>';
-        }
     }
 }
 

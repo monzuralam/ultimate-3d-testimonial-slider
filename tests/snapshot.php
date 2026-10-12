@@ -49,7 +49,7 @@
  *                                  Only this plugin's callbacks on the enqueue
  *                                  hooks run; no DB writes.
  * - settings.json                  The uts_settings option: the Settings page's
- *                                  inline window.utsSettingsData (raw and
+ *                                  inline window.utsAdmin (raw, and its
  *                                  decoded schema/defaults), the registered
  *                                  setting (sanitize_callback only as present /
  *                                  callable), sanitize_option() results for a
@@ -693,7 +693,7 @@ if ( ! function_exists( 'uts_snapshot_assets' ) ) {
 	function uts_snapshot_assets() {
 		require_once ABSPATH . 'wp-admin/includes/admin.php';
 
-		$handles = array( 'uts', 'uts-admin', 'uts-settings', 'react-jsx-runtime' );
+		$handles = array( 'uts', 'uts-admin', 'uts-admin-app', 'react-jsx-runtime' );
 		$saved   = array();
 		foreach ( array( 'wp_query', 'wp_the_query', 'post', 'current_screen' ) as $name ) {
 			$saved[ $name ] = isset( $GLOBALS[ $name ] ) ? $GLOBALS[ $name ] : null;
@@ -758,13 +758,13 @@ if ( ! function_exists( 'uts_snapshot_assets' ) ) {
 		// React build: core's react-jsx-runtime, then the plugin's fallback when core lacks it.
 		uts_snapshot_reset_assets();
 		$out['react_jsx_runtime']['core_registered'] = wp_script_is( 'react-jsx-runtime', 'registered' );
-		uts_register_build( 'uts-settings', 'settings' );
-		$out['react_jsx_runtime']['with_core'] = uts_snapshot_asset_state( array( 'uts-settings', 'react-jsx-runtime' ) );
+		uts_register_build( 'uts-admin-app', 'admin-app' );
+		$out['react_jsx_runtime']['with_core'] = uts_snapshot_asset_state( array( 'uts-admin-app', 'react-jsx-runtime' ) );
 
 		uts_snapshot_reset_assets();
 		wp_deregister_script( 'react-jsx-runtime' );
-		uts_register_build( 'uts-settings', 'settings' );
-		$out['react_jsx_runtime']['fallback'] = uts_snapshot_asset_state( array( 'uts-settings', 'react-jsx-runtime' ) );
+		uts_register_build( 'uts-admin-app', 'admin-app' );
+		$out['react_jsx_runtime']['fallback'] = uts_snapshot_asset_state( array( 'uts-admin-app', 'react-jsx-runtime' ) );
 
 		uts_snapshot_reset_assets();
 
@@ -774,11 +774,12 @@ if ( ! function_exists( 'uts_snapshot_assets' ) ) {
 
 if ( ! function_exists( 'uts_snapshot_settings_page_data' ) ) {
 	/**
-	 * The Settings page's inline `window.utsSettingsData` script.
+	 * The admin app's inline `window.utsAdmin` script on the Settings page
+	 * (its schema and defaults).
 	 *
 	 * Runs only this plugin's callbacks on the page's load hook and on
 	 * admin_enqueue_scripts, then reads the inline script added before the
-	 * `uts-settings` handle.
+	 * `uts-admin-app` handle.
 	 *
 	 * @since 1.1.0
 	 * @author Monzur Alam
@@ -802,11 +803,16 @@ if ( ! function_exists( 'uts_snapshot_settings_page_data' ) ) {
 		uts_snapshot_run_plugin_hook( 'load-' . $hook );
 		uts_snapshot_run_plugin_hook( 'admin_enqueue_scripts', array( $hook ) );
 
-		$before = wp_scripts()->get_data( 'uts-settings', 'before' );
+		$before = wp_scripts()->get_data( 'uts-admin-app', 'before' );
 		$raw    = is_array( $before ) ? implode( "\n", array_filter( $before ) ) : '';
 		$data   = null;
-		if ( preg_match( '/^window\.utsSettingsData = (.*);$/s', $raw, $matches ) ) {
-			$data = json_decode( $matches[1], true );
+		if ( preg_match( '/^window\.utsAdmin = (.*);$/s', $raw, $matches ) ) {
+			$app  = json_decode( $matches[1], true );
+			// The settings-related part of the app's boot data.
+			$data = array(
+				'schema'   => isset( $app['schema'] ) ? $app['schema'] : null,
+				'defaults' => isset( $app['defaults'] ) ? $app['defaults'] : null,
+			);
 		}
 
 		uts_snapshot_reset_assets();

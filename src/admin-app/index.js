@@ -1,5 +1,5 @@
 /**
- * Settings page entry.
+ * Admin app entry: Getting Started, Shortcode Builder and Settings.
  */
 import domReady from '@wordpress/dom-ready';
 import { createRoot, render } from '@wordpress/element';
@@ -8,7 +8,7 @@ import App from './App';
 import './main.scss';
 
 domReady( () => {
-	const root = document.getElementById( 'uts-settings-root' );
+	const root = document.getElementById( 'uts-admin-root' );
 
 	if ( ! root ) {
 		return;

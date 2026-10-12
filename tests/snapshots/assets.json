@@ -220,18 +220,20 @@
         "core_registered": true,
         "with_core": {
             "scripts": {
-                "uts-settings": {
-                    "src": "http://learn.test/wp-content/plugins/ultimate-3d-testimonial-slider/build/settings.js",
+                "uts-admin-app": {
+                    "src": "http://learn.test/wp-content/plugins/ultimate-3d-testimonial-slider/build/admin-app.js",
                     "deps": [
                         "react-jsx-runtime",
                         "wp-api-fetch",
                         "wp-components",
                         "wp-compose",
+                        "wp-date",
                         "wp-dom-ready",
                         "wp-element",
-                        "wp-i18n"
+                        "wp-i18n",
+                        "wp-url"
                     ],
-                    "ver": "{BUILD_HASH settings}",
+                    "ver": "{BUILD_HASH admin-app}",
                     "args": null,
                     "group": 1,
                     "enqueued": false
@@ -248,10 +250,10 @@
             },
             "enqueued_scripts": [],
             "styles": {
-                "uts-settings": {
-                    "src": "http://learn.test/wp-content/plugins/ultimate-3d-testimonial-slider/build/settings.css",
+                "uts-admin-app": {
+                    "src": "http://learn.test/wp-content/plugins/ultimate-3d-testimonial-slider/build/admin-app.css",
                     "deps": [],
-                    "ver": "{BUILD_HASH settings}",
+                    "ver": "{BUILD_HASH admin-app}",
                     "args": "all",
                     "rtl": "replace",
                     "enqueued": false
@@ -261,18 +263,20 @@
         },
         "fallback": {
             "scripts": {
-                "uts-settings": {
-                    "src": "http://learn.test/wp-content/plugins/ultimate-3d-testimonial-slider/build/settings.js",
+                "uts-admin-app": {
+                    "src": "http://learn.test/wp-content/plugins/ultimate-3d-testimonial-slider/build/admin-app.js",
                     "deps": [
                         "react-jsx-runtime",
                         "wp-api-fetch",
                         "wp-components",
                         "wp-compose",
+                        "wp-date",
                         "wp-dom-ready",
                         "wp-element",
-                        "wp-i18n"
+                        "wp-i18n",
+                        "wp-url"
                     ],
-                    "ver": "{BUILD_HASH settings}",
+                    "ver": "{BUILD_HASH admin-app}",
                     "args": null,
                     "group": 1,
                     "enqueued": false
@@ -294,10 +298,10 @@
             },
             "enqueued_scripts": [],
             "styles": {
-                "uts-settings": {
-                    "src": "http://learn.test/wp-content/plugins/ultimate-3d-testimonial-slider/build/settings.css",
+                "uts-admin-app": {
+                    "src": "http://learn.test/wp-content/plugins/ultimate-3d-testimonial-slider/build/admin-app.css",
                     "deps": [],
-                    "ver": "{BUILD_HASH settings}",
+                    "ver": "{BUILD_HASH admin-app}",
                     "args": "all",
                     "rtl": "replace",
                     "enqueued": false

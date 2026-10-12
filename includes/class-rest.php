@@ -123,6 +123,17 @@ class REST {
 
 		register_rest_route(
 			self::NAMESPACE_V1,
+			'/shortcodes/(?P<id>\d+)/usage',
+			array(
+				'methods'             => \WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'usage' ),
+				'permission_callback' => array( $this, 'can_manage' ),
+				'args'                => $id_arg,
+			)
+		);
+
+		register_rest_route(
+			self::NAMESPACE_V1,
 			'/preview',
 			array(
 				'methods'             => \WP_REST_Server::CREATABLE,
@@ -332,6 +343,68 @@ class REST {
 		$response->set_status( 201 );
 
 		return $response;
+	}
+
+	/**
+	 * GET /shortcodes/{id}/usage: posts whose content uses [uts id="{id}"].
+	 *
+	 * Searches post content (no revisions, auto-drafts or trash) and returns
+	 * at most 20 posts, newest first.
+	 *
+	 * @since 1.1.0
+	 * @author Monzur Alam
+	 *
+	 * @param \WP_REST_Request $request Request.
+	 * @return \WP_REST_Response|\WP_Error
+	 */
+	public function usage( $request ) {
+		global $wpdb;
+
+		$id = (int) $request['id'];
+		if ( ! DB::get( $id ) ) {
+			return $this->not_found();
+		}
+
+		// Cheap SQL pre-filter, then an exact match in PHP (quotes are optional).
+		$candidates = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			$wpdb->prepare(
+				"SELECT ID, post_content FROM {$wpdb->posts}
+				WHERE post_type NOT IN ('revision', 'uts')
+				AND post_status NOT IN ('trash', 'auto-draft', 'inherit')
+				AND post_content LIKE %s AND post_content LIKE %s
+				ORDER BY post_modified DESC LIMIT 200",
+				'%' . $wpdb->esc_like( '[uts' ) . '%',
+				'%' . $wpdb->esc_like( 'id=' ) . '%' . $wpdb->esc_like( (string) $id ) . '%'
+			)
+		);
+
+		$posts = array();
+		foreach ( (array) $candidates as $candidate ) {
+			if ( ! preg_match( '/\[uts\b[^\]]*\bid\s*=\s*["\']?' . $id . '(?![\d])/', $candidate->post_content ) ) {
+				continue;
+			}
+
+			$post = get_post( $candidate->ID );
+			if ( ! $post ) {
+				continue;
+			}
+
+			$type    = get_post_type_object( $post->post_type );
+			$posts[] = array(
+				'id'        => $post->ID,
+				'title'     => get_the_title( $post ) !== '' ? get_the_title( $post ) : __( '(no title)', 'uts' ),
+				'type'      => $type ? $type->labels->singular_name : $post->post_type,
+				'status'    => $post->post_status,
+				'edit_link' => (string) get_edit_post_link( $post->ID, 'raw' ),
+				'link'      => (string) get_permalink( $post ),
+			);
+
+			if ( 20 === count( $posts ) ) {
+				break;
+			}
+		}
+
+		return rest_ensure_response( $posts );
 	}
 
 	/**

@@ -78,6 +78,7 @@ try {
 		'PATCH /shortcodes/{id}'     => array( 'PATCH', '/shortcodes/' . $fixture, array( 'title' => 'REST fixture' ), 'manage' ),
 		'DELETE /shortcodes/{id}'    => array( 'DELETE', '/shortcodes/999999999', array(), 'manage' ),
 		'POST /shortcodes/{id}/dup'  => array( 'POST', '/shortcodes/999999999/duplicate', array(), 'manage' ),
+		'GET /shortcodes/{id}/usage' => array( 'GET', '/shortcodes/' . $fixture . '/usage', array(), 'manage' ),
 		'POST /preview'              => array( 'POST', '/preview', array( 'attributes' => array( 'type' => 'list' ) ), 'edit' ),
 		'GET /status'                => array( 'GET', '/status', array(), 'edit' ),
 	);
@@ -237,6 +238,24 @@ try {
 	$check( 'status counts builder instances', isset( $st['shortcodes']['draft'] ) && $st['shortcodes']['draft'] >= 1 );
 
 	// ------------------------------------------------------------------
+	WP_CLI::line( '-- Usage ("Where is this used?")' );
+	$check( 'usage of an unused slider is empty', array() === $request( 'GET', '/shortcodes/' . $id . '/usage' )->get_data() );
+	$check( '404 usage of unknown ID', 404 === $status( $request( 'GET', '/shortcodes/999999999/usage' ) ) );
+	$uts_posts   = array();
+	$uts_posts[] = wp_insert_post( array( 'post_type' => 'page', 'post_status' => 'draft', 'post_title' => 'UTS usage test (quoted)', 'post_content' => 'Hello [uts id="' . $id . '" autoplay="false"] world' ) );
+	$uts_posts[] = wp_insert_post( array( 'post_type' => 'post', 'post_status' => 'draft', 'post_title' => 'UTS usage test (bare)', 'post_content' => '[uts type="grid" id=' . $id . ']' ) );
+	$uts_posts[] = wp_insert_post( array( 'post_type' => 'page', 'post_status' => 'draft', 'post_title' => 'UTS usage test (other id)', 'post_content' => '[uts id="' . $id . '0"] [uts category_id="' . $id . '"]' ) );
+	$used        = $request( 'GET', '/shortcodes/' . $id . '/usage' )->get_data();
+	$titles      = wp_list_pluck( $used, 'title' );
+	sort( $titles );
+	$check( 'usage finds quoted and unquoted ids, not other ids', array( 'UTS usage test (bare)', 'UTS usage test (quoted)' ) === $titles, wp_json_encode( $titles ) );
+	$check( 'usage item shape', $used && array( 'id', 'title', 'type', 'status', 'edit_link', 'link' ) === array_keys( $used[0] ) && 'draft' === $used[0]['status'] );
+	foreach ( $uts_posts as $uts_post ) {
+		wp_delete_post( $uts_post, true );
+	}
+	$check( 'usage empty again after the posts are deleted', array() === $request( 'GET', '/shortcodes/' . $id . '/usage' )->get_data() );
+
+	// ------------------------------------------------------------------
 	WP_CLI::line( '-- Delete' );
 	$trashed = $request( 'DELETE', '/shortcodes/' . $dup_item['id'] );
 	$check( 'DELETE -> trashed item', 200 === $status( $trashed ) && 'trash' === $trashed->get_data()['status'] );
@@ -249,6 +268,13 @@ try {
 	remove_all_filters( 'uts_builder_capability' );
 	remove_filter( 'user_has_cap', $as_editor );
 	wp_set_current_user( $admin );
+	if ( isset( $uts_posts ) ) {
+		foreach ( $uts_posts as $uts_post ) {
+			if ( get_post( $uts_post ) ) {
+				wp_delete_post( $uts_post, true );
+			}
+		}
+	}
 	foreach ( array_unique( array_filter( $uts_created ) ) as $created_id ) {
 		if ( DB::get( $created_id ) ) {
 			DB::delete( $created_id, true );

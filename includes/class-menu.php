@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin menu: the plugin's submenu pages, shared header and activation redirect.
+ * Admin menu: the plugin's pages (one React app) and the activation redirect.
  *
  * @package UTS
  * @since 1.1.0
@@ -12,9 +12,10 @@ namespace UTS;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Registers the Getting Started and Settings pages under Testimonials,
- * renders the header shared by both, loads the Settings page app and opens
- * Getting Started once after activation.
+ * Registers the Getting Started, Shortcode Builder and Settings pages under
+ * Testimonials. All three mount the same React app (src/admin-app), which
+ * reads `?page=` to pick its screen and switches between them without
+ * reloading. Also opens Getting Started once after activation.
  *
  * @since 1.1.0
  * @author Monzur Alam
@@ -29,6 +30,13 @@ class Menu {
 	const PARENT_SLUG = 'edit.php?post_type=uts';
 
 	/**
+	 * Script/style handle of the admin app.
+	 *
+	 * @var string
+	 */
+	const APP_HANDLE = 'uts-admin-app';
+
+	/**
 	 * Hook the pages and the activation redirect.
 	 *
 	 * @since 1.1.0
@@ -40,34 +48,52 @@ class Menu {
 	}
 
 	/**
+	 * The app's pages: slug => title, menu title, capability.
+	 *
+	 * @since 1.1.0
+	 * @author Monzur Alam
+	 *
+	 * @return array
+	 */
+	public static function pages() {
+		return array(
+			'uts-getting-started' => array(
+				'title'      => __( 'Getting Started', 'uts' ),
+				'menu_title' => __( 'Getting Started', 'uts' ),
+				'capability' => 'edit_posts',
+			),
+			'uts-builder'         => array(
+				'title'      => __( 'Shortcode Builder', 'uts' ),
+				'menu_title' => __( 'Shortcode Builder', 'uts' ),
+				'capability' => REST::builder_capability(),
+			),
+			'uts-settings'        => array(
+				'title'      => __( 'Testimonial Settings', 'uts' ),
+				'menu_title' => __( 'Settings', 'uts' ),
+				'capability' => 'manage_options',
+			),
+		);
+	}
+
+	/**
 	 * Register the plugin's admin pages under Testimonials.
 	 *
 	 * @since 1.0.1
 	 * @author Monzur Alam
 	 */
 	public function add_pages() {
-		$page = Plugin::instance()->component( 'UTS\Getting_Started' );
+		foreach ( self::pages() as $slug => $page ) {
+			$hook = add_submenu_page(
+				self::PARENT_SLUG,
+				$page['title'],
+				$page['menu_title'],
+				$page['capability'],
+				$slug,
+				array( $this, 'render_app' )
+			);
 
-		$getting_started = add_submenu_page(
-			self::PARENT_SLUG,
-			__( 'Getting Started', 'uts' ),
-			__( 'Getting Started', 'uts' ),
-			'edit_posts',
-			'uts-getting-started',
-			array( $page, 'render' )
-		);
-
-		$settings = add_submenu_page(
-			self::PARENT_SLUG,
-			__( 'Testimonial Settings', 'uts' ),
-			__( 'Settings', 'uts' ),
-			'manage_options',
-			'uts-settings',
-			array( $this, 'render_settings_page' )
-		);
-
-		add_action( 'load-' . $getting_started, array( $page, 'load' ) );
-		add_action( 'load-' . $settings, array( $this, 'load_settings_page' ) );
+			add_action( 'load-' . $hook, array( $this, 'load_app' ) );
+		}
 	}
 
 	/**
@@ -100,99 +126,127 @@ class Menu {
 	}
 
 	/**
-	 * Shared header (plugin name, version and tabs) for the plugin's admin pages.
-	 *
-	 * The `.wp-header-end` marker makes WordPress put admin notices below it.
+	 * Page load: enqueue the app.
 	 *
 	 * @since 1.1.0
 	 * @author Monzur Alam
-	 *
-	 * @param string $active Active tab key.
 	 */
-	public static function header( $active ) {
-		$tabs = array(
-			'getting-started' => array( __( 'Getting Started', 'uts' ), admin_url( 'edit.php?post_type=uts&page=uts-getting-started' ), 'edit_posts' ),
-			'settings'        => array( __( 'Settings', 'uts' ), admin_url( 'edit.php?post_type=uts&page=uts-settings' ), 'manage_options' ),
-			'testimonials'    => array( __( 'All Testimonials', 'uts' ), admin_url( 'edit.php?post_type=uts' ), 'edit_posts' ),
-			'categories'      => array( __( 'Categories', 'uts' ), admin_url( 'edit-tags.php?taxonomy=uts_category&post_type=uts' ), 'manage_categories' ),
-		);
+	public function load_app() {
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_app' ) );
+	}
+
+	/**
+	 * Page callback: the React app mounts here.
+	 *
+	 * The `.wp-header-end` marker keeps admin notices above the app.
+	 *
+	 * @since 1.1.0
+	 * @author Monzur Alam
+	 */
+	public function render_app() {
 		?>
-		<div class="uts-admin-header uts:flex uts:flex-wrap uts:items-center uts:gap-x-8 uts:gap-y-1 uts:border-b uts:border-wp-border uts:bg-white uts:px-5 uts:md:px-8">
-			<div class="uts:flex uts:items-center uts:gap-3 uts:py-3">
-				<span class="dashicons dashicons-slides uts:text-wp-blue uts:text-[26px] uts:size-[26px]" aria-hidden="true"></span>
-				<span class="uts:text-lg uts:font-semibold uts:text-gray-900"><?php esc_html_e( 'Ultimate 3D Testimonial Slider', 'uts' ); ?></span>
-				<span class="uts:rounded-full uts:border uts:border-wp-border uts:px-2 uts:py-0.5 uts:text-xs uts:text-wp-muted">v<?php echo esc_html( UTS_VERSION ); ?></span>
-			</div>
-			<nav class="uts:flex uts:flex-1 uts:flex-wrap uts:gap-x-6" aria-label="<?php esc_attr_e( 'Plugin pages', 'uts' ); ?>">
-				<?php
-				foreach ( $tabs as $key => $tab ) {
-					if ( ! current_user_can( $tab[2] ) ) {
-						continue;
-					}
-					$is_active = $key === $active;
-					?>
-					<a href="<?php echo esc_url( $tab[1] ); ?>"
-						class="uts:-mb-px uts:border-b-2 uts:py-4 uts:text-sm uts:font-medium uts:no-underline <?php echo $is_active ? 'uts:border-wp-blue uts:text-wp-blue' : 'uts:border-transparent uts:text-gray-700 uts:hover:text-wp-blue'; ?>"
-						<?php echo $is_active ? 'aria-current="page"' : ''; ?>>
-						<?php echo esc_html( $tab[0] ); ?>
-					</a>
-				<?php } ?>
-			</nav>
-			<a href="<?php echo esc_url( uts_link( 'support' ) ); ?>" target="_blank" rel="noopener noreferrer" class="uts:flex uts:items-center uts:gap-1 uts:py-3 uts:text-sm uts:font-medium uts:text-wp-blue uts:no-underline">
-				<span class="dashicons dashicons-sos" aria-hidden="true"></span>
-				<?php esc_html_e( 'Get Help', 'uts' ); ?>
-			</a>
-		</div>
 		<hr class="wp-header-end uts:hidden">
+		<div id="uts-admin-root" class="uts-admin-root"></div>
+		<noscript>
+			<div class="notice notice-error"><p><?php esc_html_e( 'Ultimate 3D Testimonial Slider needs JavaScript for this page. Please enable it in your browser.', 'uts' ); ?></p></div>
+		</noscript>
 		<?php
 	}
 
 	/**
-	 * Settings page: enqueue assets on load.
+	 * Enqueue the admin app, its boot data and the frontend build (for previews).
 	 *
 	 * @since 1.1.0
 	 * @author Monzur Alam
 	 */
-	public function load_settings_page() {
-		add_action( 'admin_enqueue_scripts', array( $this, 'settings_page_assets' ) );
-	}
-
-	/**
-	 * Settings page callback: the React app mounts here.
-	 *
-	 * @since 1.1.0
-	 * @author Monzur Alam
-	 */
-	public function render_settings_page() {
-		self::header( 'settings' );
-		echo '<div class="wrap"><div id="uts-settings-root"></div></div>';
-	}
-
-	/**
-	 * Settings page assets.
-	 *
-	 * @since 1.1.0
-	 * @author Monzur Alam
-	 */
-	public function settings_page_assets() {
-		if ( ! uts_register_build( 'uts-settings', 'settings' ) ) {
+	public function enqueue_app() {
+		if ( ! uts_register_build( self::APP_HANDLE, 'admin-app' ) ) {
 			return;
 		}
 
+		if ( uts_register_build( 'uts', 'frontend' ) ) {
+			Assets::enqueue_frontend();
+		}
+
 		wp_add_inline_script(
-			'uts-settings',
-			'window.utsSettingsData = ' . wp_json_encode(
-				array(
-					'schema'   => Settings::schema(),
-					'defaults' => Settings::defaults(),
-				)
-			) . ';',
+			self::APP_HANDLE,
+			'window.utsAdmin = ' . wp_json_encode( self::app_data() ) . ';',
 			'before'
 		);
 
 		wp_enqueue_style( 'wp-components' );
-		wp_enqueue_style( 'uts-settings' );
-		wp_enqueue_script( 'uts-settings' );
-		wp_set_script_translations( 'uts-settings', 'uts' );
+		wp_enqueue_style( self::APP_HANDLE );
+		wp_enqueue_script( self::APP_HANDLE );
+		wp_set_script_translations( self::APP_HANDLE, 'uts' );
+	}
+
+	/**
+	 * Boot data for the admin app (`window.utsAdmin`).
+	 *
+	 * @since 1.1.0
+	 * @author Monzur Alam
+	 *
+	 * @return array
+	 */
+	public static function app_data() {
+		$user  = wp_get_current_user();
+		$pages = array();
+		foreach ( self::pages() as $slug => $page ) {
+			if ( current_user_can( $page['capability'] ) ) {
+				$pages[ $slug ] = array(
+					'title' => $page['title'],
+					'url'   => admin_url( 'edit.php?post_type=uts&page=' . $slug ),
+				);
+			}
+		}
+
+		$categories = array();
+		$terms      = get_terms(
+			array(
+				'taxonomy'   => 'uts_category',
+				'hide_empty' => false,
+			)
+		);
+		foreach ( is_array( $terms ) ? $terms : array() as $term ) {
+			$categories[] = array(
+				'value' => $term->slug,
+				'label' => $term->name,
+				'count' => (int) $term->count,
+			);
+		}
+
+		$status               = Getting_Started::setup_status();
+		$status['shortcodes'] = DB::count();
+
+		return array(
+			'version'       => UTS_VERSION,
+			'pages'         => $pages,
+			'schema'        => Settings::schema(),
+			'defaults'      => Settings::defaults(),
+			'settings'      => Settings::get(),
+			'attributeDocs' => Getting_Started::attribute_docs(),
+			'categories'    => $categories,
+			'status'        => $status,
+			'videoId'       => Getting_Started::video_id(),
+			'links'         => array(
+				'docs'          => uts_link( 'docs' ),
+				'support'       => uts_link( 'support' ),
+				'review'        => uts_link( 'review' ),
+				'github'        => uts_link( 'github' ),
+				'testimonials'  => admin_url( 'edit.php?post_type=uts' ),
+				'newTestimonial' => admin_url( 'post-new.php?post_type=uts' ),
+				'withoutPhoto'  => admin_url( 'edit.php?post_type=uts&uts_photo=missing' ),
+				'categories'    => admin_url( 'edit-tags.php?taxonomy=uts_category&post_type=uts' ),
+				'newPage'       => admin_url( 'post-new.php?post_type=page' ),
+				'usedOn'        => $status['page_id'] ? (string) get_permalink( $status['page_id'] ) : '',
+				'usedOnTitle'   => $status['page_id'] ? get_the_title( $status['page_id'] ) : '',
+			),
+			'user'          => array(
+				'name'           => $user->display_name,
+				'canManage'      => current_user_can( 'manage_options' ),
+				'canBuild'       => current_user_can( REST::builder_capability() ),
+				'canCategories'  => current_user_can( 'manage_categories' ),
+			),
+		);
 	}
 }

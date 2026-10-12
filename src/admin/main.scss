@@ -1,14 +1,3 @@
-.uts-shortcode-wrap {
-	padding: 10px;
-	display: flex;
-	justify-content: space-between;
-}
-
-.uts-shortcode-wrap button span {
-	vertical-align: middle;
-	display: block;
-}
-
 /* Header spans the full content width (cancels #wpcontent padding). */
 .uts-admin-header {
 	margin-left: -20px;
@@ -87,11 +76,11 @@
 
 
 /* Keep the preview's slider inside the card. */
-.uts-getting-started [data-uts-preview-panel] .ucs-container {
+.uts-preview .ucs-container {
 	margin-bottom: 0;
 }
 
-/* Getting Started video player (created by src/admin/index.js). */
+/* Getting Started video player (src/admin-app/components/VideoEmbed.js). */
 .uts-video-frame {
 	display: block;
 	width: 100%;

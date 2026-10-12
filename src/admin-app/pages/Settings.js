@@ -1,8 +1,7 @@
 /**
- * Settings page app: loads, edits and saves the uts_settings option
- * through the core /wp/v2/settings endpoint.
+ * Settings page: loads, edits and saves the uts_settings option through
+ * the core /wp/v2/settings endpoint.
  */
-import apiFetch from '@wordpress/api-fetch';
 import {
 	Button,
 	Card,
@@ -14,14 +13,16 @@ import {
 import { useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
-import Field from './components/Field';
-import { TABS } from './fields';
-
-const { schema, defaults } = window.utsSettingsData;
+import { getSettings, saveSettings } from '../api';
+import { useApp } from '../App';
+import Field from '../components/Field';
+import data from '../data';
+import { TABS } from '../fields';
 
 const isEqual = ( a, b ) => JSON.stringify( a ) === JSON.stringify( b );
 
-const App = () => {
+const Settings = () => {
+	const { setDirty } = useApp();
 	const [ settings, setSettings ] = useState( null );
 	const [ saved, setSaved ] = useState( null );
 	const [ isSaving, setIsSaving ] = useState( false );
@@ -30,33 +31,20 @@ const App = () => {
 	const isDirty = !! settings && ! isEqual( settings, saved );
 
 	useEffect( () => {
-		apiFetch( { path: '/wp/v2/settings' } )
-			.then( ( response ) => {
-				const loaded = { ...defaults, ...response.uts_settings };
-				setSettings( loaded );
-				setSaved( loaded );
+		getSettings()
+			.then( ( loaded ) => {
+				const merged = { ...data.defaults, ...loaded };
+				setSettings( merged );
+				setSaved( merged );
 			} )
 			.catch( ( error ) =>
 				setNotice( { status: 'error', message: error.message } )
 			);
 	}, [] );
 
-	// Warn before leaving with unsaved changes.
 	useEffect( () => {
-		if ( ! isDirty ) {
-			return;
-		}
-
-		const onBeforeUnload = ( event ) => {
-			event.preventDefault();
-			event.returnValue = '';
-		};
-
-		window.addEventListener( 'beforeunload', onBeforeUnload );
-
-		return () =>
-			window.removeEventListener( 'beforeunload', onBeforeUnload );
-	}, [ isDirty ] );
+		setDirty( isDirty );
+	}, [ isDirty, setDirty ] );
 
 	const update = ( key, value ) =>
 		setSettings( ( current ) => ( { ...current, [ key ]: value } ) );
@@ -65,14 +53,13 @@ const App = () => {
 		setIsSaving( true );
 		setNotice( null );
 
-		apiFetch( {
-			path: '/wp/v2/settings',
-			method: 'POST',
-			data: { uts_settings: settings },
-		} )
-			.then( ( response ) => {
-				setSettings( response.uts_settings );
-				setSaved( response.uts_settings );
+		saveSettings( settings )
+			.then( ( stored ) => {
+				setSettings( stored );
+				setSaved( stored );
+				// Other screens (Builder, Getting Started) read the globals from here.
+				data.settings = stored;
+				data.status.settings_saved = true;
 				setNotice( {
 					status: 'success',
 					message: __( 'Settings saved.', 'uts' ),
@@ -94,7 +81,7 @@ const App = () => {
 					<Field
 						key={ field.key }
 						field={ field }
-						schema={ schema[ field.key ] }
+						schema={ data.schema[ field.key ] }
 						value={ settings[ field.key ] }
 						onChange={ ( value ) => update( field.key, value ) }
 					/>
@@ -107,7 +94,7 @@ const App = () => {
 			<h1>{ __( 'Testimonial Settings', 'uts' ) }</h1>
 			<p className="uts-settings__intro">
 				{ __(
-					'Defaults for every [uts] shortcode. Shortcode attributes such as type="grid" or count="3" override these.',
+					'Defaults for every [uts] shortcode. Saved sliders from the Shortcode Builder and shortcode attributes such as type="grid" or count="3" override these.',
 					'uts'
 				) }
 			</p>
@@ -131,9 +118,11 @@ const App = () => {
 							variant="tertiary"
 							isDestructive
 							disabled={
-								isSaving || isEqual( settings, defaults )
+								isSaving || isEqual( settings, data.defaults )
 							}
-							onClick={ () => setSettings( { ...defaults } ) }
+							onClick={ () =>
+								setSettings( { ...data.defaults } )
+							}
 						>
 							{ __( 'Reset to defaults', 'uts' ) }
 						</Button>
@@ -155,4 +144,4 @@ const App = () => {
 	);
 };
 
-export default App;
+export default Settings;
