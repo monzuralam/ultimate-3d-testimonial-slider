@@ -249,7 +249,7 @@ const Edit = ( { id } ) => {
 	// Changed values stay saved and come back when the layout is switched back.
 	const isSlider = 'slider' === effective.type;
 	const isVisible = ( field ) =>
-		( 'grid_columns' !== field.key || 'grid' === effective.type ) &&
+		( ! field.layouts || field.layouts.includes( effective.type ) ) &&
 		( ! field.showIf || field.showIf( effective ) );
 
 	const renderTab = ( tab ) => (

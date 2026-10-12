@@ -82,7 +82,7 @@ class Getting_Started {
 	 */
 	public static function attribute_docs() {
 		return array(
-			'type'              => __('Layout: slider, grid or list.', 'uts'),
+			'type'              => __('Layout: slider, grid, list, masonry or ticker.', 'uts'),
 			'count'             => __('How many testimonials to show. 0 shows all.', 'uts'),
 			'category'          => __('Only show testimonials from this category (use the category slug).', 'uts'),
 			'excerpt_length'    => __('Words of the testimonial to show. 0 shows the full text.', 'uts'),
@@ -100,7 +100,8 @@ class Getting_Started {
 			'show_image'        => __('Show the client photo: true or false.', 'uts'),
 			'show_title'        => __('Show the client name: true or false.', 'uts'),
 			'show_designation'  => __('Show the position and company: true or false.', 'uts'),
-			'grid_columns'      => __('Grid only: columns on desktop, 1 to 6.', 'uts'),
+			'grid_columns'      => __('Grid and masonry only: columns on desktop, 1 to 6.', 'uts'),
+			'ticker_duration'   => __('Ticker only: seconds each testimonial takes to scroll past (higher is slower).', 'uts'),
 			'accent_color'      => __('Color of the dots and arrows, e.g. #2271b1.', 'uts'),
 			'text_color'        => __('Text color of the cards.', 'uts'),
 			'background_color'  => __('Background color of the cards.', 'uts'),

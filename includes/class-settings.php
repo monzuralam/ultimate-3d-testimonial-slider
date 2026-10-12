@@ -52,7 +52,7 @@ class Settings {
 			// General.
 			'type'              => array(
 				'type'    => 'string',
-				'enum'    => array( 'slider', 'grid', 'list' ),
+				'enum'    => array( 'slider', 'grid', 'list', 'masonry', 'ticker' ),
 				'default' => 'slider',
 			),
 			'count'             => array(
@@ -144,6 +144,12 @@ class Settings {
 				'minimum' => 1,
 				'maximum' => 6,
 				'default' => 3,
+			),
+			'ticker_duration'   => array(
+				'type'    => 'integer',
+				'minimum' => 2,
+				'maximum' => 30,
+				'default' => 6,
 			),
 
 			// Style (empty color = theme/plugin CSS default).

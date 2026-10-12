@@ -22,6 +22,8 @@
  * - shortcode-default.html         [uts]
  * - shortcode-grid.html            [uts type="grid"]
  * - shortcode-fade-navigation.html [uts effect="fade" navigation="true"]
+ * - shortcode-masonry.html         [uts type="masonry" grid_columns="2"]
+ * - shortcode-ticker.html          [uts type="ticker" ticker_duration="4"]
  * - rest-settings.json             GET /wp/v2/settings as an administrator
  * - admin-getting-started.html     Getting Started page body, as an administrator
  * - admin-columns.json             Testimonials list: column headers, sortable
@@ -294,6 +296,8 @@ if ( ! function_exists( 'uts_snapshot_shortcodes' ) ) {
 			'shortcode-default.html'         => '[uts]',
 			'shortcode-grid.html'            => '[uts type="grid"]',
 			'shortcode-fade-navigation.html' => '[uts effect="fade" navigation="true"]',
+			'shortcode-masonry.html'         => '[uts type="masonry" grid_columns="2"]',
+			'shortcode-ticker.html'          => '[uts type="ticker" ticker_duration="4"]',
 		);
 
 		$files = array();

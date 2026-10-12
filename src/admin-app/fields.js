@@ -3,6 +3,7 @@
  *
  * Ranges, options and defaults come from the PHP schema
  * (uts_settings_schema()); this file only adds labels and UI.
+ * `layouts` limits a field to those layouts in the Shortcode Builder.
  */
 import { __ } from '@wordpress/i18n';
 
@@ -25,6 +26,8 @@ export const TABS = [
 					slider: __( '3D slider', 'uts' ),
 					grid: __( 'Grid', 'uts' ),
 					list: __( 'List', 'uts' ),
+					masonry: __( 'Masonry', 'uts' ),
+					ticker: __( 'Ticker (scrolling row)', 'uts' ),
 				},
 			},
 			{
@@ -145,11 +148,22 @@ export const TABS = [
 			{
 				key: 'grid_columns',
 				control: 'range',
-				label: __( 'Grid columns', 'uts' ),
+				label: __( 'Columns', 'uts' ),
 				help: __(
-					'Desktop columns for the grid layout. Smaller screens use fewer.',
+					'Desktop columns for the grid and masonry layouts. Smaller screens use fewer.',
 					'uts'
 				),
+				layouts: [ 'grid', 'masonry' ],
+			},
+			{
+				key: 'ticker_duration',
+				control: 'range',
+				label: __( 'Ticker speed (seconds per testimonial)', 'uts' ),
+				help: __(
+					'Higher is slower. The ticker pauses on hover and stays still for visitors who prefer reduced motion.',
+					'uts'
+				),
+				layouts: [ 'ticker' ],
 			},
 		],
 	},

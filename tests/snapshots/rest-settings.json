@@ -20,6 +20,7 @@
             "show_title": true,
             "show_designation": true,
             "grid_columns": 3,
+            "ticker_duration": 6,
             "accent_color": "",
             "text_color": "",
             "background_color": "",

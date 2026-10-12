@@ -149,10 +149,92 @@
 	display: none;
 }
 
+/* masonry: a grid whose cards keep their own height (row spans set by JS) */
+.ucs-container.masonry .ucs-wrapper {
+	display: grid;
+	grid-template-columns: repeat(var(--uts-columns, 3), 1fr);
+	gap: 20px;
+	align-items: start;
+}
+
+.ucs-container.masonry.ucs-masonry-ready .ucs-wrapper {
+	grid-auto-rows: 1px;
+	row-gap: 0;
+}
+
+.ucs-container.masonry .ucs-item {
+	background: var(--uts-bg, #fff);
+	color: var(--uts-text, inherit);
+	border-radius: var(--uts-radius, 0);
+	padding: 15px;
+	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+	text-align: center;
+}
+
+/* ticker: an endless row; the track holds the cards twice and moves by half */
+.ucs-container.ticker {
+	overflow: hidden;
+	padding: 15px 0 25px;
+	mask-image: linear-gradient(90deg, transparent, #000 5% 95%, transparent);
+}
+
+.ucs-container.ticker .ucs-wrapper {
+	display: flex;
+	width: max-content;
+	margin: 0;
+	animation: uts-ticker var(--uts-ticker-duration, 30s) linear infinite;
+}
+
+.ucs-container.ticker:hover .ucs-wrapper,
+.ucs-container.ticker:focus-within .ucs-wrapper {
+	animation-play-state: paused;
+}
+
+.ucs-container.ticker .ucs-item {
+	flex: 0 0 auto;
+	width: 320px;
+	max-width: 80vw;
+	margin-right: 20px;
+	background: var(--uts-bg, #fff);
+	color: var(--uts-text, inherit);
+	border-radius: var(--uts-radius, 0);
+	padding: 15px;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+	text-align: center;
+}
+
+@keyframes uts-ticker {
+
+	to {
+		transform: translateX(-50%);
+	}
+}
+
+/* No motion: a static row (copies hidden) to scroll by hand. */
+@media (prefers-reduced-motion: reduce) {
+
+	.ucs-container.ticker {
+		overflow-x: auto;
+		mask-image: none;
+	}
+
+	.ucs-container.ticker .ucs-wrapper {
+		animation: none;
+	}
+
+	.ucs-container.ticker .ucs-item[aria-hidden="true"] {
+		display: none;
+	}
+}
+
 /* responsive */
 @media screen and (max-width: 991px) {
 
 	.ucs-container.grid .ucs-wrapper {
+		grid-template-columns: repeat(var(--uts-columns-md, 2), 1fr);
+	}
+
+	.ucs-container.masonry .ucs-wrapper {
 		grid-template-columns: repeat(var(--uts-columns-md, 2), 1fr);
 	}
 }
@@ -167,6 +249,10 @@
 
 	/* grid */
 	.ucs-container.grid .ucs-wrapper {
+		grid-template-columns: repeat(1, 1fr);
+	}
+
+	.ucs-container.masonry .ucs-wrapper {
 		grid-template-columns: repeat(1, 1fr);
 	}
 }

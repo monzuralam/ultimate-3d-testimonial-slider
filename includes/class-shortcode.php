@@ -12,7 +12,7 @@ namespace UTS;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Renders testimonials as a slider, grid or list via [uts].
+ * Renders testimonials as a slider, grid, list, masonry or ticker via [uts].
  *
  * @since 1.1.0
  * @author Monzur Alam
@@ -43,7 +43,7 @@ class Shortcode {
 	 * Render the shortcode.
 	 *
 	 * Runs a WP_Query on `uts` posts, optionally filtered by category, and
-	 * outputs them as a slider, grid or list. Defaults come from the global
+	 * outputs them as a slider, grid, list, masonry or ticker. Defaults come from the global
 	 * settings; any setting key can be overridden as an attribute,
 	 * e.g. [uts type="grid" grid_columns="4"].
 	 *
@@ -53,7 +53,7 @@ class Shortcode {
 	 * @param array|string $atts Shortcode attributes. Main attributes:
 	 *     - 'count' (int) : Number of testimonials to display. 0 = all.
 	 *     - 'category' (string) : Slug of the category to filter testimonials.
-	 *     - 'type' (string) : slider, grid or list.
+	 *     - 'type' (string) : slider, grid, list, masonry or ticker.
 	 * @return string The HTML output.
 	 */
 	public function render( $atts ) {
@@ -132,11 +132,17 @@ class Shortcode {
 			echo ' data-uts-config="' . esc_attr( wp_json_encode( self::slider_config( $settings ) ) ) . '"';
 		}
 		?>>
-		<div class="<?php echo $is_slider ? 'swiper-wrapper' : 'ucs-wrapper'; ?>">
+		<div class="<?php echo $is_slider ? 'swiper-wrapper' : 'ucs-wrapper'; ?>"<?php
+		if ( 'ticker' === $type && $query->post_count > 0 ) {
+			echo ' style="' . esc_attr( '--uts-ticker-duration:' . ( self::ticker_copies( $query->post_count ) * $query->post_count * $settings['ticker_duration'] ) . 's' ) . '"';
+		}
+		?>>
 			<?php
+			$items = array();
 			if ( $query->have_posts() ) :
 				while ( $query->have_posts() ) :
 					$query->the_post();
+					ob_start();
 					?>
 					<div class="ucs-item <?php echo $is_slider ? 'swiper-slide' : ''; ?>">
 						<?php
@@ -167,9 +173,11 @@ class Shortcode {
 						</div>
 					</div>
 					<?php
+					$items[] = ob_get_clean();
 				endwhile;
 			endif;
 			wp_reset_postdata();
+			echo 'ticker' === $type ? self::ticker_items( $items ) : implode( '', $items ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built and escaped above.
 			?>
 		</div>
 		<?php if ( $is_slider && $settings['pagination'] ) { ?>
@@ -210,7 +218,7 @@ class Shortcode {
 		if ( $settings['border_radius'] > 0 ) {
 			$vars['--uts-radius'] = $settings['border_radius'] . 'px';
 		}
-		if ( 'grid' === $settings['type'] && 3 !== $settings['grid_columns'] ) {
+		if ( in_array( $settings['type'], array( 'grid', 'masonry' ), true ) && 3 !== $settings['grid_columns'] ) {
 			$vars['--uts-columns']    = $settings['grid_columns'];
 			$vars['--uts-columns-md'] = min( 2, $settings['grid_columns'] );
 		}
@@ -221,6 +229,42 @@ class Shortcode {
 		}
 
 		return $style;
+	}
+
+	/**
+	 * How many times the ticker repeats its testimonials per pass, so one pass
+	 * is wide enough (about 5 cards) to fill the screen even with 1-2 testimonials.
+	 *
+	 * @since 1.1.0
+	 * @author Monzur Alam
+	 *
+	 * @param int $count Number of testimonials.
+	 * @return int
+	 */
+	public static function ticker_copies( $count ) {
+		return max( 1, (int) ceil( 5 / max( 1, $count ) ) );
+	}
+
+	/**
+	 * The ticker track: the testimonials repeated for one pass, then that pass
+	 * again, so moving the track by -50% loops seamlessly. Only the first copy
+	 * of each testimonial is read by screen readers.
+	 *
+	 * @since 1.1.0
+	 * @author Monzur Alam
+	 *
+	 * @param string[] $items Rendered `.ucs-item` markup, one per testimonial.
+	 * @return string
+	 */
+	public static function ticker_items( $items ) {
+		if ( ! $items ) {
+			return '';
+		}
+
+		$copy   = preg_replace( '/<div class="ucs-item/', '<div aria-hidden="true" class="ucs-item', implode( '', $items ) );
+		$copies = 2 * self::ticker_copies( count( $items ) );
+
+		return implode( '', $items ) . str_repeat( $copy, $copies - 1 );
 	}
 
 	/**

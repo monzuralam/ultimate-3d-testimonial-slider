@@ -1,6 +1,7 @@
 /**
  * Frontend: initializes Swiper on every slider container, using the
- * options from its data-uts-config attribute (see uts_slider_config()).
+ * options from its data-uts-config attribute (see uts_slider_config()),
+ * and lays out masonry containers.
  */
 import Swiper from 'swiper';
 import {
@@ -159,17 +160,51 @@ const initSlider = ( element ) => {
 	} );
 };
 
+// Masonry: each card spans as many 1px grid rows as it is tall (plus the
+// gap), so cards keep their own height and still fill the columns from left
+// to right. Without JS the layout is a plain grid.
+const MASONRY_GAP = 20;
+
+const layoutMasonry = ( element ) => {
+	element.classList.add( 'ucs-masonry-ready' );
+	element.querySelectorAll( '.ucs-item' ).forEach( ( item ) => {
+		const height = Math.ceil( item.getBoundingClientRect().height );
+		item.style.gridRowEnd = `span ${ height + MASONRY_GAP }`;
+	} );
+};
+
+const initMasonry = ( element ) => {
+	if ( element.utsMasonry ) {
+		element.utsMasonry.disconnect();
+	}
+	layoutMasonry( element );
+
+	// Cards change height when images load or the width changes.
+	if ( window.ResizeObserver ) {
+		const observer = new window.ResizeObserver( () =>
+			layoutMasonry( element )
+		);
+		element
+			.querySelectorAll( '.ucs-item' )
+			.forEach( ( item ) => observer.observe( item ) );
+		element.utsMasonry = observer;
+	}
+};
+
 /**
- * Initialize every slider inside `root`. Public as `window.utsSlider.init()`
+ * Initialize every slider (and lay out every masonry) inside `root`. Public as `window.utsSlider.init()`
  * for markup added after page load (the admin preview, AJAX-loaded content).
  *
  * @param {Element|Document} root Element to search in. Defaults to the document.
  * @return {Swiper[]} The slider instances.
  */
-const init = ( root = document ) =>
-	Array.from( root.querySelectorAll( '.ucs-container.slider' ) ).map(
+const init = ( root = document ) => {
+	root.querySelectorAll( '.ucs-container.masonry' ).forEach( initMasonry );
+
+	return Array.from( root.querySelectorAll( '.ucs-container.slider' ) ).map(
 		initSlider
 	);
+};
 
 window.utsSlider = { init };
 

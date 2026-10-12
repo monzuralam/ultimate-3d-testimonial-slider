@@ -19,7 +19,7 @@ Ultimate 3D Testimonial Slider is create awesome client's testimonial showcase f
 * Quick to set up, with a Getting Started guide
 * Lightweight: no jQuery, assets load only on pages that use the shortcode
 * 3D coverflow, slide, fade, cards, 3D cube, flip and creative slider effects
-* Slider, grid and list layouts
+* Slider, grid, list, masonry and ticker (endless scrolling row) layouts
 * Settings page for the default layout, autoplay, loop, speed, arrows, dots, colors and more
 * Every setting can be overridden per shortcode
 * Several sliders on the same page
@@ -46,12 +46,13 @@ The `[uts]` shortcode accepts the following optional attributes:
 |------------|--------------------------------------------------------------|-----------|---------------------------------------------|
 | `count`    | Number of testimonials to display. `0` shows all.            | All       | `[uts count="3"]`                           |
 | `category` | Filter testimonials by category slug.                        | *None*    | `[uts category="client-feedback"]`          |
-| `type`     | Layout type for displaying testimonials.                     | `slider`  | `[uts type="grid"]`, `[uts type="list"]`    |
+| `type`     | Layout: `slider`, `grid`, `list`, `masonry` or `ticker`.     | `slider`  | `[uts type="grid"]`, `[uts type="ticker"]`  |
 | `effect`   | Slider effect: `coverflow`, `slide`, `fade`, `cards`, `cube`, `flip` or `creative`. | `coverflow` | `[uts effect="fade"]`                     |
 | `autoplay` | Play the slider automatically (`autoplay_delay` in ms).      | `false`   | `[uts autoplay="true" autoplay_delay="5000"]` |
 | `loop`     | Loop back to the first slide.                                | `false`   | `[uts loop="true"]`                         |
 | `navigation` / `pagination` | Show arrows / dots.                         | `false` / `true` | `[uts navigation="true" pagination="false"]` |
-| `grid_columns` | Grid columns on desktop (1-6).                           | `3`       | `[uts type="grid" grid_columns="4"]`        |
+| `grid_columns` | Grid and masonry columns on desktop (1-6).               | `3`       | `[uts type="masonry" grid_columns="4"]`     |
+| `ticker_duration` | Ticker: seconds per testimonial (higher is slower).   | `6`       | `[uts type="ticker" ticker_duration="10"]`   |
 
 The defaults come from **Testimonials > Settings**. Every option on that page can also be used as a shortcode attribute with the same name (for example `excerpt_length`, `show_image`, `accent_color`), and attributes always win over the settings.
 
@@ -124,7 +125,7 @@ Yes! Use the count attribute in the shortcode to limit the number of testimonial
 Example: [uts count="5"] displays only 5 testimonials.
 
 = What layout types are available? =
-There are three layout types you can choose from using the type attribute. They are slider, list & grid.
+There are five layout types you can choose from using the type attribute: slider, grid, list, masonry (cards keep their own height) and ticker (an endless scrolling row that pauses on hover).
 
 = Where can I change the slider effect, autoplay or colors? =
 
@@ -150,6 +151,7 @@ Please visit the plugin support forum on WordPress.org for assistance.
 = 1.1.0 =
 * **New:** Settings page (Testimonials > Settings) for the default layout, count, excerpt length, image size, slider effect, autoplay, loop, speed, arrows, dots, visibility of image/name/designation, grid columns, colors and corner radius
 * **New:** Slide, fade, cards, cube, flip and creative slider effects, autoplay, loop and navigation arrows
+* **New:** Masonry and ticker layouts
 * **New:** Every setting can be overridden as a shortcode attribute
 * **New:** Getting Started dashboard with a video tutorial, a live preview of your testimonials, a setup checklist, a step-by-step "How to use" guide and a full shortcode reference
 * **New:** Photo, Position & Company and Order columns in the testimonials list, plus a "Without photo" filter

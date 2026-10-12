@@ -60,9 +60,11 @@ const LAYOUTS = [
 	{ value: 'slider', label: __( 'Slider', 'uts' ) },
 	{ value: 'grid', label: __( 'Grid', 'uts' ) },
 	{ value: 'list', label: __( 'List', 'uts' ) },
+	{ value: 'masonry', label: __( 'Masonry', 'uts' ) },
+	{ value: 'ticker', label: __( 'Ticker', 'uts' ) },
 ];
 
-/** Slider / Grid / List tabs with arrow-key navigation (WAI-ARIA tabs). */
+/** Layout tabs (one per layout) with arrow-key navigation (WAI-ARIA tabs). */
 const LivePreview = () => {
 	const [ layout, setLayout ] = useState( 'slider' );
 	const tabs = useRef( [] );
@@ -438,6 +440,10 @@ const Step = ( { number, title, open = false, children } ) => (
 const EXAMPLES = [
 	[ '[uts type="grid" grid_columns="4"]', __( 'A 4-column grid.', 'uts' ) ],
 	[ '[uts type="list" count="3"]', __( 'A list of the first 3.', 'uts' ) ],
+	[
+		'[uts type="ticker" ticker_duration="10"]',
+		__( 'A slow, endless scrolling row.', 'uts' ),
+	],
 	[
 		'[uts effect="fade" autoplay="true"]',
 		__( 'Fading slider that plays by itself.', 'uts' ),
@@ -874,7 +880,7 @@ const GettingStarted = () => {
 						</p>
 						<p className="uts:mt-3 uts:mb-0 uts:max-w-2xl uts:text-[15px] uts:text-wp-muted">
 							{ __(
-								'Turn what your clients say into a 3D slider, grid or list. Add testimonials, place one shortcode, and you are done.',
+								'Turn what your clients say into a 3D slider, grid, list, masonry or ticker. Add testimonials, place one shortcode, and you are done.',
 								'uts'
 							) }
 						</p>
