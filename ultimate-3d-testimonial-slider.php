@@ -9,7 +9,7 @@
  * Requires PHP:      5.6
  * Author:            Monzur Alam
  * Author URI:        https://profiles.wordpress.org/monzuralam
- * Text Domain:       uts
+ * Text Domain:       ultimate-3d-testimonial-slider
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * GitHub Plugin URI: https://github.com/monzuralam/ultimate-3d-testimonial-slider

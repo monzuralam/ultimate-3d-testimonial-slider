@@ -17,14 +17,14 @@ const Header = ( { page, navigate } ) => {
 	const tabs = [
 		{
 			key: 'testimonials',
-			label: __( 'All Testimonials', 'uts' ),
+			label: __( 'All Testimonials', 'ultimate-3d-testimonial-slider' ),
 			href: data.links.testimonials,
 		},
 	];
 	if ( data.user.canCategories ) {
 		tabs.push( {
 			key: 'categories',
-			label: __( 'Categories', 'uts' ),
+			label: __( 'Categories', 'ultimate-3d-testimonial-slider' ),
 			href: data.links.categories,
 		} );
 	}
@@ -36,7 +36,7 @@ const Header = ( { page, navigate } ) => {
 					key: slug,
 					label:
 						'uts-settings' === slug
-							? __( 'Settings', 'uts' )
+							? __( 'Settings', 'ultimate-3d-testimonial-slider' )
 							: data.pages[ slug ].title,
 					href: routeUrl( { page: slug } ),
 					route: { page: slug },
@@ -61,7 +61,10 @@ const Header = ( { page, navigate } ) => {
 					aria-hidden="true"
 				/>
 				<span className="uts:text-lg uts:font-semibold uts:text-gray-900">
-					{ __( 'Ultimate 3D Testimonial Slider', 'uts' ) }
+					{ __(
+						'Ultimate 3D Testimonial Slider',
+						'ultimate-3d-testimonial-slider'
+					) }
 				</span>
 				<span className="uts:rounded-full uts:border uts:border-wp-border uts:px-2 uts:py-0.5 uts:text-xs uts:text-wp-muted">
 					v{ data.version }
@@ -69,7 +72,10 @@ const Header = ( { page, navigate } ) => {
 			</div>
 			<nav
 				className="uts:flex uts:flex-1 uts:flex-wrap uts:gap-x-6"
-				aria-label={ __( 'Plugin pages', 'uts' ) }
+				aria-label={ __(
+					'Plugin pages',
+					'ultimate-3d-testimonial-slider'
+				) }
 			>
 				{ tabs.map( ( tab ) => {
 					const active = tab.key === page;
@@ -97,9 +103,12 @@ const Header = ( { page, navigate } ) => {
 				className="uts:flex uts:items-center uts:gap-1 uts:py-3 uts:text-sm uts:font-medium uts:text-wp-blue uts:no-underline"
 			>
 				<span className="dashicons dashicons-sos" aria-hidden="true" />
-				{ __( 'Get Help', 'uts' ) }
+				{ __( 'Get Help', 'ultimate-3d-testimonial-slider' ) }
 				<span className="screen-reader-text">
-					{ __( '(opens in a new tab)', 'uts' ) }
+					{ __(
+						'(opens in a new tab)',
+						'ultimate-3d-testimonial-slider'
+					) }
 				</span>
 			</a>
 		</div>

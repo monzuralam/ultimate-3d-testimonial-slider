@@ -61,7 +61,7 @@ class Metabox {
 	public function add() {
 		add_meta_box(
 			'uts_custom_metabox',
-			__( 'Client Additional', 'uts' ),
+			__( 'Client Additional', 'ultimate-3d-testimonial-slider' ),
 			array( $this, 'render' ),
 			'uts',
 			'normal'
@@ -81,8 +81,8 @@ class Metabox {
 
 		$designation = get_post_meta( $post->ID, self::META_KEY, true );
 		?>
-		<label for="uts_designation"><?php esc_html_e( 'Position & Company Name', 'uts' ); ?></label>
-		<input type="text" name="uts_designation" id="uts_designation" class="regular-text" value="<?php echo esc_attr( $designation ); ?>" placeholder="<?php esc_attr_e( 'CEO, Company Name', 'uts' ); ?>">
+		<label for="uts_designation"><?php esc_html_e( 'Position & Company Name', 'ultimate-3d-testimonial-slider' ); ?></label>
+		<input type="text" name="uts_designation" id="uts_designation" class="regular-text" value="<?php echo esc_attr( $designation ); ?>" placeholder="<?php esc_attr_e( 'CEO, Company Name', 'ultimate-3d-testimonial-slider' ); ?>">
 		<?php
 	}
 

@@ -40,7 +40,10 @@ const CopyField = ( { value, className = '' } ) => {
 				type="text"
 				readOnly
 				value={ value }
-				aria-label={ __( 'Shortcode', 'uts' ) }
+				aria-label={ __(
+					'Shortcode',
+					'ultimate-3d-testimonial-slider'
+				) }
 				className="uts:min-w-0 uts:flex-1 uts:font-mono uts:text-[13px]"
 				onFocus={ ( event ) => event.target.select() }
 			/>
@@ -49,8 +52,11 @@ const CopyField = ( { value, className = '' } ) => {
 				onClick={ onCopy }
 				label={
 					copied
-						? __( 'Copied', 'uts' )
-						: __( 'Copy shortcode', 'uts' )
+						? __( 'Copied', 'ultimate-3d-testimonial-slider' )
+						: __(
+								'Copy shortcode',
+								'ultimate-3d-testimonial-slider'
+							)
 				}
 				showTooltip
 			>
@@ -60,7 +66,12 @@ const CopyField = ( { value, className = '' } ) => {
 				/>
 			</Button>
 			<span className="screen-reader-text" aria-live="polite">
-				{ copied ? __( 'Shortcode copied.', 'uts' ) : '' }
+				{ copied
+					? __(
+							'Shortcode copied.',
+							'ultimate-3d-testimonial-slider'
+						)
+					: '' }
 			</span>
 		</div>
 	);

@@ -36,9 +36,9 @@ const formatDate = ( rfc3339 ) => {
 };
 
 const STATUS_LABELS = {
-	publish: __( 'Published', 'uts' ),
-	draft: __( 'Draft', 'uts' ),
-	trash: __( 'Trash', 'uts' ),
+	publish: __( 'Published', 'ultimate-3d-testimonial-slider' ),
+	draft: __( 'Draft', 'ultimate-3d-testimonial-slider' ),
+	trash: __( 'Trash', 'ultimate-3d-testimonial-slider' ),
 };
 
 const List = () => {
@@ -125,10 +125,22 @@ const List = () => {
 
 	const allCount = counts.publish + counts.draft;
 	const views = [
-		[ 'any', __( 'All', 'uts' ), allCount ],
-		[ 'publish', __( 'Published', 'uts' ), counts.publish ],
-		[ 'draft', __( 'Drafts', 'uts' ), counts.draft ],
-		[ 'trash', __( 'Trash', 'uts' ), counts.trash ],
+		[ 'any', __( 'All', 'ultimate-3d-testimonial-slider' ), allCount ],
+		[
+			'publish',
+			__( 'Published', 'ultimate-3d-testimonial-slider' ),
+			counts.publish,
+		],
+		[
+			'draft',
+			__( 'Drafts', 'ultimate-3d-testimonial-slider' ),
+			counts.draft,
+		],
+		[
+			'trash',
+			__( 'Trash', 'ultimate-3d-testimonial-slider' ),
+			counts.trash,
+		],
 	];
 
 	const rowActions = ( item ) => {
@@ -142,11 +154,14 @@ const List = () => {
 							item.id,
 							() =>
 								updateShortcode( item.id, { status: 'draft' } ),
-							__( 'Slider restored as a draft.', 'uts' )
+							__(
+								'Slider restored as a draft.',
+								'ultimate-3d-testimonial-slider'
+							)
 						)
 					}
 				>
-					{ __( 'Restore', 'uts' ) }
+					{ __( 'Restore', 'ultimate-3d-testimonial-slider' ) }
 				</Button>,
 				<Button
 					key="delete"
@@ -154,7 +169,10 @@ const List = () => {
 					isDestructive
 					onClick={ () => setConfirm( { item, force: true } ) }
 				>
-					{ __( 'Delete permanently', 'uts' ) }
+					{ __(
+						'Delete permanently',
+						'ultimate-3d-testimonial-slider'
+					) }
 				</Button>,
 			];
 		}
@@ -174,7 +192,7 @@ const List = () => {
 					} )
 				}
 			>
-				{ __( 'Edit', 'uts' ) }
+				{ __( 'Edit', 'ultimate-3d-testimonial-slider' ) }
 			</a>,
 			<Button
 				key="dup"
@@ -183,11 +201,14 @@ const List = () => {
 					run(
 						item.id,
 						() => duplicateShortcode( item.id ),
-						__( 'Slider duplicated as a draft.', 'uts' )
+						__(
+							'Slider duplicated as a draft.',
+							'ultimate-3d-testimonial-slider'
+						)
 					)
 				}
 			>
-				{ __( 'Duplicate', 'uts' ) }
+				{ __( 'Duplicate', 'ultimate-3d-testimonial-slider' ) }
 			</Button>,
 			<Button
 				key="trash"
@@ -195,7 +216,7 @@ const List = () => {
 				isDestructive
 				onClick={ () => setConfirm( { item, force: false } ) }
 			>
-				{ __( 'Trash', 'uts' ) }
+				{ __( 'Trash', 'ultimate-3d-testimonial-slider' ) }
 			</Button>,
 		];
 	};
@@ -204,7 +225,10 @@ const List = () => {
 		<div className="uts-builder">
 			<div className="uts:mb-4 uts:flex uts:flex-wrap uts:items-center uts:gap-3">
 				<h1 className="wp-heading-inline uts:m-0">
-					{ __( 'Shortcode Builder', 'uts' ) }
+					{ __(
+						'Shortcode Builder',
+						'ultimate-3d-testimonial-slider'
+					) }
 				</h1>
 				<a
 					href={ routeUrl( { page: 'uts-builder', view: 'new' } ) }
@@ -213,13 +237,13 @@ const List = () => {
 						open( event, { page: 'uts-builder', view: 'new' } )
 					}
 				>
-					{ __( 'Add New Slider', 'uts' ) }
+					{ __( 'Add New Slider', 'ultimate-3d-testimonial-slider' ) }
 				</a>
 			</div>
 			<p className="uts:mt-0 uts:mb-4 uts:max-w-3xl uts:text-wp-muted">
 				{ __(
 					'Save named sliders with their own look, then paste their shortcode anywhere. Editing a slider updates every page that uses it. Options a slider does not change follow your Settings.',
-					'uts'
+					'ultimate-3d-testimonial-slider'
 				) }
 			</p>
 
@@ -258,9 +282,15 @@ const List = () => {
 				<div className="uts:w-64">
 					<TextControl
 						type="search"
-						label={ __( 'Search sliders', 'uts' ) }
+						label={ __(
+							'Search sliders',
+							'ultimate-3d-testimonial-slider'
+						) }
 						hideLabelFromVision
-						placeholder={ __( 'Search sliders…', 'uts' ) }
+						placeholder={ __(
+							'Search sliders…',
+							'ultimate-3d-testimonial-slider'
+						) }
 						value={ search }
 						onChange={ setSearch }
 						__nextHasNoMarginBottom
@@ -277,12 +307,15 @@ const List = () => {
 						aria-hidden="true"
 					/>
 					<p className="uts:mt-3 uts:mb-1 uts:text-lg uts:font-semibold uts:text-gray-900">
-						{ __( 'No saved sliders yet', 'uts' ) }
+						{ __(
+							'No saved sliders yet',
+							'ultimate-3d-testimonial-slider'
+						) }
 					</p>
 					<p className="uts:mt-0 uts:mb-5 uts:max-w-md uts:text-wp-muted">
 						{ __(
 							'Create a slider for each place it appears, for example "Homepage" or "Pricing page", each with its own layout and effect.',
-							'uts'
+							'ultimate-3d-testimonial-slider'
 						) }
 					</p>
 					<Button
@@ -291,7 +324,10 @@ const List = () => {
 							navigate( { page: 'uts-builder', view: 'new' } )
 						}
 					>
-						{ __( 'Create your first slider', 'uts' ) }
+						{ __(
+							'Create your first slider',
+							'ultimate-3d-testimonial-slider'
+						) }
 					</Button>
 				</div>
 			) }
@@ -304,14 +340,28 @@ const List = () => {
 					<thead>
 						<tr>
 							<th scope="col" className="uts:w-[34%]">
-								{ __( 'Title', 'uts' ) }
+								{ __(
+									'Title',
+									'ultimate-3d-testimonial-slider'
+								) }
 							</th>
 							<th scope="col" className="uts:w-[30%]">
-								{ __( 'Shortcode', 'uts' ) }
+								{ __(
+									'Shortcode',
+									'ultimate-3d-testimonial-slider'
+								) }
 							</th>
-							<th scope="col">{ __( 'Status', 'uts' ) }</th>
 							<th scope="col">
-								{ __( 'Last modified', 'uts' ) }
+								{ __(
+									'Status',
+									'ultimate-3d-testimonial-slider'
+								) }
+							</th>
+							<th scope="col">
+								{ __(
+									'Last modified',
+									'ultimate-3d-testimonial-slider'
+								) }
 							</th>
 						</tr>
 					</thead>
@@ -322,9 +372,12 @@ const List = () => {
 									{ query
 										? __(
 												'No sliders match your search.',
-												'uts'
+												'ultimate-3d-testimonial-slider'
 											)
-										: __( 'No sliders found.', 'uts' ) }
+										: __(
+												'No sliders found.',
+												'ultimate-3d-testimonial-slider'
+											) }
 								</td>
 							</tr>
 						) }
@@ -386,7 +439,7 @@ const List = () => {
 								'%s item',
 								'%s items',
 								result.total,
-								'uts'
+								'ultimate-3d-testimonial-slider'
 							),
 							result.total
 						) }
@@ -395,7 +448,10 @@ const List = () => {
 						variant="secondary"
 						disabled={ page <= 1 }
 						onClick={ () => setPage( page - 1 ) }
-						label={ __( 'Previous page', 'uts' ) }
+						label={ __(
+							'Previous page',
+							'ultimate-3d-testimonial-slider'
+						) }
 					>
 						‹
 					</Button>
@@ -403,7 +459,7 @@ const List = () => {
 						{ sprintf(
 							/* translators: 1: current page, 2: total pages */ __(
 								'%1$s of %2$s',
-								'uts'
+								'ultimate-3d-testimonial-slider'
 							),
 							page,
 							result.totalPages
@@ -413,7 +469,10 @@ const List = () => {
 						variant="secondary"
 						disabled={ page >= result.totalPages }
 						onClick={ () => setPage( page + 1 ) }
-						label={ __( 'Next page', 'uts' ) }
+						label={ __(
+							'Next page',
+							'ultimate-3d-testimonial-slider'
+						) }
 					>
 						›
 					</Button>
@@ -424,8 +483,14 @@ const List = () => {
 				<Modal
 					title={
 						confirm.force
-							? __( 'Delete this slider permanently?', 'uts' )
-							: __( 'Move this slider to the trash?', 'uts' )
+							? __(
+									'Delete this slider permanently?',
+									'ultimate-3d-testimonial-slider'
+								)
+							: __(
+									'Move this slider to the trash?',
+									'ultimate-3d-testimonial-slider'
+								)
 					}
 					onRequestClose={ () => setConfirm( null ) }
 				>
@@ -436,7 +501,7 @@ const List = () => {
 					<p>
 						{ __(
 							'Pages that use its shortcode will show nothing in its place. Used in:',
-							'uts'
+							'ultimate-3d-testimonial-slider'
 						) }
 					</p>
 					<Usage id={ confirm.item.id } />
@@ -445,7 +510,7 @@ const List = () => {
 							variant="tertiary"
 							onClick={ () => setConfirm( null ) }
 						>
-							{ __( 'Cancel', 'uts' ) }
+							{ __( 'Cancel', 'ultimate-3d-testimonial-slider' ) }
 						</Button>
 						<Button
 							variant="primary"
@@ -462,18 +527,24 @@ const List = () => {
 									force
 										? __(
 												'Slider deleted permanently.',
-												'uts'
+												'ultimate-3d-testimonial-slider'
 											)
 										: __(
 												'Slider moved to the trash.',
-												'uts'
+												'ultimate-3d-testimonial-slider'
 											)
 								);
 							} }
 						>
 							{ confirm.force
-								? __( 'Delete permanently', 'uts' )
-								: __( 'Move to Trash', 'uts' ) }
+								? __(
+										'Delete permanently',
+										'ultimate-3d-testimonial-slider'
+									)
+								: __(
+										'Move to Trash',
+										'ultimate-3d-testimonial-slider'
+									) }
 						</Button>
 					</div>
 				</Modal>

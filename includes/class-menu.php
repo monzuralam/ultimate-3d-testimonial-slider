@@ -58,18 +58,18 @@ class Menu {
 	public static function pages() {
 		return array(
 			'uts-getting-started' => array(
-				'title'      => __( 'Getting Started', 'uts' ),
-				'menu_title' => __( 'Getting Started', 'uts' ),
+				'title'      => __( 'Getting Started', 'ultimate-3d-testimonial-slider' ),
+				'menu_title' => __( 'Getting Started', 'ultimate-3d-testimonial-slider' ),
 				'capability' => 'edit_posts',
 			),
 			'uts-builder'         => array(
-				'title'      => __( 'Shortcode Builder', 'uts' ),
-				'menu_title' => __( 'Shortcode Builder', 'uts' ),
+				'title'      => __( 'Shortcode Builder', 'ultimate-3d-testimonial-slider' ),
+				'menu_title' => __( 'Shortcode Builder', 'ultimate-3d-testimonial-slider' ),
 				'capability' => REST::builder_capability(),
 			),
 			'uts-settings'        => array(
-				'title'      => __( 'Testimonial Settings', 'uts' ),
-				'menu_title' => __( 'Settings', 'uts' ),
+				'title'      => __( 'Testimonial Settings', 'ultimate-3d-testimonial-slider' ),
+				'menu_title' => __( 'Settings', 'ultimate-3d-testimonial-slider' ),
 				'capability' => 'manage_options',
 			),
 		);
@@ -148,7 +148,7 @@ class Menu {
 		<hr class="wp-header-end uts:hidden">
 		<div id="uts-admin-root" class="uts-admin-root"></div>
 		<noscript>
-			<div class="notice notice-error"><p><?php esc_html_e( 'Ultimate 3D Testimonial Slider needs JavaScript for this page. Please enable it in your browser.', 'uts' ); ?></p></div>
+			<div class="notice notice-error"><p><?php esc_html_e( 'Ultimate 3D Testimonial Slider needs JavaScript for this page. Please enable it in your browser.', 'ultimate-3d-testimonial-slider' ); ?></p></div>
 		</noscript>
 		<?php
 	}
@@ -177,7 +177,7 @@ class Menu {
 		wp_enqueue_style( 'wp-components' );
 		wp_enqueue_style( self::APP_HANDLE );
 		wp_enqueue_script( self::APP_HANDLE );
-		wp_set_script_translations( self::APP_HANDLE, 'uts' );
+		wp_set_script_translations( self::APP_HANDLE, 'ultimate-3d-testimonial-slider' );
 	}
 
 	/**

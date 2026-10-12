@@ -117,7 +117,7 @@ const App = () => {
 						<p>
 							{ __(
 								'Sorry, you are not allowed to access this page.',
-								'uts'
+								'ultimate-3d-testimonial-slider'
 							) }
 						</p>
 					</div>
@@ -126,13 +126,16 @@ const App = () => {
 
 			{ pending && (
 				<Modal
-					title={ __( 'Leave without saving?', 'uts' ) }
+					title={ __(
+						'Leave without saving?',
+						'ultimate-3d-testimonial-slider'
+					) }
 					onRequestClose={ () => setPending( null ) }
 				>
 					<p>
 						{ __(
 							'You have unsaved changes on this page. If you leave now, they will be lost.',
-							'uts'
+							'ultimate-3d-testimonial-slider'
 						) }
 					</p>
 					<div className="uts:mt-6 uts:flex uts:justify-end uts:gap-3">
@@ -140,7 +143,10 @@ const App = () => {
 							variant="tertiary"
 							onClick={ () => setPending( null ) }
 						>
-							{ __( 'Stay on this page', 'uts' ) }
+							{ __(
+								'Stay on this page',
+								'ultimate-3d-testimonial-slider'
+							) }
 						</Button>
 						<Button
 							variant="primary"
@@ -151,7 +157,10 @@ const App = () => {
 								go( next, replace );
 							} }
 						>
-							{ __( 'Leave and discard changes', 'uts' ) }
+							{ __(
+								'Leave and discard changes',
+								'ultimate-3d-testimonial-slider'
+							) }
 						</Button>
 					</div>
 				</Modal>

@@ -48,15 +48,15 @@ class Admin_Columns {
 
 		foreach ( $columns as $key => $label ) {
 			if ( 'title' === $key ) {
-				$new['uts_photo'] = __( 'Photo', 'uts' );
+				$new['uts_photo'] = __( 'Photo', 'ultimate-3d-testimonial-slider' );
 			}
 			$new[ $key ] = $label;
 		}
 
 		$date = isset( $new['date'] ) ? $new['date'] : null;
 		unset( $new['date'] );
-		$new['uts_designation'] = __( 'Position & Company', 'uts' );
-		$new['uts_order']       = __( 'Order', 'uts' );
+		$new['uts_designation'] = __( 'Position & Company', 'ultimate-3d-testimonial-slider' );
+		$new['uts_order']       = __( 'Order', 'ultimate-3d-testimonial-slider' );
 		if ( null !== $date ) {
 			$new['date'] = $date;
 		}
@@ -79,7 +79,7 @@ class Admin_Columns {
 				if ( has_post_thumbnail( $post_id ) ) {
 					echo get_the_post_thumbnail( $post_id, array( 40, 40 ), array( 'class' => 'uts-list-photo', 'alt' => '' ) );
 				} else {
-					echo '<span class="uts-list-photo uts-list-photo--missing" title="' . esc_attr__( 'No photo', 'uts' ) . '"><span class="dashicons dashicons-format-quote" aria-hidden="true"></span><span class="screen-reader-text">' . esc_html__( 'No photo', 'uts' ) . '</span></span>';
+					echo '<span class="uts-list-photo uts-list-photo--missing" title="' . esc_attr__( 'No photo', 'ultimate-3d-testimonial-slider' ) . '"><span class="dashicons dashicons-format-quote" aria-hidden="true"></span><span class="screen-reader-text">' . esc_html__( 'No photo', 'ultimate-3d-testimonial-slider' ) . '</span></span>';
 				}
 				break;
 
@@ -164,7 +164,7 @@ class Admin_Columns {
 			'<a href="%s"%s>%s <span class="count">(%s)</span></a>',
 			esc_url( admin_url( 'edit.php?post_type=uts&post_status=publish&uts_photo=missing' ) ),
 			$current ? ' class="current" aria-current="page"' : '',
-			esc_html__( 'Without photo', 'uts' ),
+			esc_html__( 'Without photo', 'ultimate-3d-testimonial-slider' ),
 			esc_html( number_format_i18n( $count ) )
 		);
 

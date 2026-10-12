@@ -42,7 +42,10 @@ const Usage = ( { id, onLoaded } ) => {
 	if ( ! posts.length ) {
 		return (
 			<p className="uts:m-0 uts:text-wp-muted">
-				{ __( 'Not used in any post or page yet.', 'uts' ) }
+				{ __(
+					'Not used in any post or page yet.',
+					'ultimate-3d-testimonial-slider'
+				) }
 			</p>
 		);
 	}

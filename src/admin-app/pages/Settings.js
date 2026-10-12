@@ -26,7 +26,11 @@ const isEqual = ( a, b ) => JSON.stringify( a ) === JSON.stringify( b );
 // Settings-only tab; the Builder shares TABS and must not get it.
 const TABS_WITH_ADVANCED = [
 	...TABS,
-	{ name: 'advanced', title: __( 'Advanced', 'uts' ), fields: [] },
+	{
+		name: 'advanced',
+		title: __( 'Advanced', 'ultimate-3d-testimonial-slider' ),
+		fields: [],
+	},
 ];
 
 const Settings = () => {
@@ -78,7 +82,10 @@ const Settings = () => {
 				data.status.settings_saved = true;
 				setNotice( {
 					status: 'success',
-					message: __( 'Settings saved.', 'uts' ),
+					message: __(
+						'Settings saved.',
+						'ultimate-3d-testimonial-slider'
+					),
 				} );
 			} )
 			.catch( ( error ) =>
@@ -90,16 +97,19 @@ const Settings = () => {
 	const renderAdvanced = () => (
 		<div className="uts-settings__fields">
 			<ToggleControl
-				label={ __( 'Keep data when the plugin is deleted', 'uts' ) }
+				label={ __(
+					'Keep data when the plugin is deleted',
+					'ultimate-3d-testimonial-slider'
+				) }
 				help={
 					keepData
 						? __(
 								'Deleting the plugin keeps your settings and saved sliders, so reinstalling brings them back.',
-								'uts'
+								'ultimate-3d-testimonial-slider'
 							)
 						: __(
 								'Deleting the plugin removes your settings and saved sliders permanently.',
-								'uts'
+								'ultimate-3d-testimonial-slider'
 							)
 				}
 				checked={ keepData }
@@ -110,14 +120,14 @@ const Settings = () => {
 				<InlineNotice status="warning" isDismissible={ false }>
 					{ __(
 						'When the plugin is deleted from the Plugins screen, its settings and saved sliders are removed and cannot be restored. Deactivating the plugin does not remove anything.',
-						'uts'
+						'ultimate-3d-testimonial-slider'
 					) }
 				</InlineNotice>
 			) }
 			<p className="uts:m-0 uts:text-wp-muted">
 				{ __(
 					'Your testimonials are never deleted: they are normal posts and stay either way.',
-					'uts'
+					'ultimate-3d-testimonial-slider'
 				) }
 			</p>
 		</div>
@@ -146,11 +156,16 @@ const Settings = () => {
 
 	return (
 		<div className="uts-settings">
-			<h1>{ __( 'Testimonial Settings', 'uts' ) }</h1>
+			<h1>
+				{ __(
+					'Testimonial Settings',
+					'ultimate-3d-testimonial-slider'
+				) }
+			</h1>
 			<p className="uts-settings__intro">
 				{ __(
 					'Defaults for every [uts] shortcode. Saved sliders from the Shortcode Builder and shortcode attributes such as type="grid" or count="3" override these.',
-					'uts'
+					'ultimate-3d-testimonial-slider'
 				) }
 			</p>
 
@@ -182,7 +197,10 @@ const Settings = () => {
 								setSettings( { ...data.defaults } )
 							}
 						>
-							{ __( 'Reset to defaults', 'uts' ) }
+							{ __(
+								'Reset to defaults',
+								'ultimate-3d-testimonial-slider'
+							) }
 						</Button>
 						<Button
 							variant="primary"
@@ -191,7 +209,10 @@ const Settings = () => {
 							disabled={ isSaving || ! isDirty }
 							onClick={ save }
 						>
-							{ __( 'Save changes', 'uts' ) }
+							{ __(
+								'Save changes',
+								'ultimate-3d-testimonial-slider'
+							) }
 						</Button>
 					</CardFooter>
 				</Card>

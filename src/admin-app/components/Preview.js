@@ -55,7 +55,10 @@ const Preview = ( { attributes, delay = 300 } ) => {
 					}
 					setError(
 						( err && err.message ) ||
-							__( 'The preview could not be loaded.', 'uts' )
+							__(
+								'The preview could not be loaded.',
+								'ultimate-3d-testimonial-slider'
+							)
 					);
 					setIsLoading( false );
 				} );
@@ -102,7 +105,10 @@ const Preview = ( { attributes, delay = 300 } ) => {
 			/>
 			{ isEmpty && (
 				<p className="uts:m-0 uts:text-center uts:text-wp-muted">
-					{ __( 'No testimonials match these options.', 'uts' ) }
+					{ __(
+						'No testimonials match these options.',
+						'ultimate-3d-testimonial-slider'
+					) }
 				</p>
 			) }
 		</div>

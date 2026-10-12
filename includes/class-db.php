@@ -198,7 +198,8 @@ KEY status (status)
 			$where[]  = 'status = %s';
 			$values[] = $args['status'];
 		} else {
-			$where[] = "status <> 'trash'";
+			$where[]  = 'status <> %s';
+			$values[] = 'trash';
 		}
 
 		$search = trim( (string) $args['search'] );
@@ -215,9 +216,11 @@ KEY status (status)
 		$table     = self::table();
 		$where_sql = implode( ' AND ', $where );
 
+		// Every condition has a placeholder, so $values is never empty and both queries are prepared.
 		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders, WordPress.DB.DirectDatabaseQuery -- table, column and direction are whitelisted above.
-		$count_sql = "SELECT COUNT(*) FROM {$table} WHERE {$where_sql}";
-		$total     = (int) $wpdb->get_var( $values ? $wpdb->prepare( $count_sql, $values ) : $count_sql );
+		$total = (int) $wpdb->get_var(
+			$wpdb->prepare( "SELECT COUNT(*) FROM {$table} WHERE {$where_sql}", $values )
+		);
 
 		$rows = $wpdb->get_results(
 			$wpdb->prepare(
@@ -269,7 +272,7 @@ KEY status (status)
 	 */
 	public static function default_title( $id ) {
 		/* translators: %d: saved slider ID (the same number as in its [uts id] shortcode) */
-		return sprintf( __( 'UTS #%d', 'uts' ), (int) $id );
+		return sprintf( __( 'UTS #%d', 'ultimate-3d-testimonial-slider' ), (int) $id );
 	}
 
 	/**
@@ -322,7 +325,7 @@ KEY status (status)
 		$inserted = $wpdb->insert( self::table(), $row, array( '%s', '%s', '%s', '%d', '%s', '%s' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 		if ( false === $inserted ) {
-			return new \WP_Error( 'uts_db_insert', __( 'The slider could not be saved.', 'uts' ) );
+			return new \WP_Error( 'uts_db_insert', __( 'The slider could not be saved.', 'ultimate-3d-testimonial-slider' ) );
 		}
 
 		$id = (int) $wpdb->insert_id;
@@ -352,7 +355,7 @@ KEY status (status)
 
 		$id = absint( $id );
 		if ( ! self::get( $id ) ) {
-			return new \WP_Error( 'uts_not_found', __( 'Slider not found.', 'uts' ), array( 'status' => 404 ) );
+			return new \WP_Error( 'uts_not_found', __( 'Slider not found.', 'ultimate-3d-testimonial-slider' ), array( 'status' => 404 ) );
 		}
 
 		$data    = is_array( $data ) ? $data : array();
@@ -373,7 +376,7 @@ KEY status (status)
 
 		if ( array_key_exists( 'status', $data ) ) {
 			if ( ! in_array( $data['status'], self::$statuses, true ) ) {
-				return new \WP_Error( 'uts_invalid_status', __( 'Invalid status.', 'uts' ), array( 'status' => 400 ) );
+				return new \WP_Error( 'uts_invalid_status', __( 'Invalid status.', 'ultimate-3d-testimonial-slider' ), array( 'status' => 400 ) );
 			}
 			$row['status'] = $data['status'];
 			$formats[]     = '%s';
@@ -386,7 +389,7 @@ KEY status (status)
 		self::flush( $id );
 
 		if ( false === $updated ) {
-			return new \WP_Error( 'uts_db_update', __( 'The slider could not be saved.', 'uts' ) );
+			return new \WP_Error( 'uts_db_update', __( 'The slider could not be saved.', 'ultimate-3d-testimonial-slider' ) );
 		}
 
 		return true;
@@ -407,7 +410,7 @@ KEY status (status)
 
 		$id = absint( $id );
 		if ( ! self::get( $id ) ) {
-			return new \WP_Error( 'uts_not_found', __( 'Slider not found.', 'uts' ), array( 'status' => 404 ) );
+			return new \WP_Error( 'uts_not_found', __( 'Slider not found.', 'ultimate-3d-testimonial-slider' ), array( 'status' => 404 ) );
 		}
 
 		if ( ! $force ) {
@@ -418,7 +421,7 @@ KEY status (status)
 		self::flush( $id );
 
 		if ( ! $deleted ) {
-			return new \WP_Error( 'uts_db_delete', __( 'The slider could not be deleted.', 'uts' ) );
+			return new \WP_Error( 'uts_db_delete', __( 'The slider could not be deleted.', 'ultimate-3d-testimonial-slider' ) );
 		}
 
 		return true;
@@ -436,13 +439,13 @@ KEY status (status)
 	public static function duplicate( $id ) {
 		$item = self::get( $id );
 		if ( ! $item ) {
-			return new \WP_Error( 'uts_not_found', __( 'Slider not found.', 'uts' ), array( 'status' => 404 ) );
+			return new \WP_Error( 'uts_not_found', __( 'Slider not found.', 'ultimate-3d-testimonial-slider' ), array( 'status' => 404 ) );
 		}
 
 		return self::insert(
 			array(
 				/* translators: %s: slider title */
-				'title'    => sprintf( __( '%s (copy)', 'uts' ), $item['title'] ),
+				'title'    => sprintf( __( '%s (copy)', 'ultimate-3d-testimonial-slider' ), $item['title'] ),
 				'settings' => $item['settings'],
 				'status'   => 'draft',
 			)

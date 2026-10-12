@@ -269,7 +269,7 @@ class Settings {
 			'uts_settings',
 			array(
 				'type'              => 'object',
-				'description'       => __( 'Ultimate 3D Testimonial Slider settings', 'uts' ),
+				'description'       => __( 'Ultimate 3D Testimonial Slider settings', 'ultimate-3d-testimonial-slider' ),
 				'default'           => self::defaults(),
 				'sanitize_callback' => array( 'UTS\Settings', 'sanitize' ),
 				'show_in_rest'      => array(
@@ -289,7 +289,7 @@ class Settings {
 			self::KEEP_DATA_OPTION,
 			array(
 				'type'              => 'boolean',
-				'description'       => __( 'Keep the plugin data (settings and saved sliders) when the plugin is deleted.', 'uts' ),
+				'description'       => __( 'Keep the plugin data (settings and saved sliders) when the plugin is deleted.', 'ultimate-3d-testimonial-slider' ),
 				'default'           => true,
 				'sanitize_callback' => array( 'UTS\Settings', 'sanitize_keep_data' ),
 				'show_in_rest'      => true,

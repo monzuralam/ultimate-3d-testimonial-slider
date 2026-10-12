@@ -57,11 +57,20 @@ const AppLink = ( { route, className, children } ) => {
 };
 
 const LAYOUTS = [
-	{ value: 'slider', label: __( 'Slider', 'uts' ) },
-	{ value: 'grid', label: __( 'Grid', 'uts' ) },
-	{ value: 'list', label: __( 'List', 'uts' ) },
-	{ value: 'masonry', label: __( 'Masonry', 'uts' ) },
-	{ value: 'ticker', label: __( 'Ticker', 'uts' ) },
+	{
+		value: 'slider',
+		label: __( 'Slider', 'ultimate-3d-testimonial-slider' ),
+	},
+	{ value: 'grid', label: __( 'Grid', 'ultimate-3d-testimonial-slider' ) },
+	{ value: 'list', label: __( 'List', 'ultimate-3d-testimonial-slider' ) },
+	{
+		value: 'masonry',
+		label: __( 'Masonry', 'ultimate-3d-testimonial-slider' ),
+	},
+	{
+		value: 'ticker',
+		label: __( 'Ticker', 'ultimate-3d-testimonial-slider' ),
+	},
 ];
 
 /** Layout tabs (one per layout) with arrow-key navigation (WAI-ARIA tabs). */
@@ -97,12 +106,15 @@ const LivePreview = () => {
 			<div className="uts:mb-5 uts:flex uts:flex-wrap uts:items-center uts:justify-between uts:gap-3">
 				<div>
 					<h2 className="uts:m-0 uts:text-lg uts:font-semibold uts:text-gray-900">
-						{ __( 'Live preview', 'uts' ) }
+						{ __(
+							'Live preview',
+							'ultimate-3d-testimonial-slider'
+						) }
 					</h2>
 					<p className="uts:m-0 uts:mt-1 uts:text-wp-muted">
 						{ __(
 							'Your testimonials with your current settings.',
-							'uts'
+							'ultimate-3d-testimonial-slider'
 						) }
 					</p>
 				</div>
@@ -110,7 +122,10 @@ const LivePreview = () => {
 					<div
 						className="uts:inline-flex uts:rounded-md uts:border uts:border-wp-border uts:p-0.5"
 						role="tablist"
-						aria-label={ __( 'Preview layout', 'uts' ) }
+						aria-label={ __(
+							'Preview layout',
+							'ultimate-3d-testimonial-slider'
+						) }
 					>
 						{ LAYOUTS.map( ( item, index ) => {
 							const selected = item.value === layout;
@@ -164,14 +179,17 @@ const LivePreview = () => {
 					<p className="uts:mt-3 uts:mb-4 uts:text-[15px] uts:text-wp-muted">
 						{ __(
 							'No testimonials yet. Add your first one to see the preview here.',
-							'uts'
+							'ultimate-3d-testimonial-slider'
 						) }
 					</p>
 					<a
 						href={ data.links.newTestimonial }
 						className="button button-primary"
 					>
-						{ __( 'Add Testimonial', 'uts' ) }
+						{ __(
+							'Add Testimonial',
+							'ultimate-3d-testimonial-slider'
+						) }
 					</a>
 				</div>
 			) }
@@ -187,7 +205,10 @@ const Checklist = () => {
 	const items = [
 		{
 			done: status.published > 0,
-			title: __( 'Add your testimonials', 'uts' ),
+			title: __(
+				'Add your testimonials',
+				'ultimate-3d-testimonial-slider'
+			),
 			text:
 				status.published > 0
 					? sprintf(
@@ -195,64 +216,73 @@ const Checklist = () => {
 								'%s testimonial published.',
 								'%s testimonials published.',
 								status.published,
-								'uts'
+								'ultimate-3d-testimonial-slider'
 							),
 							status.published
 						)
 					: __(
 							'Add at least one testimonial to show on your site.',
-							'uts'
+							'ultimate-3d-testimonial-slider'
 						),
 			href: links.newTestimonial,
-			link: __( 'Add Testimonial', 'uts' ),
+			link: __( 'Add Testimonial', 'ultimate-3d-testimonial-slider' ),
 		},
 		{
 			done: status.published > 0 && 0 === missing,
-			title: __( 'Add client photos', 'uts' ),
+			title: __( 'Add client photos', 'ultimate-3d-testimonial-slider' ),
 			text:
 				status.published > 0
 					? sprintf(
 							/* translators: 1: testimonials with a photo, 2: all testimonials */ __(
 								'%1$s of %2$s testimonials have a photo. Without one, a quote icon is shown.',
-								'uts'
+								'ultimate-3d-testimonial-slider'
 							),
 							status.with_photo,
 							status.published
 						)
-					: __( 'Set a featured image on each testimonial.', 'uts' ),
+					: __(
+							'Set a featured image on each testimonial.',
+							'ultimate-3d-testimonial-slider'
+						),
 			href: missing > 0 ? links.withoutPhoto : links.testimonials,
 			link:
 				missing > 0
 					? sprintf(
 							/* translators: %s: number of testimonials without a photo */ __(
 								'Show the %s without a photo',
-								'uts'
+								'ultimate-3d-testimonial-slider'
 							),
 							missing
 						)
-					: __( 'View Testimonials', 'uts' ),
+					: __(
+							'View Testimonials',
+							'ultimate-3d-testimonial-slider'
+						),
 		},
 		{
 			done: !! status.settings_saved,
-			title: __( 'Choose your look', 'uts' ),
+			title: __( 'Choose your look', 'ultimate-3d-testimonial-slider' ),
 			text: status.settings_saved
 				? __(
 						'Settings saved. You can change them at any time.',
-						'uts'
+						'ultimate-3d-testimonial-slider'
 					)
 				: __(
 						'Pick the layout, slider effect, autoplay and colors. The defaults work too.',
-						'uts'
+						'ultimate-3d-testimonial-slider'
 					),
 			route: user.canManage ? { page: 'uts-settings' } : null,
-			link: __( 'Open Settings', 'uts' ),
+			link: __( 'Open Settings', 'ultimate-3d-testimonial-slider' ),
 		},
 	];
 
 	if ( user.canBuild ) {
 		items.push( {
 			done: savedSliders > 0,
-			title: __( 'Save a slider (optional)', 'uts' ),
+			title: __(
+				'Save a slider (optional)',
+				'ultimate-3d-testimonial-slider'
+			),
 			text:
 				savedSliders > 0
 					? sprintf(
@@ -260,13 +290,13 @@ const Checklist = () => {
 								'%s saved slider. Use it anywhere with its [uts id] shortcode.',
 								'%s saved sliders. Use them anywhere with their [uts id] shortcodes.',
 								savedSliders,
-								'uts'
+								'ultimate-3d-testimonial-slider'
 							),
 							savedSliders
 						)
 					: __(
 							'Save different looks (homepage, pricing page…) in the Shortcode Builder and reuse them by ID.',
-							'uts'
+							'ultimate-3d-testimonial-slider'
 						),
 			route:
 				savedSliders > 0
@@ -274,32 +304,32 @@ const Checklist = () => {
 					: { page: 'uts-builder', view: 'new' },
 			link:
 				savedSliders > 0
-					? __( 'Open the Builder', 'uts' )
-					: __( 'Create a Slider', 'uts' ),
+					? __( 'Open the Builder', 'ultimate-3d-testimonial-slider' )
+					: __( 'Create a Slider', 'ultimate-3d-testimonial-slider' ),
 		} );
 	}
 
 	items.push( {
 		done: status.page_id > 0,
-		title: __( 'Show them on a page', 'uts' ),
+		title: __( 'Show them on a page', 'ultimate-3d-testimonial-slider' ),
 		text:
 			status.page_id > 0
 				? sprintf(
 						/* translators: %s: page title */ __(
 							'Used on "%s".',
-							'uts'
+							'ultimate-3d-testimonial-slider'
 						),
 						links.usedOnTitle
 					)
 				: __(
 						'Paste [uts] into any page. See "How to use" below.',
-						'uts'
+						'ultimate-3d-testimonial-slider'
 					),
 		href: status.page_id > 0 ? links.usedOn : links.newPage,
 		link:
 			status.page_id > 0
-				? __( 'View Page', 'uts' )
-				: __( 'Create a Page', 'uts' ),
+				? __( 'View Page', 'ultimate-3d-testimonial-slider' )
+				: __( 'Create a Page', 'ultimate-3d-testimonial-slider' ),
 	} );
 
 	const done = items.filter( ( item ) => item.done ).length;
@@ -321,28 +351,37 @@ const Checklist = () => {
 								/>
 								{ __(
 									'All set! Your testimonials are live.',
-									'uts'
+									'ultimate-3d-testimonial-slider'
 								) }
 							</span>
 							<span className="uts:text-sm uts:font-medium uts:text-wp-blue">
 								<span className="uts-checklist__show">
-									{ __( 'Show checklist', 'uts' ) }
+									{ __(
+										'Show checklist',
+										'ultimate-3d-testimonial-slider'
+									) }
 								</span>
 								<span className="uts-checklist__hide">
-									{ __( 'Hide checklist', 'uts' ) }
+									{ __(
+										'Hide checklist',
+										'ultimate-3d-testimonial-slider'
+									) }
 								</span>
 							</span>
 						</>
 					) : (
 						<>
 							<h2 className="uts:m-0 uts:text-lg uts:font-semibold uts:text-gray-900">
-								{ __( 'Setup checklist', 'uts' ) }
+								{ __(
+									'Setup checklist',
+									'ultimate-3d-testimonial-slider'
+								) }
 							</h2>
 							<span className="uts:text-sm uts:font-medium uts:text-wp-muted">
 								{ sprintf(
 									/* translators: 1: done steps, 2: all steps */ __(
 										'%1$s of %2$s done',
-										'uts'
+										'ultimate-3d-testimonial-slider'
 									),
 									done,
 									items.length
@@ -358,7 +397,10 @@ const Checklist = () => {
 						aria-valuemin={ 0 }
 						aria-valuemax={ items.length }
 						aria-valuenow={ done }
-						aria-label={ __( 'Setup progress', 'uts' ) }
+						aria-label={ __(
+							'Setup progress',
+							'ultimate-3d-testimonial-slider'
+						) }
 					>
 						<div
 							className="uts:h-full uts:rounded-full uts:bg-green-600"
@@ -383,11 +425,17 @@ const Checklist = () => {
 										{ item.title }
 										{ item.done ? (
 											<span className="uts:rounded-full uts:bg-green-50 uts:px-2 uts:py-0.5 uts:text-xs uts:font-medium uts:text-green-700">
-												{ __( 'Done', 'uts' ) }
+												{ __(
+													'Done',
+													'ultimate-3d-testimonial-slider'
+												) }
 											</span>
 										) : (
 											<span className="screen-reader-text">
-												{ __( '(to do)', 'uts' ) }
+												{ __(
+													'(to do)',
+													'ultimate-3d-testimonial-slider'
+												) }
 											</span>
 										) }
 									</p>
@@ -438,93 +486,120 @@ const Step = ( { number, title, open = false, children } ) => (
 );
 
 const EXAMPLES = [
-	[ '[uts type="grid" grid_columns="4"]', __( 'A 4-column grid.', 'uts' ) ],
-	[ '[uts type="list" count="3"]', __( 'A list of the first 3.', 'uts' ) ],
+	[
+		'[uts type="grid" grid_columns="4"]',
+		__( 'A 4-column grid.', 'ultimate-3d-testimonial-slider' ),
+	],
+	[
+		'[uts type="list" count="3"]',
+		__( 'A list of the first 3.', 'ultimate-3d-testimonial-slider' ),
+	],
 	[
 		'[uts type="ticker" ticker_duration="10"]',
-		__( 'A slow, endless scrolling row.', 'uts' ),
+		__(
+			'A slow, endless scrolling row.',
+			'ultimate-3d-testimonial-slider'
+		),
 	],
 	[
 		'[uts effect="fade" autoplay="true"]',
-		__( 'Fading slider that plays by itself.', 'uts' ),
+		__(
+			'Fading slider that plays by itself.',
+			'ultimate-3d-testimonial-slider'
+		),
 	],
 	[
 		'[uts navigation="true" pagination="false"]',
-		__( 'Arrows instead of dots.', 'uts' ),
+		__( 'Arrows instead of dots.', 'ultimate-3d-testimonial-slider' ),
 	],
 	[
 		'[uts effect="cards" loop="true"]',
-		__( 'Stacked cards that loop.', 'uts' ),
+		__( 'Stacked cards that loop.', 'ultimate-3d-testimonial-slider' ),
 	],
 	[
 		'[uts show_image="false" excerpt_length="0"]',
-		__( 'Full text, no photos.', 'uts' ),
+		__( 'Full text, no photos.', 'ultimate-3d-testimonial-slider' ),
 	],
 ];
 
 const PLACES = [
 	[
 		'dashicons-block-default',
-		__( 'Block editor (Gutenberg)', 'uts' ),
+		__( 'Block editor (Gutenberg)', 'ultimate-3d-testimonial-slider' ),
 		__(
 			'Click +, search for "Shortcode", add the Shortcode block and paste [uts].',
-			'uts'
+			'ultimate-3d-testimonial-slider'
 		),
 	],
 	[
 		'dashicons-edit-page',
-		__( 'Classic editor', 'uts' ),
-		__( 'Paste [uts] on its own line in the content.', 'uts' ),
+		__( 'Classic editor', 'ultimate-3d-testimonial-slider' ),
+		__(
+			'Paste [uts] on its own line in the content.',
+			'ultimate-3d-testimonial-slider'
+		),
 	],
 	[
 		'dashicons-layout',
-		__( 'Elementor and other page builders', 'uts' ),
-		__( 'Drag in the "Shortcode" widget/element and paste [uts].', 'uts' ),
+		__(
+			'Elementor and other page builders',
+			'ultimate-3d-testimonial-slider'
+		),
+		__(
+			'Drag in the "Shortcode" widget/element and paste [uts].',
+			'ultimate-3d-testimonial-slider'
+		),
 	],
 	[
 		'dashicons-welcome-widgets-menus',
-		__( 'Sidebar or footer widget', 'uts' ),
+		__( 'Sidebar or footer widget', 'ultimate-3d-testimonial-slider' ),
 		__(
 			'Appearance → Widgets (or Editor for block themes): add a Shortcode block and paste [uts].',
-			'uts'
+			'ultimate-3d-testimonial-slider'
 		),
 	],
 ];
 
 const TIPS = [
 	[
-		__( 'Nothing shows up on the page', 'uts' ),
+		__( 'Nothing shows up on the page', 'ultimate-3d-testimonial-slider' ),
 		__(
 			'Check that the testimonials are published, that the category slug is spelled exactly right, and that the shortcode is not inside a code block. A saved slider must be published, not a draft. Clear your caching plugin after changes.',
-			'uts'
+			'ultimate-3d-testimonial-slider'
 		),
 	],
 	[
-		__( 'More than one slider on a page', 'uts' ),
+		__(
+			'More than one slider on a page',
+			'ultimate-3d-testimonial-slider'
+		),
 		__(
 			'Supported. Each [uts] works on its own with its own attributes.',
-			'uts'
+			'ultimate-3d-testimonial-slider'
 		),
 	],
 	[
-		__( 'Changing the order', 'uts' ),
+		__( 'Changing the order', 'ultimate-3d-testimonial-slider' ),
 		__(
 			'Set "Order" in the Page Attributes box of each testimonial. Lower numbers come first.',
-			'uts'
+			'ultimate-3d-testimonial-slider'
 		),
 	],
 	[
-		__( 'Autoplay or loop looks odd with few testimonials', 'uts' ),
+		__(
+			'Autoplay or loop looks odd with few testimonials',
+			'ultimate-3d-testimonial-slider'
+		),
 		__(
 			'Loop needs at least 3 testimonials to look smooth; add more or turn loop off.',
-			'uts'
+			'ultimate-3d-testimonial-slider'
 		),
 	],
 	[
-		__( 'Matching my theme', 'uts' ),
+		__( 'Matching my theme', 'ultimate-3d-testimonial-slider' ),
 		__(
 			"Use the Style tab in Settings for colors and corner radius. For more, target .ucs-container and .ucs-item in your theme's custom CSS.",
-			'uts'
+			'ultimate-3d-testimonial-slider'
 		),
 	],
 ];
@@ -537,16 +612,19 @@ const Guide = () => {
 		...data.attributeDocs,
 		id: __(
 			'Use a saved slider from the Shortcode Builder; other attributes still override it.',
-			'uts'
+			'ultimate-3d-testimonial-slider'
 		),
 	};
 
 	return (
-		<Card title={ __( 'How to use', 'uts' ) }>
+		<Card title={ __( 'How to use', 'ultimate-3d-testimonial-slider' ) }>
 			<div className="uts-guide uts:flex uts:flex-col uts:gap-3">
 				<Step
 					number="1"
-					title={ __( 'Add a testimonial', 'uts' ) }
+					title={ __(
+						'Add a testimonial',
+						'ultimate-3d-testimonial-slider'
+					) }
 					open
 				>
 					<ol className="uts:ml-4 uts:list-decimal uts:space-y-2">
@@ -554,7 +632,7 @@ const Guide = () => {
 							{ createInterpolateElement(
 								__(
 									'Go to <strong>Ultimate 3D Testimonial Slider → Add Post</strong>.',
-									'uts'
+									'ultimate-3d-testimonial-slider'
 								),
 								bold
 							) }
@@ -563,7 +641,7 @@ const Guide = () => {
 							{ createInterpolateElement(
 								__(
 									'<strong>Title:</strong> the client\'s name, e.g. "Jane Cooper".',
-									'uts'
+									'ultimate-3d-testimonial-slider'
 								),
 								bold
 							) }
@@ -572,7 +650,7 @@ const Guide = () => {
 							{ createInterpolateElement(
 								__(
 									'<strong>Content:</strong> what the client said. Keep it short; the excerpt length in Settings trims long ones.',
-									'uts'
+									'ultimate-3d-testimonial-slider'
 								),
 								bold
 							) }
@@ -581,7 +659,7 @@ const Guide = () => {
 							{ createInterpolateElement(
 								__(
 									"<strong>Client Featured Image:</strong> the client's photo. A square image of at least 160 × 160 px looks best, since it is shown as a circle.",
-									'uts'
+									'ultimate-3d-testimonial-slider'
 								),
 								bold
 							) }
@@ -590,7 +668,7 @@ const Guide = () => {
 							{ createInterpolateElement(
 								__(
 									'<strong>Position & Company Name</strong> (below the editor): e.g. "CEO, Acme Inc."',
-									'uts'
+									'ultimate-3d-testimonial-slider'
 								),
 								bold
 							) }
@@ -599,7 +677,7 @@ const Guide = () => {
 							{ createInterpolateElement(
 								__(
 									'<strong>Order</strong> (Page Attributes box): lower numbers show first. Leave it at 0 to keep the default order.',
-									'uts'
+									'ultimate-3d-testimonial-slider'
 								),
 								bold
 							) }
@@ -608,7 +686,7 @@ const Guide = () => {
 							{ createInterpolateElement(
 								__(
 									'Click <strong>Publish</strong>. Only published testimonials are shown.',
-									'uts'
+									'ultimate-3d-testimonial-slider'
 								),
 								bold
 							) }
@@ -618,12 +696,15 @@ const Guide = () => {
 
 				<Step
 					number="2"
-					title={ __( 'Organize with categories (optional)', 'uts' ) }
+					title={ __(
+						'Organize with categories (optional)',
+						'ultimate-3d-testimonial-slider'
+					) }
 				>
 					<p>
 						{ __(
 							'Categories let you show different testimonials in different places, for example "Web Design" clients on one page and "SEO" clients on another.',
-							'uts'
+							'ultimate-3d-testimonial-slider'
 						) }
 					</p>
 					<ol className="uts:ml-4 uts:list-decimal uts:space-y-2">
@@ -631,7 +712,7 @@ const Guide = () => {
 							{ createInterpolateElement(
 								__(
 									'Create categories under <strong>Category</strong> in the plugin menu, or tick them in the Category box while editing a testimonial.',
-									'uts'
+									'ultimate-3d-testimonial-slider'
 								),
 								bold
 							) }
@@ -640,12 +721,17 @@ const Guide = () => {
 							{ createInterpolateElement(
 								__(
 									'Note the category <strong>slug</strong> (the URL-friendly name, e.g. <code>web-design</code>) on the Category screen.',
-									'uts'
+									'ultimate-3d-testimonial-slider'
 								),
 								strongCode
 							) }
 						</li>
-						<li>{ __( 'Use it in the shortcode:', 'uts' ) }</li>
+						<li>
+							{ __(
+								'Use it in the shortcode:',
+								'ultimate-3d-testimonial-slider'
+							) }
+						</li>
 					</ol>
 					<CopyField
 						value='[uts category="web-design"]'
@@ -655,12 +741,15 @@ const Guide = () => {
 
 				<Step
 					number="3"
-					title={ __( 'Show testimonials on your site', 'uts' ) }
+					title={ __(
+						'Show testimonials on your site',
+						'ultimate-3d-testimonial-slider'
+					) }
 				>
 					<p>
 						{ __(
 							'Everything works with one shortcode. Copy it, then paste it where you want the testimonials:',
-							'uts'
+							'ultimate-3d-testimonial-slider'
 						) }
 					</p>
 					<CopyField
@@ -689,7 +778,7 @@ const Guide = () => {
 					<p className="uts:mt-4 uts:mb-1">
 						{ __(
 							'In a theme template file (for developers):',
-							'uts'
+							'ultimate-3d-testimonial-slider'
 						) }
 					</p>
 					<pre className="uts:m-0 uts:overflow-x-auto uts:rounded-md uts:bg-gray-900 uts:p-3 uts:text-[13px] uts:text-gray-100">
@@ -699,11 +788,17 @@ const Guide = () => {
 					</pre>
 				</Step>
 
-				<Step number="4" title={ __( 'Customize the design', 'uts' ) }>
+				<Step
+					number="4"
+					title={ __(
+						'Customize the design',
+						'ultimate-3d-testimonial-slider'
+					) }
+				>
 					<p>
 						{ __(
 							'There are three levels, and you can mix them:',
-							'uts'
+							'ultimate-3d-testimonial-slider'
 						) }
 					</p>
 					<ul className="uts:ml-4 uts:list-disc uts:space-y-2">
@@ -711,7 +806,7 @@ const Guide = () => {
 							{ createInterpolateElement(
 								__(
 									'<strong>Settings page</strong>: the defaults for every [uts] on your site, such as layout, effect, autoplay and colors.',
-									'uts'
+									'ultimate-3d-testimonial-slider'
 								),
 								bold
 							) }
@@ -720,7 +815,7 @@ const Guide = () => {
 							{ createInterpolateElement(
 								__(
 									'<strong>Shortcode Builder</strong>: save a named slider (e.g. "Homepage") that changes some options, and use it anywhere with its own shortcode, like [uts id="5"]. Editing it updates every page that uses it.',
-									'uts'
+									'ultimate-3d-testimonial-slider'
 								),
 								bold
 							) }
@@ -729,13 +824,15 @@ const Guide = () => {
 							{ createInterpolateElement(
 								__(
 									'<strong>Shortcode attributes</strong>: change one slider only. Any setting can be used as an attribute with the same name, and it wins over everything else.',
-									'uts'
+									'ultimate-3d-testimonial-slider'
 								),
 								bold
 							) }
 						</li>
 					</ul>
-					<p>{ __( 'Examples:', 'uts' ) }</p>
+					<p>
+						{ __( 'Examples:', 'ultimate-3d-testimonial-slider' ) }
+					</p>
 					<div className="uts:grid uts:grid-cols-1 uts:gap-x-6 uts:gap-y-3 uts:lg:grid-cols-2">
 						{ EXAMPLES.map( ( [ shortcode, text ] ) => (
 							<div key={ shortcode }>
@@ -748,19 +845,34 @@ const Guide = () => {
 					</div>
 				</Step>
 
-				<Step number="5" title={ __( 'Shortcode reference', 'uts' ) }>
+				<Step
+					number="5"
+					title={ __(
+						'Shortcode reference',
+						'ultimate-3d-testimonial-slider'
+					) }
+				>
 					<div className="uts:overflow-x-auto uts:pt-4">
 						<table className="widefat striped uts:min-w-[560px]">
 							<thead>
 								<tr>
 									<th scope="col">
-										{ __( 'Attribute', 'uts' ) }
+										{ __(
+											'Attribute',
+											'ultimate-3d-testimonial-slider'
+										) }
 									</th>
 									<th scope="col">
-										{ __( 'What it does', 'uts' ) }
+										{ __(
+											'What it does',
+											'ultimate-3d-testimonial-slider'
+										) }
 									</th>
 									<th scope="col">
-										{ __( 'Default', 'uts' ) }
+										{ __(
+											'Default',
+											'ultimate-3d-testimonial-slider'
+										) }
 									</th>
 								</tr>
 							</thead>
@@ -788,7 +900,7 @@ const Guide = () => {
 						<p className="uts:mb-0 uts:text-wp-muted">
 							{ __(
 								'"Default" shows your current Settings value, used when the attribute is left out.',
-								'uts'
+								'ultimate-3d-testimonial-slider'
 							) }
 						</p>
 					</div>
@@ -796,7 +908,10 @@ const Guide = () => {
 
 				<Step
 					number="?"
-					title={ __( 'Tips & troubleshooting', 'uts' ) }
+					title={ __(
+						'Tips & troubleshooting',
+						'ultimate-3d-testimonial-slider'
+					) }
 				>
 					<dl className="uts:m-0 uts:mt-4 uts:space-y-3">
 						{ TIPS.map( ( [ title, text ] ) => (
@@ -819,40 +934,43 @@ const Guide = () => {
 const RESOURCES = [
 	[
 		'dashicons-book',
-		__( 'Documentation', 'uts' ),
+		__( 'Documentation', 'ultimate-3d-testimonial-slider' ),
 		__(
 			'Features, FAQ and the full shortcode reference on WordPress.org.',
-			'uts'
+			'ultimate-3d-testimonial-slider'
 		),
 		'docs',
-		__( 'Read the Docs', 'uts' ),
+		__( 'Read the Docs', 'ultimate-3d-testimonial-slider' ),
 	],
 	[
 		'dashicons-sos',
-		__( 'Need help?', 'uts' ),
+		__( 'Need help?', 'ultimate-3d-testimonial-slider' ),
 		__(
 			'Ask a question in the free support forum. We usually reply within a few days.',
-			'uts'
+			'ultimate-3d-testimonial-slider'
 		),
 		'support',
-		__( 'Open Support Forum', 'uts' ),
+		__( 'Open Support Forum', 'ultimate-3d-testimonial-slider' ),
 	],
 	[
 		'dashicons-star-filled',
-		__( 'Enjoying the plugin?', 'uts' ),
+		__( 'Enjoying the plugin?', 'ultimate-3d-testimonial-slider' ),
 		__(
 			'A quick review on WordPress.org helps other people find it and keeps it improving.',
-			'uts'
+			'ultimate-3d-testimonial-slider'
 		),
 		'review',
-		__( 'Leave a Review', 'uts' ),
+		__( 'Leave a Review', 'ultimate-3d-testimonial-slider' ),
 	],
 	[
 		'dashicons-editor-code',
-		__( 'Source code', 'uts' ),
-		__( 'Report bugs, suggest features or contribute on GitHub.', 'uts' ),
+		__( 'Source code', 'ultimate-3d-testimonial-slider' ),
+		__(
+			'Report bugs, suggest features or contribute on GitHub.',
+			'ultimate-3d-testimonial-slider'
+		),
 		'github',
-		__( 'View on GitHub', 'uts' ),
+		__( 'View on GitHub', 'ultimate-3d-testimonial-slider' ),
 	],
 ];
 
@@ -862,7 +980,7 @@ const GettingStarted = () => {
 	return (
 		<div className="uts-getting-started">
 			<h1 className="screen-reader-text">
-				{ __( 'Getting Started', 'uts' ) }
+				{ __( 'Getting Started', 'ultimate-3d-testimonial-slider' ) }
 			</h1>
 
 			<div className="uts:grid uts:grid-cols-1 uts:gap-6 uts:xl:grid-cols-[minmax(0,1fr)_320px]">
@@ -872,7 +990,7 @@ const GettingStarted = () => {
 							{ sprintf(
 								/* translators: %s: user display name */ __(
 									'Welcome, %s',
-									'uts'
+									'ultimate-3d-testimonial-slider'
 								),
 								user.name
 							) }{ ' ' }
@@ -881,7 +999,7 @@ const GettingStarted = () => {
 						<p className="uts:mt-3 uts:mb-0 uts:max-w-2xl uts:text-[15px] uts:text-wp-muted">
 							{ __(
 								'Turn what your clients say into a 3D slider, grid, list, masonry or ticker. Add testimonials, place one shortcode, and you are done.',
-								'uts'
+								'ultimate-3d-testimonial-slider'
 							) }
 						</p>
 						<div className="uts:mt-5 uts:flex uts:flex-wrap uts:gap-3">
@@ -893,7 +1011,10 @@ const GettingStarted = () => {
 									className="dashicons dashicons-plus-alt2 uts:size-5 uts:text-xl uts:leading-none"
 									aria-hidden="true"
 								/>
-								{ __( 'Add Testimonial', 'uts' ) }
+								{ __(
+									'Add Testimonial',
+									'ultimate-3d-testimonial-slider'
+								) }
 							</a>
 							{ user.canBuild && (
 								<AppLink
@@ -907,7 +1028,10 @@ const GettingStarted = () => {
 										className="dashicons dashicons-slides uts:size-5 uts:text-xl uts:leading-none"
 										aria-hidden="true"
 									/>
-									{ __( 'Build a Slider', 'uts' ) }
+									{ __(
+										'Build a Slider',
+										'ultimate-3d-testimonial-slider'
+									) }
 								</AppLink>
 							) }
 							{ user.canManage && (
@@ -919,7 +1043,10 @@ const GettingStarted = () => {
 										className="dashicons dashicons-admin-appearance uts:size-5 uts:text-xl uts:leading-none"
 										aria-hidden="true"
 									/>
-									{ __( 'Customize the Look', 'uts' ) }
+									{ __(
+										'Customize the Look',
+										'ultimate-3d-testimonial-slider'
+									) }
 								</AppLink>
 							) }
 						</div>
@@ -952,7 +1079,10 @@ const GettingStarted = () => {
 							>
 								{ label }
 								<span className="screen-reader-text">
-									{ __( '(opens in a new tab)', 'uts' ) }
+									{ __(
+										'(opens in a new tab)',
+										'ultimate-3d-testimonial-slider'
+									) }
 								</span>
 							</a>
 						</Card>

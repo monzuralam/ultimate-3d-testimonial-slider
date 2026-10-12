@@ -14,7 +14,7 @@ const VideoEmbed = ( { videoId } ) => {
 	const [ playing, setPlaying ] = useState( false );
 	const title = __(
 		'Watch: set up your testimonial slider in a few minutes',
-		'uts'
+		'ultimate-3d-testimonial-slider'
 	);
 
 	let content;
@@ -28,12 +28,15 @@ const VideoEmbed = ( { videoId } ) => {
 					/>
 				</span>
 				<p className="uts:m-0 uts:text-xl uts:font-semibold uts:text-white">
-					{ __( 'Video tutorial coming soon', 'uts' ) }
+					{ __(
+						'Video tutorial coming soon',
+						'ultimate-3d-testimonial-slider'
+					) }
 				</p>
 				<p className="uts:m-0 uts:max-w-md uts:text-white/80">
 					{ __(
 						'A short walkthrough of adding testimonials and placing the slider. Until then, the "How to use" guide below covers every step.',
-						'uts'
+						'ultimate-3d-testimonial-slider'
 					) }
 				</p>
 			</div>
@@ -53,7 +56,7 @@ const VideoEmbed = ( { videoId } ) => {
 			<button
 				type="button"
 				className="uts:group uts:relative uts:block uts:size-full uts:cursor-pointer uts:border-0 uts:bg-transparent uts:p-0"
-				aria-label={ `${ __( 'Play video:', 'uts' ) } ${ title }` }
+				aria-label={ `${ __( 'Play video:', 'ultimate-3d-testimonial-slider' ) } ${ title }` }
 				onClick={ () => setPlaying( true ) }
 			>
 				<img

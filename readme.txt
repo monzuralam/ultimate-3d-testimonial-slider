@@ -124,9 +124,6 @@ All-in-One Sticky Menu & Sticky Header, Sticky Sidebar Solution for WordPress.
 ⏳ [All-in-One WP Preloader](https://wordpress.org/plugins/all-in-one-wp-preloader/)
 All-in-One WP Preloader gives your site a loading screen without writing any code.
 
-🎥 [Best Youtube Video LazyLoad](https://wordpress.org/plugins/best-youtube-video-lazyload/)
-Youtube Video Lazyload improves Google PageSpeed Insights Score, GTmetrix, and Pingdom score.
-
 == Frequently Asked Questions ==
 
 = How do I display the testimonials on my site? =

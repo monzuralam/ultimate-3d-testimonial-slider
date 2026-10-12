@@ -36,13 +36,13 @@ let carryNotice = null;
 
 const display = ( value ) => {
 	if ( true === value ) {
-		return __( 'On', 'uts' );
+		return __( 'On', 'ultimate-3d-testimonial-slider' );
 	}
 	if ( false === value ) {
-		return __( 'Off', 'uts' );
+		return __( 'Off', 'ultimate-3d-testimonial-slider' );
 	}
 	if ( '' === value || null === value || undefined === value ) {
-		return __( 'Theme default', 'uts' );
+		return __( 'Theme default', 'ultimate-3d-testimonial-slider' );
 	}
 	return String( value );
 };
@@ -111,7 +111,10 @@ const Edit = ( { id } ) => {
 						variant="link"
 						onClick={ () => navigate( { page: 'uts-builder' } ) }
 					>
-						{ __( '← Back to all sliders', 'uts' ) }
+						{ __(
+							'← Back to all sliders',
+							'ultimate-3d-testimonial-slider'
+						) }
 					</Button>
 				</p>
 			</>
@@ -164,11 +167,11 @@ const Edit = ( { id } ) => {
 						'publish' === stored.status
 							? __(
 									'Slider saved. Paste its shortcode into any page:',
-									'uts'
+									'ultimate-3d-testimonial-slider'
 								)
 							: __(
 									'Draft saved. Publish it to use its shortcode on your site.',
-									'uts'
+									'ultimate-3d-testimonial-slider'
 								),
 					shortcode:
 						'publish' === stored.status ? stored.shortcode : '',
@@ -211,7 +214,10 @@ const Edit = ( { id } ) => {
 						'type' === field.key
 							? {
 									...field,
-									label: __( 'Layout', 'uts' ),
+									label: __(
+										'Layout',
+										'ultimate-3d-testimonial-slider'
+									),
 									help: undefined,
 								}
 							: field
@@ -223,7 +229,10 @@ const Edit = ( { id } ) => {
 				{ isChanged && (
 					<p className="uts:m-0 uts:mt-1.5 uts:flex uts:flex-wrap uts:items-center uts:gap-2 uts:text-[12px]">
 						<span className="uts:rounded-full uts:bg-blue-50 uts:px-2 uts:py-0.5 uts:font-medium uts:text-wp-blue">
-							{ __( 'Changed', 'uts' ) }
+							{ __(
+								'Changed',
+								'ultimate-3d-testimonial-slider'
+							) }
 						</span>
 						<Button
 							variant="link"
@@ -233,7 +242,7 @@ const Edit = ( { id } ) => {
 							{ sprintf(
 								/* translators: %s: global default value */ __(
 									'Reset to default (%s)',
-									'uts'
+									'ultimate-3d-testimonial-slider'
 								),
 								display( data.settings[ field.key ] )
 							) }
@@ -256,14 +265,20 @@ const Edit = ( { id } ) => {
 		<div className="uts-settings__fields">
 			{ 'general' === tab.name && (
 				<SelectControl
-					label={ __( 'Category', 'uts' ) }
+					label={ __( 'Category', 'ultimate-3d-testimonial-slider' ) }
 					help={ __(
 						'Show only testimonials from one category.',
-						'uts'
+						'ultimate-3d-testimonial-slider'
 					) }
 					value={ changed.category || '' }
 					options={ [
-						{ value: '', label: __( 'All categories', 'uts' ) },
+						{
+							value: '',
+							label: __(
+								'All categories',
+								'ultimate-3d-testimonial-slider'
+							),
+						},
 						...data.categories.map( ( term ) => ( {
 							value: term.value,
 							label: `${ term.label } (${ term.count })`,
@@ -282,7 +297,7 @@ const Edit = ( { id } ) => {
 				<p className="uts-builder-note uts:m-0 uts:rounded-md uts:bg-wp-bg uts:p-4 uts:text-wp-muted">
 					{ __(
 						'These options only apply to the Slider layout. Set Layout to "3D slider" on the General tab to change the effect, autoplay, arrows and dots.',
-						'uts'
+						'ultimate-3d-testimonial-slider'
 					) }
 				</p>
 			) : (
@@ -296,7 +311,9 @@ const Edit = ( { id } ) => {
 	return (
 		<div className="uts-builder-edit">
 			<h1 className="screen-reader-text">
-				{ id ? __( 'Edit Slider', 'uts' ) : __( 'New Slider', 'uts' ) }
+				{ id
+					? __( 'Edit Slider', 'ultimate-3d-testimonial-slider' )
+					: __( 'New Slider', 'ultimate-3d-testimonial-slider' ) }
 			</h1>
 
 			<div className="uts-builder-bar uts:mb-6 uts:flex uts:flex-wrap uts:items-center uts:justify-between uts:gap-3 uts:rounded-lg uts:border uts:border-solid uts:border-wp-border uts:bg-white uts:p-3 uts:md:sticky uts:md:top-8 uts:md:z-10">
@@ -306,13 +323,19 @@ const Edit = ( { id } ) => {
 						href={ routeUrl( { page: 'uts-builder' } ) }
 						onClick={ back }
 					>
-						{ __( '← Back', 'uts' ) }
+						{ __( '← Back', 'ultimate-3d-testimonial-slider' ) }
 					</Button>
 					<div className="uts:w-full uts:max-w-xs">
 						<TextControl
-							label={ __( 'Slider name', 'uts' ) }
+							label={ __(
+								'Slider name',
+								'ultimate-3d-testimonial-slider'
+							) }
 							hideLabelFromVision
-							placeholder={ __( 'e.g. Homepage slider', 'uts' ) }
+							placeholder={ __(
+								'e.g. Homepage slider',
+								'ultimate-3d-testimonial-slider'
+							) }
 							value={ item.title }
 							maxLength={ 191 }
 							onChange={ ( title ) =>
@@ -334,8 +357,14 @@ const Edit = ( { id } ) => {
 							}` }
 						>
 							{ 'publish' === item.status
-								? __( 'Published', 'uts' )
-								: __( 'Draft', 'uts' ) }
+								? __(
+										'Published',
+										'ultimate-3d-testimonial-slider'
+									)
+								: __(
+										'Draft',
+										'ultimate-3d-testimonial-slider'
+									) }
 						</span>
 					) }
 				</div>
@@ -346,8 +375,14 @@ const Edit = ( { id } ) => {
 						onClick={ () => save( 'draft' ) }
 					>
 						{ 'publish' === item.status && id
-							? __( 'Switch to Draft', 'uts' )
-							: __( 'Save Draft', 'uts' ) }
+							? __(
+									'Switch to Draft',
+									'ultimate-3d-testimonial-slider'
+								)
+							: __(
+									'Save Draft',
+									'ultimate-3d-testimonial-slider'
+								) }
 					</Button>
 					<Button
 						variant="primary"
@@ -359,8 +394,8 @@ const Edit = ( { id } ) => {
 						onClick={ () => save( 'publish' ) }
 					>
 						{ id && 'publish' !== item.status
-							? __( 'Publish', 'uts' )
-							: __( 'Save', 'uts' ) }
+							? __( 'Publish', 'ultimate-3d-testimonial-slider' )
+							: __( 'Save', 'ultimate-3d-testimonial-slider' ) }
 					</Button>
 				</div>
 			</div>
@@ -389,13 +424,13 @@ const Edit = ( { id } ) => {
 									? sprintf(
 											/* translators: %s: number of options */ __(
 												'This slider changes %s option(s). All others follow your Settings.',
-												'uts'
+												'ultimate-3d-testimonial-slider'
 											),
 											changedCount
 										)
 									: __(
 											'This slider uses your Settings. Change any option below to make it different.',
-											'uts'
+											'ultimate-3d-testimonial-slider'
 										) }
 							</p>
 						</CardBody>
@@ -406,12 +441,22 @@ const Edit = ( { id } ) => {
 				</div>
 
 				<div className="uts:flex uts:min-w-0 uts:flex-col uts:gap-6 uts:xl:sticky uts:xl:top-28 uts:xl:self-start">
-					<Card title={ __( 'Live preview', 'uts' ) }>
+					<Card
+						title={ __(
+							'Live preview',
+							'ultimate-3d-testimonial-slider'
+						) }
+					>
 						<Preview attributes={ { ...changed } } />
 					</Card>
 
 					{ id > 0 && (
-						<Card title={ __( 'Shortcode', 'uts' ) }>
+						<Card
+							title={ __(
+								'Shortcode',
+								'ultimate-3d-testimonial-slider'
+							) }
+						>
 							<CopyField
 								value={ item.shortcode }
 								className="uts:max-w-md"
@@ -420,18 +465,21 @@ const Edit = ( { id } ) => {
 								{ 'publish' === item.status
 									? __(
 											'Paste it into any page. Attributes still override the slider, e.g. add autoplay="false".',
-											'uts'
+											'ultimate-3d-testimonial-slider'
 										)
 									: __(
 											'Drafts show nothing on your site. Publish the slider to use this shortcode.',
-											'uts'
+											'ultimate-3d-testimonial-slider'
 										) }
 							</p>
 							<div className="uts:mt-4">
 								{ showUsage ? (
 									<>
 										<h3 className="uts:m-0 uts:mb-2 uts:text-sm">
-											{ __( 'Used in', 'uts' ) }
+											{ __(
+												'Used in',
+												'ultimate-3d-testimonial-slider'
+											) }
 										</h3>
 										<Usage id={ id } />
 									</>
@@ -440,7 +488,10 @@ const Edit = ( { id } ) => {
 										variant="link"
 										onClick={ () => setShowUsage( true ) }
 									>
-										{ __( 'Where is this used?', 'uts' ) }
+										{ __(
+											'Where is this used?',
+											'ultimate-3d-testimonial-slider'
+										) }
 									</Button>
 								) }
 							</div>

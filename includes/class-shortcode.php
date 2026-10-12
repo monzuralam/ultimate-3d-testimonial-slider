@@ -151,7 +151,7 @@ class Shortcode {
 								the_post_thumbnail( $settings['image_size'] );
 							} else {
 								?>
-								<img src="<?php echo esc_url( UTS_URL . '/assets/images/quotation.png' ); ?>" alt="<?php esc_attr_e( 'Quote', 'uts' ); ?>" class="img-fluid">
+								<img src="<?php echo esc_url( UTS_URL . '/assets/images/quotation.png' ); ?>" alt="<?php esc_attr_e( 'Quote', 'ultimate-3d-testimonial-slider' ); ?>" class="img-fluid">
 								<?php
 							}
 						}

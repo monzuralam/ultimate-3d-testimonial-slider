@@ -50,7 +50,7 @@ class REST {
 	public function register_routes() {
 		$id_arg = array(
 			'id' => array(
-				'description' => __( 'Saved shortcode ID.', 'uts' ),
+				'description' => __( 'Saved shortcode ID.', 'ultimate-3d-testimonial-slider' ),
 				'type'        => 'integer',
 				'minimum'     => 1,
 				'required'    => true,
@@ -100,7 +100,7 @@ class REST {
 						$id_arg,
 						array(
 							'force' => array(
-								'description' => __( 'Delete permanently instead of moving to the trash.', 'uts' ),
+								'description' => __( 'Delete permanently instead of moving to the trash.', 'ultimate-3d-testimonial-slider' ),
 								'type'        => 'boolean',
 								'default'     => false,
 							),
@@ -141,7 +141,7 @@ class REST {
 				'permission_callback' => array( $this, 'can_edit' ),
 				'args'                => array(
 					'attributes' => array(
-						'description' => __( 'Shortcode attributes, e.g. { "type": "grid", "id": 5 }.', 'uts' ),
+						'description' => __( 'Shortcode attributes, e.g. { "type": "grid", "id": 5 }.', 'ultimate-3d-testimonial-slider' ),
 						'type'        => 'object',
 						'default'     => array(),
 					),
@@ -392,7 +392,7 @@ class REST {
 			$type    = get_post_type_object( $post->post_type );
 			$posts[] = array(
 				'id'        => $post->ID,
-				'title'     => get_the_title( $post ) !== '' ? get_the_title( $post ) : __( '(no title)', 'uts' ),
+				'title'     => get_the_title( $post ) !== '' ? get_the_title( $post ) : __( '(no title)', 'ultimate-3d-testimonial-slider' ),
 				'type'      => $type ? $type->labels->singular_name : $post->post_type,
 				'status'    => $post->post_status,
 				'edit_link' => (string) get_edit_post_link( $post->ID, 'raw' ),
@@ -590,12 +590,12 @@ class REST {
 
 		return array(
 			'title'    => array(
-				'description' => __( 'Slider name, shown in the builder.', 'uts' ),
+				'description' => __( 'Slider name, shown in the builder.', 'ultimate-3d-testimonial-slider' ),
 				'type'        => 'string',
 				'maxLength'   => 191,
 			),
 			'settings' => array(
-				'description'          => __( 'Options this slider changes from the global settings.', 'uts' ),
+				'description'          => __( 'Options this slider changes from the global settings.', 'ultimate-3d-testimonial-slider' ),
 				'type'                 => 'object',
 				'properties'           => $properties,
 				'additionalProperties' => false,
@@ -613,6 +613,6 @@ class REST {
 	 * @return \WP_Error
 	 */
 	private function not_found() {
-		return new \WP_Error( 'uts_not_found', __( 'Slider not found.', 'uts' ), array( 'status' => 404 ) );
+		return new \WP_Error( 'uts_not_found', __( 'Slider not found.', 'ultimate-3d-testimonial-slider' ), array( 'status' => 404 ) );
 	}
 }
