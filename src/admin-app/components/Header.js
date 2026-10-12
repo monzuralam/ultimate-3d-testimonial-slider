@@ -13,7 +13,21 @@ import { isModifiedClick, routeUrl } from '../router';
  * @param {Function} props.navigate navigate( route ).
  */
 const Header = ( { page, navigate } ) => {
-	const tabs = [];
+	// Order: All Testimonials | Categories | Getting Started | Shortcode Builder | Settings.
+	const tabs = [
+		{
+			key: 'testimonials',
+			label: __( 'All Testimonials', 'uts' ),
+			href: data.links.testimonials,
+		},
+	];
+	if ( data.user.canCategories ) {
+		tabs.push( {
+			key: 'categories',
+			label: __( 'Categories', 'uts' ),
+			href: data.links.categories,
+		} );
+	}
 
 	[ 'uts-getting-started', 'uts-builder', 'uts-settings' ].forEach(
 		( slug ) => {
@@ -30,18 +44,6 @@ const Header = ( { page, navigate } ) => {
 			}
 		}
 	);
-	tabs.push( {
-		key: 'testimonials',
-		label: __( 'All Testimonials', 'uts' ),
-		href: data.links.testimonials,
-	} );
-	if ( data.user.canCategories ) {
-		tabs.push( {
-			key: 'categories',
-			label: __( 'Categories', 'uts' ),
-			href: data.links.categories,
-		} );
-	}
 
 	const onClick = ( event, tab ) => {
 		if ( ! tab.route || isModifiedClick( event ) ) {
