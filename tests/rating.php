@@ -121,7 +121,7 @@ try {
 	// ------------------------------------------------------------------
 	WP_CLI::line( '-- Card styles' );
 	$check( 'classic adds no class', false === strpos( do_shortcode( '[uts]' ), 'ucs-card-' ) && false === strpos( do_shortcode( '[uts card_style="classic"]' ), 'ucs-card-' ) );
-	foreach ( array( 'modern', 'bubble', 'elegant', 'glass', 'dark' ) as $style ) {
+	foreach ( array( 'modern', 'bubble', 'elegant', 'glass', 'dark', 'split' ) as $style ) {
 		foreach ( array( 'slider', 'grid', 'list', 'masonry', 'ticker' ) as $type ) {
 			$out = do_shortcode( '[uts type="' . $type . '" card_style="' . $style . '"]' );
 			if ( ! preg_match( '/<section [^>]*class="ucs-container ' . $type . '[^"]* ucs-card-' . $style . '"/', $out ) ) {

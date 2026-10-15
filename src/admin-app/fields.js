@@ -264,6 +264,10 @@ export const TABS = [
 						'ultimate-3d-testimonial-slider'
 					),
 					dark: __( 'Dark', 'ultimate-3d-testimonial-slider' ),
+					split: __(
+						'Split (accent panel, photo on top)',
+						'ultimate-3d-testimonial-slider'
+					),
 				},
 			},
 			{
