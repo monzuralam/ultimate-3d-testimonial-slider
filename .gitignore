@@ -2,3 +2,7 @@ node_modules/
 build/
 *.zip
 .DS_Store
+
+# Rendered promo video and review stills (source is promo.html + render.js)
+.wordpress-org/video/*.mp4
+.wordpress-org/video/still-*.png

@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Ultimate 3D Testimonial Slider — promo</title>
+<!--
+	60-second promo video, rendered frame by frame by render.js (window.seek( seconds )).
+	Uses the plugin's real frontend build, so every slider and card style is the real thing.
+	Demo testimonials are fictional; avatars are generated initials (no photos of people).
+-->
+<link rel="stylesheet" href="../../build/frontend.css">
+<style>
+	* { box-sizing: border-box; }
+	html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; }
+	body { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; color: #0f172a; background: #1e1b4b; }
+
+	#bg { position: absolute; inset: 0; background: linear-gradient(135deg, #1e40af 0%, #3730a3 55%, #5b21b6 100%); overflow: hidden; }
+	#bg .blob { position: absolute; border-radius: 50%; filter: blur(60px); opacity: .45; }
+	.scene { position: absolute; inset: 0; visibility: hidden; }
+	.white { color: #fff; }
+	.center { position: absolute; left: 0; right: 0; text-align: center; }
+
+	/* Browser window mockup */
+	.browser { position: absolute; background: #f8fafc; border-radius: 18px; overflow: hidden; box-shadow: 0 40px 90px -20px rgba(2, 6, 23, .6); }
+	.browser .chrome { height: 54px; background: #e2e8f0; display: flex; align-items: center; gap: 10px; padding: 0 22px; }
+	.browser .dot { width: 14px; height: 14px; border-radius: 50%; }
+	.browser .url { margin-left: 22px; flex: 1; max-width: 640px; height: 32px; border-radius: 16px; background: #fff; color: #475569; font-size: 16px; display: flex; align-items: center; padding: 0 18px; }
+	.browser .page { position: absolute; top: 54px; left: 0; right: 0; bottom: 0; overflow: hidden; }
+
+	/* Scene labels */
+	.label { position: absolute; color: #fff; }
+	.label .kicker { font-size: 22px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: #c7d2fe; }
+	.label .big { font-size: 64px; font-weight: 800; letter-spacing: -1px; line-height: 1.05; }
+	.stack { position: relative; height: 72px; }
+	.stack > div { position: absolute; left: 0; top: 0; white-space: nowrap; }
+
+	/* Plain reviews (before) */
+	.plain { position: absolute; left: 50%; top: 380px; width: 900px; margin-left: -450px; background: #fff; border-radius: 6px; padding: 30px 36px; font: 18px/1.6 Georgia, serif; color: #64748b; }
+	.plain p { margin: 0 0 16px; }
+	.plain b { color: #334155; font-family: "Segoe UI", Arial, sans-serif; font-size: 16px; }
+
+	/* WordPress admin mock */
+	.zoom { position: absolute; left: 0; top: 0; width: 80%; height: 80%; transform: scale(1.25); transform-origin: 0 0; }
+	.wp { position: absolute; inset: 0; background: #f0f0f1; font-size: 15px; }
+	.wp .adminbar { height: 34px; background: #1d2327; }
+	.wp .menu { position: absolute; top: 34px; bottom: 0; left: 0; width: 160px; background: #1d2327; padding-top: 12px; }
+	.wp .menu div { color: #c3c4c7; font-size: 14px; padding: 9px 14px; }
+	.wp .menu .on { background: #2271b1; color: #fff; }
+	.wp .main { position: absolute; top: 34px; left: 160px; right: 0; bottom: 0; }
+	.wp .apphead { height: 54px; background: #fff; border-bottom: 1px solid #dcdcde; display: flex; align-items: center; gap: 30px; padding: 0 28px; font-size: 15px; color: #1d2327; }
+	.wp .apphead .name { font-weight: 600; font-size: 18px; }
+	.wp .apphead .ver { border: 1px solid #c3c4c7; border-radius: 10px; padding: 1px 8px; font-size: 12px; color: #646970; }
+	.wp .apphead .tab { padding: 16px 0; border-bottom: 3px solid transparent; }
+	.wp .apphead .tab.on { color: #2271b1; border-bottom-color: #2271b1; }
+	.wpcard { background: #fff; border: 1px solid #dcdcde; border-radius: 10px; }
+	.btn { display: inline-flex; align-items: center; height: 40px; padding: 0 18px; border-radius: 4px; font-size: 15px; font-weight: 500; border: 1px solid #2271b1; color: #2271b1; background: #fff; }
+	.btn.primary { background: #2271b1; color: #fff; }
+	.input { height: 40px; border: 1px solid #8c8f94; border-radius: 4px; display: flex; align-items: center; padding: 0 12px; font-size: 15px; background: #fff; }
+	.field { margin-bottom: 16px; }
+	.field .lbl { font-size: 12px; font-weight: 600; text-transform: uppercase; color: #1d2327; margin-bottom: 8px; }
+	.select { position: relative; }
+	.select::after { content: ""; position: absolute; right: 14px; top: 15px; width: 8px; height: 8px; border-right: 2px solid #1d2327; border-bottom: 2px solid #1d2327; transform: rotate(45deg); }
+	.toggle { display: flex; align-items: center; gap: 12px; font-size: 15px; }
+	.toggle .track { width: 36px; height: 18px; border-radius: 9px; border: 1px solid #1e1e1e; position: relative; background: #fff; }
+	.toggle .knob { position: absolute; top: 2px; left: 2px; width: 12px; height: 12px; border-radius: 50%; background: #1e1e1e; }
+	.tabs { display: flex; gap: 26px; border-bottom: 1px solid #e0e0e0; margin: 0 -24px 24px; padding: 0 24px; }
+	.tabs div { padding: 14px 0; font-size: 15px; }
+	.tabs .on { box-shadow: inset 0 -3px #2271b1; }
+	.dropdown { position: absolute; left: 0; right: 0; bottom: 44px; background: #fff; border: 1px solid #c3c4c7; border-radius: 4px; box-shadow: 0 10px 24px rgba(0,0,0,.15); z-index: 5; }
+	.dropdown div { padding: 9px 12px; font-size: 15px; }
+	.notice { border-left: 4px solid #00a32a; background: #fff; padding: 8px 16px; box-shadow: 0 1px 1px rgba(0,0,0,.04); }
+	.copyfield { display: inline-flex; margin-top: 10px; border: 1px solid #c3c4c7; border-radius: 4px; overflow: hidden; }
+	.copyfield code { padding: 9px 14px; font: 15px Consolas, monospace; background: #f6f7f7; }
+	.copyfield span { padding: 9px 14px; background: #2271b1; color: #fff; font-weight: 500; }
+
+	/* Block editor mock */
+	.editor { position: absolute; inset: 0; background: #fff; }
+	.editor .bar { height: 64px; border-bottom: 1px solid #e0e0e0; display: flex; align-items: center; justify-content: flex-end; gap: 14px; padding: 0 24px; }
+	.editor .canvas { width: 840px; margin: 70px auto 0; }
+	.editor h1 { font: 700 46px/1.2 "Segoe UI", sans-serif; margin: 0 0 26px; }
+	.editor .para { font: 20px/1.7 Georgia, serif; color: #1e293b; margin-bottom: 28px; }
+	.scblock { border: 1px solid #1e1e1e; border-radius: 2px; padding: 18px 20px; }
+	.scblock .t { font-size: 15px; margin-bottom: 10px; display: flex; gap: 8px; align-items: center; }
+	.snack { position: absolute; left: 28px; bottom: 28px; background: #1e1e1e; color: #fff; padding: 14px 22px; border-radius: 4px; font-size: 15px; }
+
+	/* Website mock */
+	.site .nav { height: 80px; display: flex; align-items: center; justify-content: space-between; padding: 0 70px; background: #fff; border-bottom: 1px solid #eef2f7; }
+	.site .logo { font-weight: 800; font-size: 26px; color: #1e293b; }
+	.site .logo span { color: #e11d48; }
+	.site .links { display: flex; gap: 34px; color: #475569; font-size: 17px; }
+	.site h2 { text-align: center; font: 800 42px/1.2 "Segoe UI", sans-serif; margin: 52px 0 8px; color: #0f172a; }
+	.site .sub { text-align: center; color: #64748b; font-size: 19px; margin-bottom: 30px; }
+
+	/* Feature tiles */
+	.tiles { position: absolute; left: 140px; right: 140px; top: 340px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; }
+	.tile { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.28); border-radius: 22px; padding: 40px 34px; color: #fff; }
+	.tile .n { font-size: 56px; font-weight: 800; line-height: 1; margin-bottom: 14px; }
+	.tile .t { font-size: 22px; font-weight: 600; }
+	.tile .d { font-size: 17px; color: #c7d2fe; margin-top: 6px; }
+
+	#cursor { position: absolute; z-index: 50; width: 34px; height: 34px; pointer-events: none; visibility: hidden; filter: drop-shadow(0 3px 4px rgba(0,0,0,.35)); }
+	#ripple { position: absolute; z-index: 49; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%; border: 3px solid #2271b1; visibility: hidden; }
+
+	/* Larger avatars in the video for legibility */
+	.ucs-container .ucs-item img.wp-post-image { object-fit: cover; }
+</style>
+</head>
+<body>
+<div id="bg">
+	<div class="blob" id="blob1" style="width:700px;height:700px;background:#818cf8"></div>
+	<div class="blob" id="blob2" style="width:600px;height:600px;background:#c026d3"></div>
+	<div class="blob" id="blob3" style="width:500px;height:500px;background:#38bdf8"></div>
+</div>
+
+<!-- 1. Hook -->
+<div class="scene" id="s1">
+	<svg id="s1q" viewBox="0 0 60 46" style="position:absolute;left:50%;top:250px;width:150px;margin-left:-75px;fill:#fff">
+		<g><circle cx="13" cy="33" r="13"/><path d="M1 33 C1 15 9 4 23 0 L25 6 C16 10 12 17 12 25 Z"/></g>
+		<g transform="translate(33 0)"><circle cx="13" cy="33" r="13"/><path d="M1 33 C1 15 9 4 23 0 L25 6 C16 10 12 17 12 25 Z"/></g>
+	</svg>
+	<div class="center white" id="s1a" style="top:470px;font-size:84px;font-weight:800;letter-spacing:-1.5px">Your clients love your work.</div>
+	<div class="center" id="s1b" style="top:590px;font-size:84px;font-weight:800;letter-spacing:-1.5px;color:#fde68a">Let the world see it.</div>
+</div>
+
+<!-- 2. Before / after -->
+<div class="scene" id="s2">
+	<div class="center white" id="s2t" style="top:110px">
+		<div style="font-size:24px;font-weight:600;letter-spacing:.18em;color:#c7d2fe">INTRODUCING</div>
+		<div style="font-size:76px;font-weight:800;letter-spacing:-1.5px;margin-top:6px">Ultimate 3D Testimonial Slider</div>
+	</div>
+	<div class="plain" id="s2plain"></div>
+	<div id="s2slider" style="position:absolute;left:360px;width:1200px;top:400px;transform-origin:50% 0"></div>
+</div>
+
+<!-- 3 + 4. Layouts and card styles (one browser window) -->
+<div class="scene" id="s34">
+	<div class="label" style="left:110px;top:70px">
+		<div class="kicker" id="s34k">5 layouts</div>
+		<div class="stack big" id="s34names"></div>
+	</div>
+	<div class="browser" id="s34win" style="left:110px;top:230px;width:1700px;height:800px">
+		<div class="chrome"><span class="dot" style="background:#f87171"></span><span class="dot" style="background:#fbbf24"></span><span class="dot" style="background:#34d399"></span><span class="url">yourwebsite.com/testimonials</span></div>
+		<div class="page" id="s34page"></div>
+	</div>
+</div>
+
+<!-- 5. Shortcode Builder -->
+<div class="scene" id="s5">
+	<div class="label" style="left:110px;top:56px">
+		<div class="kicker">Shortcode Builder</div>
+		<div class="big" style="font-size:52px">Design it. See it live. Save.</div>
+	</div>
+	<div class="browser" style="left:110px;top:200px;width:1700px;height:850px">
+		<div class="chrome"><span class="dot" style="background:#f87171"></span><span class="dot" style="background:#fbbf24"></span><span class="dot" style="background:#34d399"></span><span class="url">yourwebsite.com/wp-admin/…&amp;page=uts-builder</span></div>
+		<div class="page">
+			<div class="zoom"><div class="wp">
+				<div class="adminbar"></div>
+				<div class="menu"><div>Dashboard</div><div>Posts</div><div>Media</div><div>Pages</div><div class="on">Ultimate 3D Testimonial Slider</div><div>Appearance</div><div>Plugins</div><div>Settings</div></div>
+				<div class="main">
+					<div class="apphead"><span class="name">Ultimate 3D Testimonial Slider</span><span class="ver">v1.1.0</span><span class="tab">All Testimonials</span><span class="tab">Categories</span><span class="tab">Getting Started</span><span class="tab on">Shortcode Builder</span><span class="tab">Settings</span></div>
+					<div style="padding:16px 24px">
+						<div class="wpcard" style="display:flex;align-items:center;gap:12px;padding:12px">
+							<span class="btn">← Back</span>
+							<div class="input" id="b-name" style="width:300px">UTS #1</div>
+							<span style="flex:1"></span>
+							<span class="btn">Save Draft</span>
+							<span class="btn primary" id="b-save">Save</span>
+						</div>
+						<div class="notice" id="b-notice" style="margin-top:16px;display:none"><span style="display:flex;align-items:center;gap:14px">Slider saved. Paste its shortcode into any page:<span class="copyfield" style="margin-top:0"><code>[uts id="1"]</code><span id="b-copy">Copy</span></span></span></div>
+						<div id="b-grid" style="display:flex;gap:22px;margin-top:18px;transition:none">
+							<div class="wpcard" style="width:420px;padding:0 24px 6px">
+								<div class="tabs"><div class="on">General</div><div>Slider</div><div>Display</div><div>Style</div></div>
+								<div class="field"><div class="lbl">Layout</div><div class="input select">3D slider</div></div>
+								<div class="field"><div class="lbl">Card style</div><div class="select" style="position:relative"><div class="input" id="b-style">Classic</div>
+									<div class="dropdown" id="b-drop" style="visibility:hidden"><div>Classic</div><div>Modern</div><div>Speech bubble</div><div>Elegant</div><div>Glass (frosted)</div><div>Dark</div><div id="b-opt">Split (accent panel, photo on top)</div></div></div></div>
+								<div class="field"><div class="lbl">Effect</div><div class="input select">3D coverflow</div></div>
+								<div class="field"><div class="toggle"><span class="track" id="b-track"><span class="knob" id="b-knob"></span></span>Autoplay</div></div>
+							</div>
+							<div class="wpcard" style="flex:1;padding:22px 24px;min-width:0">
+								<div style="font-size:17px;font-weight:600;margin-bottom:14px">Live preview</div>
+								<div style="position:relative;background:#f0f0f1;border-radius:8px;height:300px;overflow:hidden">
+									<div id="b-prevA" style="position:absolute;left:20px;right:20px;top:18px"></div>
+									<div id="b-prevB" style="position:absolute;left:20px;right:20px;top:18px"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div></div>
+		</div>
+	</div>
+</div>
+
+<!-- 6. Paste anywhere -->
+<div class="scene" id="s6">
+	<div class="label" style="left:110px;top:56px">
+		<div class="kicker">One shortcode</div>
+		<div class="stack big" id="s6names" style="font-size:52px"><div>Paste it on any page.</div><div>Live on your site.</div></div>
+	</div>
+	<div class="browser" id="s6ed" style="left:110px;top:200px;width:1700px;height:850px">
+		<div class="chrome"><span class="dot" style="background:#f87171"></span><span class="dot" style="background:#fbbf24"></span><span class="dot" style="background:#34d399"></span><span class="url">yourwebsite.com/wp-admin/post.php</span></div>
+		<div class="page">
+			<div class="zoom"><div class="editor">
+				<div class="bar"><span style="color:#1e1e1e;font-size:15px">Save draft</span><span class="btn primary" id="e-pub">Publish</span></div>
+				<div class="canvas">
+					<h1>Home</h1>
+					<div class="para">We build brands people love. Here is what our clients say about working with us.</div>
+					<div class="scblock"><div class="t"><b>[/]</b> Shortcode</div><div class="input" id="e-sc" style="height:44px;font-family:Consolas,monospace"></div></div>
+				</div>
+				<div class="snack" id="e-snack" style="visibility:hidden">Page published. <u>View page</u></div>
+			</div></div>
+		</div>
+	</div>
+	<div class="browser" id="s6site" style="left:110px;top:200px;width:1700px;height:850px">
+		<div class="chrome"><span class="dot" style="background:#f87171"></span><span class="dot" style="background:#fbbf24"></span><span class="dot" style="background:#34d399"></span><span class="url">brightwave.example</span></div>
+		<div class="page site" style="background:#f8fafc">
+			<div class="nav"><div class="logo">bright<span>wave</span></div><div class="links"><span>Work</span><span>Services</span><span>About</span><span>Contact</span></div></div>
+			<h2>What our clients say</h2>
+			<div class="sub">Real words from teams we have worked with.</div>
+			<div id="siteSlider" style="width:1300px;margin:0 auto"></div>
+		</div>
+	</div>
+</div>
+
+<!-- 7. Features -->
+<div class="scene" id="s7">
+	<div class="center white" style="top:170px;font-size:72px;font-weight:800;letter-spacing:-1px">Everything you need</div>
+	<div class="tiles" id="tiles"></div>
+</div>
+
+<!-- 8. Call to action -->
+<div class="scene" id="s8">
+	<img id="s8icon" src="../icon.svg" alt="" style="position:absolute;left:50%;top:190px;width:200px;height:200px;margin-left:-100px;border-radius:44px;box-shadow:0 30px 60px -10px rgba(2,6,23,.5)">
+	<div class="center white" id="s8t" style="top:440px;font-size:76px;font-weight:800;letter-spacing:-1.5px">Ultimate 3D Testimonial Slider</div>
+	<div class="center" id="s8b" style="top:560px"><span style="display:inline-block;background:#fff;color:#3730a3;font-size:34px;font-weight:700;padding:18px 44px;border-radius:999px">Free on WordPress.org</span></div>
+	<div class="center" id="s8s" style="top:690px;font-size:28px;color:#c7d2fe">Search “Ultimate 3D Testimonial Slider” in Plugins → Add New</div>
+</div>
+
+<svg id="cursor" viewBox="0 0 24 24"><path d="M4 2l15 11-6.6 1.2 3.8 7.3-2.7 1.4-3.8-7.4L4 19.6z" fill="#fff" stroke="#111" stroke-width="1.4" stroke-linejoin="round"/></svg>
+<div id="ripple"></div>
+
+<script src="../../build/frontend.js"></script>
+<script>
+/* ---------- demo data (fictional) ---------- */
+const PEOPLE = [
+	{ n: 'Sarah Mitchell', r: 'Marketing Director, Brightwave', s: 5, c: [ '#6366f1', '#a855f7' ], t: 'Our conversion rate jumped the week we added these sliders. Visitors finally see what clients say about us.' },
+	{ n: 'David Chen', r: 'Founder, Northpeak Studio', s: 5, c: [ '#0ea5e9', '#6366f1' ], t: 'Set up in five minutes. The 3D slider looks like something we paid an agency for.' },
+	{ n: 'Amira Hassan', r: 'Product Lead, Loopline', s: 4, c: [ '#f43f5e', '#f97316' ], t: 'Clean, fast and it matches our theme perfectly. The card styles are gorgeous, and the star ratings build instant trust.' },
+	{ n: 'James Carter', r: 'Owner, Carter & Co.', s: 5, c: [ '#10b981', '#0ea5e9' ], t: 'I manage every slider from the Shortcode Builder. No code, no stress.' },
+	{ n: 'Priya Nair', r: 'Head of Growth, Fieldnote', s: 5, c: [ '#a855f7', '#ec4899' ], t: 'The masonry layout made our reviews page shine. Our team loves how easy it is to keep it up to date.' },
+	{ n: 'Lucas Moreau', r: 'Designer, Atelier Nord', s: 4, c: [ '#f59e0b', '#ef4444' ], t: 'Finally a testimonial plugin with real design taste.' },
+];
+
+const avatar = ( p ) => {
+	const ini = p.n.split( ' ' ).map( ( w ) => w[ 0 ] ).join( '' );
+	const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${ p.c[ 0 ] }"/><stop offset="1" stop-color="${ p.c[ 1 ] }"/></linearGradient></defs><rect width="100" height="100" fill="url(#g)"/><text x="50" y="62" font-family="Segoe UI, Arial" font-size="38" font-weight="700" fill="#fff" text-anchor="middle">${ ini }</text></svg>`;
+	return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent( svg );
+};
+
+const STAR = '<path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 14.9l-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/>';
+const rating = ( s ) => `<div class="ucs-rating" role="img" aria-label="Rated ${ s } out of 5">${ [ 1, 2, 3, 4, 5 ].map( ( i ) => `<svg class="ucs-star${ i <= s ? ' is-on' : '' }" viewBox="0 0 20 20" aria-hidden="true" focusable="false">${ STAR }</svg>` ).join( '' ) }</div>`;
+
+/* Same markup as UTS\Shortcode::render(). */
+let uid = 0;
+const uts = ( type, o = {} ) => {
+	const people = ( o.people || PEOPLE ).slice( 0, o.count || 6 );
+	const slider = 'slider' === type;
+	const cls = [ 'ucs-container', type ];
+	if ( slider ) {
+		cls.push( 'swiper', 'uts-effect-' + ( o.effect || 'coverflow' ) );
+	}
+	if ( o.style && 'classic' !== o.style ) {
+		cls.push( 'ucs-card-' + o.style );
+	}
+	const item = ( p, hidden ) => `<div ${ hidden ? 'aria-hidden="true" ' : '' }class="ucs-item ${ slider ? 'swiper-slide' : '' }"><img src="${ avatar( p ) }" alt="" class="wp-post-image"><div class="details-content">${ false === o.rating ? '' : rating( p.s ) }<p>${ p.t }</p><h3>${ p.n }</h3><h4>${ p.r }</h4></div></div>`;
+	let items = people.map( ( p ) => item( p ) ).join( '' );
+	if ( 'ticker' === type ) {
+		items += people.map( ( p ) => item( p, true ) ).join( '' );
+	}
+	const style = ( o.vars || '' ) + ( o.columns ? `--uts-columns:${ o.columns };` : '' );
+	const config = slider ? ` data-uts-config='${ JSON.stringify( { effect: o.effect || 'coverflow', speed: 300, loop: false, autoplay: false, pagination: true, navigation: false, coverflow: { rotate: 50, depth: 100, stretch: 0 } } ) }'` : '';
+	return `<section id="ucs-v-${ ++uid }" class="${ cls.join( ' ' ) }"${ style ? ` style="${ style }"` : '' }${ config }><div class="${ slider ? 'swiper-wrapper' : 'ucs-wrapper' }"${ 'ticker' === type ? ' style="--uts-ticker-duration:24s"' : '' }>${ items }</div>${ slider ? '<div class="swiper-pagination"></div>' : '' }</section>`;
+};
+
+/* ---------- build the scenes ---------- */
+const $ = ( id ) => document.getElementById( id );
+$( 's2plain' ).innerHTML = PEOPLE.slice( 0, 3 ).map( ( p ) => `<p>“${ p.t }” <b>— ${ p.n }</b></p>` ).join( '' );
+$( 's2slider' ).innerHTML = uts( 'slider', { style: 'modern' } );
+
+const MASONRY = PEOPLE.map( ( person, i ) => ( { ...person, t: person.t + [ ' We tried three other plugins first, and none came close to this.', '', ' Support answered within hours, too.', ' It took me ten minutes to move all our reviews over, and the result looks custom-built.', '', ' Our clients notice it, and they tell us.' ][ i ] } ) );
+const LAYOUTS = [ [ 'Slider', uts( 'slider' ) ], [ 'Grid', uts( 'grid', { count: 3 } ) ], [ 'List', uts( 'list', { count: 3 } ) ], [ 'Masonry', uts( 'masonry', { count: 6, people: MASONRY } ) ], [ 'Ticker', uts( 'ticker' ) ] ];
+const STYLES = [ [ 'Classic', 'classic' ], [ 'Modern', 'modern' ], [ 'Speech bubble', 'bubble' ], [ 'Elegant', 'elegant' ], [ 'Glass', 'glass' ], [ 'Dark', 'dark' ], [ 'Split', 'split' ] ];
+const page = $( 's34page' );
+const names = $( 's34names' );
+const panels = [];
+const addPanel = ( name, html, top ) => {
+	const el = document.createElement( 'div' );
+	const isTicker = 'Ticker' === name;
+	el.style.cssText = `position:absolute;left:${ isTicker ? 0 : 210 }px;right:${ isTicker ? 0 : 210 }px;top:${ top }px`;
+	const scale = { Ticker: 1.2, Masonry: 1.02 }[ name ] || 1.25;
+	el.innerHTML = `<div style="transform:scale(${ scale });transform-origin:50% 0">${ html }</div>`;
+	page.appendChild( el );
+	const label = document.createElement( 'div' );
+	label.textContent = name;
+	names.appendChild( label );
+	panels.push( { el, label } );
+};
+LAYOUTS.forEach( ( [ name, html ] ) => addPanel( name, html, { Slider: 120, Grid: 120, List: 40, Masonry: 24, Ticker: 220 }[ name ] ) );
+STYLES.forEach( ( [ name, style ] ) => addPanel( name, uts( 'grid', { count: 3, style } ), 'glass' === style ? 110 : 140 ) );
+
+const SHORT = PEOPLE.map( ( person ) => ( { ...person, t: person.t.split( '. ' )[ 0 ].split( ' ' ).slice( 0, 9 ).join( ' ' ).replace( /[.,]$/, '' ) + '.' } ) );
+$( 'b-prevA' ).innerHTML = uts( 'slider', { people: SHORT } );
+$( 'b-prevB' ).innerHTML = uts( 'slider', { style: 'split', people: SHORT } );
+$( 'siteSlider' ).innerHTML = uts( 'slider', { style: 'split' } );
+
+const TILES = [ [ '5', 'Layouts', 'Slider, grid, list, masonry, ticker' ], [ '7', 'Card styles', 'From classic to glass and dark' ], [ '7', 'Slider effects', 'Coverflow, cards, cube, flip…' ], [ '★', 'Star ratings', 'Shown only when you set them' ], [ '1', 'Shortcode', 'Works with any theme or builder' ], [ '0', 'jQuery', 'Lightweight, loads only where used' ], [ '∞', 'Loop & autoplay', 'Even with a few testimonials' ], [ 'A11y', 'Accessible', 'Respects reduced motion' ] ];
+$( 'tiles' ).innerHTML = TILES.map( ( [ n, t, d ] ) => `<div class="tile"><div class="n">${ n }</div><div class="t">${ t }</div><div class="d">${ d }</div></div>` ).join( '' );
+
+const swipers = window.utsSlider.init( document );
+const swiperIn = ( id ) => $( id ).querySelector( '.swiper' ).swiper;
+const SW = { s2: swiperIn( 's2slider' ), lay: panels[ 0 ].el.querySelector( '.swiper' ).swiper, bA: swiperIn( 'b-prevA' ), bB: swiperIn( 'b-prevB' ), site: swiperIn( 'siteSlider' ) };
+const ticker = panels[ 4 ].el.querySelector( '.ucs-wrapper' );
+
+/* ---------- motion helpers ---------- */
+const clamp = ( x ) => Math.min( 1, Math.max( 0, x ) );
+const p = ( t, a, b ) => clamp( ( t - a ) / ( b - a ) );
+const lerp = ( a, b, x ) => a + ( b - a ) * x;
+const io = ( x ) => ( x < 0.5 ? 4 * x * x * x : 1 - Math.pow( -2 * x + 2, 3 ) / 2 );
+const out = ( x ) => 1 - Math.pow( 1 - x, 3 );
+const back = ( x ) => { const c = 1.70158; return 1 + ( c + 1 ) * Math.pow( x - 1, 3 ) + c * Math.pow( x - 1, 2 ); };
+const show = ( el, op, tf ) => { el.style.opacity = op; el.style.visibility = op > 0.001 ? 'visible' : 'hidden'; if ( undefined !== tf ) { el.style.transform = tf; } };
+const rise = ( el, x, dist = 30 ) => show( el, x, `translateY(${ ( 1 - x ) * dist }px)` );
+
+// Swiper at a fractional slide position (deterministic, no transitions).
+const drive = ( sw, pos ) => {
+	const max = sw.snapGrid.length - 1;
+	pos = Math.min( max, Math.max( 0, pos ) );
+	const i = Math.floor( pos );
+	const a = -sw.snapGrid[ i ];
+	const b = -sw.snapGrid[ Math.min( i + 1, max ) ];
+	const tr = lerp( a, b, pos - i );
+	sw.setTransition( 0 );
+	sw.setTranslate( tr );
+	sw.updateProgress( tr );
+	sw.updateActiveIndex( Math.round( pos ) );
+	sw.updateSlidesClasses();
+	if ( sw.pagination && sw.pagination.update ) {
+		sw.pagination.update();
+	}
+};
+// Hold, then glide to the next slide; repeat.
+const steps = ( t, start, hold = 1.1, move = 0.7 ) => {
+	if ( t < 0 ) {
+		return start;
+	}
+	const n = Math.floor( t / ( hold + move ) );
+	const r = t - n * ( hold + move );
+	return start + n + io( p( r, hold, hold + move ) );
+};
+
+// Cursor path: [time, x, y] keyframes; clicks: times.
+const cursor = $( 'cursor' );
+const ripple = $( 'ripple' );
+const moveCursor = ( t, keys, clicks ) => {
+	if ( t < keys[ 0 ][ 0 ] || t > keys[ keys.length - 1 ][ 0 ] + 0.6 ) {
+		cursor.style.visibility = 'hidden';
+		ripple.style.visibility = 'hidden';
+		return;
+	}
+	const at = ( key ) => {
+		if ( 'string' !== typeof key[ 1 ] ) {
+			return [ key[ 1 ], key[ 2 ] ];
+		}
+		const r = $( key[ 1 ] ).getBoundingClientRect();
+		return [ r.left + r.width * ( undefined === key[ 2 ] ? 0.5 : key[ 2 ] ), r.top + r.height * 0.5 ];
+	};
+	let [ x, y ] = at( keys[ 0 ] );
+	for ( let i = 1; i < keys.length; i++ ) {
+		if ( t >= keys[ i - 1 ][ 0 ] ) {
+			const k = io( p( t, keys[ i - 1 ][ 0 ], keys[ i ][ 0 ] ) );
+			const a = at( keys[ i - 1 ] );
+			const b = at( keys[ i ] );
+			x = lerp( a[ 0 ], b[ 0 ], k );
+			y = lerp( a[ 1 ], b[ 1 ], k );
+		}
+	}
+	cursor.style.visibility = 'visible';
+	cursor.style.left = x + 'px';
+	cursor.style.top = y + 'px';
+	const c = clicks.find( ( ct ) => t >= ct && t < ct + 0.45 );
+	if ( undefined === c ) {
+		ripple.style.visibility = 'hidden';
+	} else {
+		const k = p( t, c, c + 0.45 );
+		ripple.style.visibility = 'visible';
+		ripple.style.left = x + 4 + 'px';
+		ripple.style.top = y + 4 + 'px';
+		ripple.style.opacity = 1 - k;
+		ripple.style.transform = `scale(${ 0.4 + k })`;
+	}
+};
+
+const SCENES = [
+	{ id: 's1', a: 0, b: 4.3 },
+	{ id: 's2', a: 4, b: 10.3 },
+	{ id: 's34', a: 10, b: 30.3 },
+	{ id: 's5', a: 30, b: 42.3 },
+	{ id: 's6', a: 42, b: 50.3 },
+	{ id: 's7', a: 50, b: 56.3 },
+	{ id: 's8', a: 56, b: 60.01 },
+];
+
+/* ---------- the timeline ---------- */
+window.seek = ( t ) => {
+	// Background drift.
+	$( 'blob1' ).style.transform = `translate(${ 200 + Math.sin( t / 6 ) * 160 }px, ${ -150 + Math.cos( t / 7 ) * 90 }px)`;
+	$( 'blob2' ).style.transform = `translate(${ 1250 + Math.cos( t / 5 ) * 180 }px, ${ 520 + Math.sin( t / 6 ) * 120 }px)`;
+	$( 'blob3' ).style.transform = `translate(${ 700 + Math.sin( t / 8 ) * 260 }px, ${ 650 + Math.cos( t / 9 ) * 80 }px)`;
+
+	SCENES.forEach( ( s ) => {
+		const op = 0 === s.a ? 1 - p( t, s.b - 0.3, s.b ) : Math.min( p( t, s.a, s.a + 0.4 ), 1 - p( t, s.b - 0.3, s.b ) );
+		show( $( s.id ), t >= s.a && t <= s.b ? op : 0 );
+	} );
+	cursor.style.visibility = 'hidden';
+	ripple.style.visibility = 'hidden';
+
+	// 1. Hook.
+	if ( t <= 4.3 ) {
+		const q = back( p( t, 0.1, 0.9 ) );
+		show( $( 's1q' ), p( t, 0.1, 0.5 ), `scale(${ 0.4 + 0.6 * q })` );
+		rise( $( 's1a' ), out( p( t, 0.7, 1.4 ) ) );
+		rise( $( 's1b' ), out( p( t, 1.7, 2.4 ) ) );
+	}
+
+	// 2. Introducing + before/after.
+	if ( t >= 4 && t <= 10.3 ) {
+		const l = t - 4;
+		rise( $( 's2t' ), out( p( l, 0.1, 0.8 ) ) );
+		const plainIn = out( p( l, 0.6, 1.2 ) );
+		const plainOut = io( p( l, 2.2, 2.8 ) );
+		show( $( 's2plain' ), plainIn * ( 1 - plainOut ), `scale(${ 1 - 0.1 * plainOut })` );
+		const sIn = out( p( l, 2.5, 3.3 ) );
+		show( $( 's2slider' ), sIn, `scale(${ 1.3 * ( 0.85 + 0.15 * sIn ) })` );
+		drive( SW.s2, steps( l - 3.4, 1, 0.6, 0.7 ) );
+	}
+
+	// 3 + 4. Layouts (10-20), then card styles (20-30).
+	if ( t >= 10 && t <= 30.3 ) {
+		const l = t - 10;
+		const isStyles = l >= 10;
+		show( $( 's34k' ), 1 );
+		$( 's34k' ).textContent = isStyles ? '7 card styles · star ratings' : '5 layouts';
+		const slot = isStyles ? 5 + Math.min( 6, Math.floor( ( l - 10 ) / ( 10 / 7 ) ) ) : Math.min( 4, Math.floor( l / 2 ) );
+		const slotStart = isStyles ? 10 + ( slot - 5 ) * ( 10 / 7 ) : slot * 2;
+		const k = out( p( l, slotStart, slotStart + 0.45 ) );
+		panels.forEach( ( panel, i ) => {
+			let op = 0;
+			if ( i === slot ) {
+				op = k;
+			} else if ( i === slot - 1 ) {
+				op = 1 - k;
+			}
+			show( panel.el, op, `translateY(${ i === slot ? ( 1 - k ) * 40 : 0 }px)` );
+			rise( panel.label, op, 24 );
+		} );
+		// The page goes dark for the Dark style.
+		const darkIdx = 10;
+		const dk = slot === darkIdx ? k : ( slot === darkIdx + 1 ? 1 - k : 0 );
+		page.style.background = `rgb(${ lerp( 248, 2, dk ) },${ lerp( 250, 6, dk ) },${ lerp( 252, 23, dk ) })`;
+		drive( SW.lay, steps( l - 0.3, 1, 0.5, 0.6 ) );
+		ticker.getAnimations().forEach( ( an ) => { an.pause(); an.currentTime = Math.max( 0, l - 8 ) * 1000 + 2000; } );
+	}
+
+	// 5. Shortcode Builder (30-42).
+	if ( t >= 30 && t <= 42.3 ) {
+		const l = t - 30;
+		const typed = 'Homepage slider';
+		const tk = p( l, 1.6, 2.8 );
+		$( 'b-name' ).textContent = l < 1.4 ? 'UTS #1' : typed.slice( 0, Math.round( tk * typed.length ) ) + ( tk < 1 && l > 1.4 ? '|' : '' );
+		$( 'b-name' ).style.borderColor = l > 1.3 && l < 3.1 ? '#2271b1' : '#8c8f94';
+		$( 'b-name' ).style.boxShadow = l > 1.3 && l < 3.1 ? '0 0 0 1px #2271b1' : 'none';
+		const dropOpen = l > 3.6 && l < 4.55;
+		show( $( 'b-drop' ), dropOpen ? 1 : 0 );
+		$( 'b-opt' ).style.background = l > 4.3 && l < 4.55 ? '#2271b1' : 'transparent';
+		$( 'b-opt' ).style.color = l > 4.3 && l < 4.55 ? '#fff' : 'inherit';
+		$( 'b-style' ).textContent = l >= 4.6 ? 'Split (accent panel, photo on top)' : 'Classic';
+		const sk = out( p( l, 4.6, 5.1 ) );
+		show( $( 'b-prevA' ), 1 - sk );
+		show( $( 'b-prevB' ), sk );
+		const on = l >= 6.1;
+		$( 'b-track' ).style.background = on ? '#2271b1' : '#fff';
+		$( 'b-track' ).style.borderColor = on ? '#2271b1' : '#1e1e1e';
+		$( 'b-knob' ).style.background = on ? '#fff' : '#1e1e1e';
+		$( 'b-knob' ).style.left = on ? '20px' : '2px';
+		drive( SW.bA, 1 );
+		drive( SW.bB, on ? steps( l - 6.4, 1, 0.7, 0.6 ) : 1 );
+		const saved = l >= 8.1;
+		$( 'b-save' ).style.opacity = l >= 7.8 && l < 8.1 ? 0.6 : 1;
+		$( 'b-notice' ).style.display = saved ? 'block' : 'none';
+		$( 'b-notice' ).style.opacity = out( p( l, 8.1, 8.5 ) );
+		$( 'b-copy' ).textContent = l >= 9.9 ? 'Copied!' : 'Copy';
+		moveCursor( l, [
+			[ 0.5, 1500, 900 ], [ 1.25, 'b-name', 0.6 ], [ 3.0, 'b-name', 0.6 ], [ 3.5, 'b-style', 0.4 ],
+			[ 3.9, 'b-style', 0.4 ], [ 4.35, 'b-opt', 0.3 ], [ 5.2, 'b-opt', 0.3 ], [ 5.9, 'b-track' ],
+			[ 7.1, 'b-track' ], [ 7.75, 'b-save' ], [ 9.1, 'b-save' ], [ 9.7, 'b-copy' ], [ 11.5, 'b-copy' ],
+		], [ 1.3, 3.55, 4.45, 5.95, 7.8, 9.75 ] );
+	}
+
+	// 6. Paste into a page, publish, live site (42-50).
+	if ( t >= 42 && t <= 50.3 ) {
+		const l = t - 42;
+		$( 'e-sc' ).textContent = l >= 1.4 ? '[uts id="1"]' : '';
+		$( 'e-sc' ).style.background = l >= 1.4 && l < 1.9 ? '#dbeafe' : '#fff';
+		show( $( 'e-snack' ), out( p( l, 2.6, 2.9 ) ) * ( 1 - p( l, 3.6, 3.8 ) ) );
+		const swap = io( p( l, 3.6, 4.3 ) );
+		show( $( 's6ed' ), 1 - swap, `scale(${ 1 - 0.04 * swap })` );
+		show( $( 's6site' ), swap, `scale(${ 0.96 + 0.04 * swap })` );
+		const lbl = $( 's6names' ).children;
+		show( lbl[ 0 ], 1 - swap );
+		show( lbl[ 1 ], swap );
+		drive( SW.site, steps( l - 4.6, 1, 0.6, 0.6 ) );
+		moveCursor( l, [ [ 0.3, 1400, 900 ], [ 1.0, 'e-sc', 0.3 ], [ 2.0, 'e-sc', 0.3 ], [ 2.5, 'e-pub' ], [ 3.2, 'e-pub' ] ], [ 1.1, 2.55 ] );
+	}
+
+	// 7. Feature tiles (50-56).
+	if ( t >= 50 && t <= 56.3 ) {
+		const l = t - 50;
+		Array.from( $( 'tiles' ).children ).forEach( ( tile, i ) => {
+			const k = back( p( l, 0.3 + i * 0.12, 0.85 + i * 0.12 ) );
+			show( tile, clamp( k ), `translateY(${ ( 1 - k ) * 50 }px) scale(${ 0.9 + 0.1 * k })` );
+		} );
+	}
+
+	// 8. Call to action (56-60).
+	if ( t >= 56 ) {
+		const l = t - 56;
+		const k = back( p( l, 0.1, 0.8 ) );
+		show( $( 's8icon' ), clamp( p( l, 0.1, 0.4 ) ), `scale(${ 0.6 + 0.4 * k })` );
+		rise( $( 's8t' ), out( p( l, 0.5, 1.1 ) ) );
+		rise( $( 's8b' ), out( p( l, 0.9, 1.5 ) ) );
+		rise( $( 's8s' ), out( p( l, 1.3, 1.9 ) ) );
+	}
+};
+
+window.seek( 0 );
+window.promoReady = true;
+</script>
+</body>
+</html>
