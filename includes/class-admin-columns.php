@@ -56,6 +56,7 @@ class Admin_Columns {
 		$date = isset( $new['date'] ) ? $new['date'] : null;
 		unset( $new['date'] );
 		$new['uts_designation'] = __( 'Position & Company', 'ultimate-3d-testimonial-slider' );
+		$new['uts_rating']      = __( 'Rating', 'ultimate-3d-testimonial-slider' );
 		$new['uts_order']       = __( 'Order', 'ultimate-3d-testimonial-slider' );
 		if ( null !== $date ) {
 			$new['date'] = $date;
@@ -86,6 +87,17 @@ class Admin_Columns {
 			case 'uts_designation':
 				$designation = get_post_meta( $post_id, 'uts_designation', true );
 				echo '' !== $designation ? esc_html( $designation ) : '<span aria-hidden="true">—</span>';
+				break;
+
+			case 'uts_rating':
+				$rating = Metabox::rating( $post_id );
+				if ( $rating ) {
+					/* translators: %d: star rating, 1 to 5 */
+					$label = sprintf( __( 'Rated %d out of 5', 'ultimate-3d-testimonial-slider' ), $rating );
+					echo '<span class="uts-list-rating" aria-hidden="true">' . esc_html( str_repeat( '★', $rating ) . str_repeat( '☆', 5 - $rating ) ) . '</span><span class="screen-reader-text">' . esc_html( $label ) . '</span>';
+				} else {
+					echo '<span aria-hidden="true">&mdash;</span>';
+				}
 				break;
 
 			case 'uts_order':

@@ -520,6 +520,20 @@ const EXAMPLES = [
 		'[uts show_image="false" excerpt_length="0"]',
 		__( 'Full text, no photos.', 'ultimate-3d-testimonial-slider' ),
 	],
+	[
+		'[uts type="grid" card_style="modern"]',
+		__(
+			'Grid of modern cards with the photo beside the name.',
+			'ultimate-3d-testimonial-slider'
+		),
+	],
+	[
+		'[uts card_style="glass" star_color="#fde047"]',
+		__(
+			'Frosted glass slider with yellow stars.',
+			'ultimate-3d-testimonial-slider'
+		),
+	],
 ];
 
 const PLACES = [
@@ -575,6 +589,20 @@ const TIPS = [
 		),
 		__(
 			'Supported. Each [uts] works on its own with its own attributes.',
+			'ultimate-3d-testimonial-slider'
+		),
+	],
+	[
+		__( 'Adding star ratings', 'ultimate-3d-testimonial-slider' ),
+		__(
+			'Edit a testimonial and pick 1 to 5 stars under "Star rating" in the Client Additional box. Testimonials without a rating show no stars. To hide all stars, turn off "Show star rating" (Display tab) or use show_rating="false".',
+			'ultimate-3d-testimonial-slider'
+		),
+	],
+	[
+		__( 'Card styles', 'ultimate-3d-testimonial-slider' ),
+		__(
+			'Pick Classic, Modern, Speech bubble, Elegant, Glass or Dark under Card style (Style tab), or use card_style="modern". Your colors and corner radius still apply on top.',
 			'ultimate-3d-testimonial-slider'
 		),
 	],

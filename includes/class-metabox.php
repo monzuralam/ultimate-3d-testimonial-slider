@@ -13,7 +13,8 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Adds the "Client Additional" metabox and saves the client's position and
- * company to the `uts_designation` post meta.
+ * company to the `uts_designation` post meta and the star rating (1-5) to
+ * `uts_rating` (no meta = no rating, so no stars on the frontend).
  *
  * @since 1.1.0
  * @author Monzur Alam
@@ -40,6 +41,13 @@ class Metabox {
 	 * @var string
 	 */
 	const META_KEY = 'uts_designation';
+
+	/**
+	 * Star rating post meta key (1-5; deleted for "No rating").
+	 *
+	 * @var string
+	 */
+	const RATING_KEY = 'uts_rating';
 
 	/**
 	 * Hook the metabox and its save handler.
@@ -84,10 +92,37 @@ class Metabox {
 		<label for="uts_designation"><?php esc_html_e( 'Position & Company Name', 'ultimate-3d-testimonial-slider' ); ?></label>
 		<input type="text" name="uts_designation" id="uts_designation" class="regular-text" value="<?php echo esc_attr( $designation ); ?>" placeholder="<?php esc_attr_e( 'CEO, Company Name', 'ultimate-3d-testimonial-slider' ); ?>">
 		<?php
+		$rating = self::rating( $post->ID );
+		?>
+		<p class="uts-metabox-rating">
+			<label for="uts_rating"><?php esc_html_e( 'Star rating', 'ultimate-3d-testimonial-slider' ); ?></label><br>
+			<select name="uts_rating" id="uts_rating">
+				<option value="0"<?php selected( $rating, 0 ); ?>><?php esc_html_e( 'No rating (no stars shown)', 'ultimate-3d-testimonial-slider' ); ?></option>
+				<?php for ( $i = 5; $i >= 1; $i-- ) { ?>
+					<option value="<?php echo (int) $i; ?>"<?php selected( $rating, $i ); ?>><?php echo esc_html( str_repeat( '★', $i ) . str_repeat( '☆', 5 - $i ) . ' ' . sprintf( /* translators: %d: number of stars */ _n( '%d star', '%d stars', $i, 'ultimate-3d-testimonial-slider' ), $i ) ); ?></option>
+				<?php } ?>
+			</select>
+		</p>
+		<?php
 	}
 
 	/**
-	 * Save the designation (nonce, autosave and capability checked).
+	 * A testimonial's star rating.
+	 *
+	 * @since 1.1.0
+	 * @author Monzur Alam
+	 *
+	 * @param int $post_id Testimonial ID.
+	 * @return int 1-5, or 0 when it has no rating.
+	 */
+	public static function rating( $post_id ) {
+		$rating = (int) get_post_meta( $post_id, self::RATING_KEY, true );
+
+		return $rating >= 1 && $rating <= 5 ? $rating : 0;
+	}
+
+	/**
+	 * Save the designation and rating (nonce, autosave and capability checked).
 	 *
 	 * @since 1.0.1
 	 * @author Monzur Alam
@@ -113,6 +148,15 @@ class Metabox {
 
 		if ( isset( $_POST['uts_designation'] ) ) {
 			update_post_meta( $post_id, self::META_KEY, sanitize_text_field( wp_unslash( $_POST['uts_designation'] ) ) );
+		}
+
+		if ( isset( $_POST['uts_rating'] ) ) {
+			$rating = absint( wp_unslash( $_POST['uts_rating'] ) );
+			if ( $rating >= 1 && $rating <= 5 ) {
+				update_post_meta( $post_id, self::RATING_KEY, $rating );
+			} else {
+				delete_post_meta( $post_id, self::RATING_KEY );
+			}
 		}
 	}
 }

@@ -197,6 +197,18 @@ export const TABS = [
 				),
 			},
 			{
+				key: 'show_rating',
+				control: 'toggle',
+				label: __(
+					'Show star rating',
+					'ultimate-3d-testimonial-slider'
+				),
+				help: __(
+					'Only testimonials with a rating (set in "Client Additional" when editing a testimonial) show stars.',
+					'ultimate-3d-testimonial-slider'
+				),
+			},
+			{
 				key: 'grid_columns',
 				control: 'range',
 				label: __( 'Columns', 'ultimate-3d-testimonial-slider' ),
@@ -226,11 +238,40 @@ export const TABS = [
 		title: __( 'Style', 'ultimate-3d-testimonial-slider' ),
 		fields: [
 			{
+				key: 'card_style',
+				control: 'select',
+				label: __( 'Card style', 'ultimate-3d-testimonial-slider' ),
+				help: __(
+					'Classic is the original card. Glass brings its own gradient backdrop; Dark suits dark sections.',
+					'ultimate-3d-testimonial-slider'
+				),
+				options: {
+					classic: __( 'Classic', 'ultimate-3d-testimonial-slider' ),
+					modern: __(
+						'Modern (soft shadow, photo beside name)',
+						'ultimate-3d-testimonial-slider'
+					),
+					bubble: __(
+						'Speech bubble',
+						'ultimate-3d-testimonial-slider'
+					),
+					elegant: __(
+						'Elegant (serif quote)',
+						'ultimate-3d-testimonial-slider'
+					),
+					glass: __(
+						'Glass (frosted)',
+						'ultimate-3d-testimonial-slider'
+					),
+					dark: __( 'Dark', 'ultimate-3d-testimonial-slider' ),
+				},
+			},
+			{
 				key: 'accent_color',
 				control: 'color',
 				label: __( 'Accent color', 'ultimate-3d-testimonial-slider' ),
 				help: __(
-					'Pagination dots and arrows.',
+					'Pagination dots and arrows, and the quote marks and lines of the Modern, Elegant and Dark styles.',
 					'ultimate-3d-testimonial-slider'
 				),
 			},
@@ -252,6 +293,15 @@ export const TABS = [
 				control: 'range',
 				label: __(
 					'Card corner radius (px)',
+					'ultimate-3d-testimonial-slider'
+				),
+			},
+			{
+				key: 'star_color',
+				control: 'color',
+				label: __( 'Star color', 'ultimate-3d-testimonial-slider' ),
+				help: __(
+					'Rating stars. Empty uses gold.',
 					'ultimate-3d-testimonial-slider'
 				),
 			},

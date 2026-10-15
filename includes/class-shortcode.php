@@ -117,6 +117,10 @@ class Shortcode {
 			$classes[] = 'swiper';
 			$classes[] = 'uts-effect-' . $settings['effect'];
 		}
+		// Classic is the original card (no class, so its markup is unchanged).
+		if ( 'classic' !== $settings['card_style'] ) {
+			$classes[] = 'ucs-card-' . $settings['card_style'];
+		}
 
 		Assets::enqueue_frontend();
 
@@ -157,7 +161,11 @@ class Shortcode {
 						}
 						?>
 						<div class="details-content">
-							<p><?php
+							<?php
+							if ( $settings['show_rating'] ) {
+								echo self::rating_html( Metabox::rating( get_the_ID() ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in rating_html().
+							}
+							?><p><?php
 								$content = wp_strip_all_tags( strip_shortcodes( get_the_content() ) );
 								echo esc_html( $settings['excerpt_length'] > 0 ? wp_trim_words( $content, $settings['excerpt_length'] ) : $content );
 							?></p>
@@ -218,6 +226,9 @@ class Shortcode {
 		if ( $settings['border_radius'] > 0 ) {
 			$vars['--uts-radius'] = $settings['border_radius'] . 'px';
 		}
+		if ( '' !== $settings['star_color'] ) {
+			$vars['--uts-star'] = $settings['star_color'];
+		}
 		if ( in_array( $settings['type'], array( 'grid', 'masonry' ), true ) && 3 !== $settings['grid_columns'] ) {
 			$vars['--uts-columns']    = $settings['grid_columns'];
 			$vars['--uts-columns-md'] = min( 2, $settings['grid_columns'] );
@@ -229,6 +240,33 @@ class Shortcode {
 		}
 
 		return $style;
+	}
+
+	/**
+	 * Star rating markup: five stars, the first $rating filled. Empty for an
+	 * unrated testimonial (0), so nothing is output.
+	 *
+	 * @since 1.1.0
+	 * @author Monzur Alam
+	 *
+	 * @param int $rating 0-5.
+	 * @return string
+	 */
+	public static function rating_html( $rating ) {
+		$rating = min( 5, max( 0, (int) $rating ) );
+		if ( ! $rating ) {
+			return '';
+		}
+
+		$stars = '';
+		for ( $i = 1; $i <= 5; $i++ ) {
+			$stars .= '<svg class="ucs-star' . ( $i <= $rating ? ' is-on' : '' ) . '" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 14.9l-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>';
+		}
+
+		/* translators: %d: star rating, 1 to 5 */
+		$label = sprintf( __( 'Rated %d out of 5', 'ultimate-3d-testimonial-slider' ), $rating );
+
+		return '<div class="ucs-rating" role="img" aria-label="' . esc_attr( $label ) . '">' . $stars . '</div>';
 	}
 
 	/**

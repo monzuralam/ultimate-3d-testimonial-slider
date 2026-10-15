@@ -22,6 +22,8 @@ Ultimate 3D Testimonial Slider shows what your clients say about you, on any pag
 * Five layouts: 3D slider, grid, list, masonry and ticker (an endless scrolling row)
 * Seven slider effects: 3D coverflow, slide, fade, cards, 3D cube, flip and creative
 * Autoplay, loop, speed, arrows and dots
+* Six card styles: classic, modern, speech bubble, elegant, glass and dark
+* Star ratings (1-5) per testimonial, shown only when set
 * Colors, corner radius, columns, excerpt length and image size
 * Settings page for the defaults; every setting can be overridden per slider or per shortcode
 * Categories, to show different testimonials on different pages
@@ -31,7 +33,7 @@ Ultimate 3D Testimonial Slider shows what your clients say about you, on any pag
 
 ### How to use
 
-1. Go to **Ultimate 3D Testimonial Slider > Add Post** and add your testimonials: the client's name as the title, their words as the content, a featured image as the photo, and their position & company in the "Client Additional" box.
+1. Go to **Ultimate 3D Testimonial Slider > Add Post** and add your testimonials: the client's name as the title, their words as the content, a featured image as the photo, and their position & company and an optional star rating in the "Client Additional" box.
 1. Go to **Ultimate 3D Testimonial Slider > Shortcode Builder**, create a slider and save it.
 1. Copy its shortcode, for example `[uts id="5"]`, and paste it into any page or post.
 
@@ -74,15 +76,18 @@ All attributes are optional. Their defaults come from **Ultimate 3D Testimonial 
 * `show_image`: show the client photo, `true` or `false`. Default: `true`
 * `show_title`: show the client name, `true` or `false`. Default: `true`
 * `show_designation`: show the position & company, `true` or `false`. Default: `true`
+* `show_rating`: show the star rating of testimonials that have one, `true` or `false`. Default: `true`
 * `grid_columns`: grid and masonry only, columns on desktop (1-6). Smaller screens use fewer. Default: `3`. Example: `[uts type="masonry" grid_columns="4"]`
 * `ticker_duration`: ticker only, seconds each testimonial takes to scroll past (2-30); higher is slower. Default: `6`. Example: `[uts type="ticker" ticker_duration="10"]`
 
 **Style**
 
+* `card_style`: `classic`, `modern`, `bubble`, `elegant`, `glass` or `dark`. Default: `classic`. Example: `[uts card_style="modern"]`
 * `accent_color`: color of the dots and arrows, e.g. `#2271b1`. Default: blue
 * `text_color`: text color of the cards. Default: theme default
 * `background_color`: background color of the cards. Default: white
 * `border_radius`: card corner radius in pixels (0-50). Default: `0`
+* `star_color`: color of the rating stars, e.g. `#f5b301`. Default: gold
 
 ### Examples
 
@@ -90,6 +95,8 @@ All attributes are optional. Their defaults come from **Ultimate 3D Testimonial 
 * A 4-column masonry: `[uts type="masonry" grid_columns="4"]`
 * A fade slider that plays by itself: `[uts effect="fade" autoplay="true"]`
 * A slow scrolling ticker: `[uts type="ticker" ticker_duration="10"]`
+* A grid of modern cards: `[uts type="grid" card_style="modern"]`
+* A frosted glass slider with yellow stars: `[uts card_style="glass" star_color="#fde047"]`
 
 ### Source code
 
@@ -150,6 +157,14 @@ Five: slider, grid, list, masonry (cards keep their own height) and ticker (an e
 
 In **Ultimate 3D Testimonial Slider > Settings** for every shortcode, or in the Shortcode Builder for one saved slider. You can also use the setting name as a shortcode attribute, for example `[uts effect="fade" autoplay="true"]`.
 
+= How do I add star ratings? =
+
+Edit a testimonial and choose 1 to 5 stars under "Star rating" in the "Client Additional" box. Testimonials without a rating show no stars. To hide stars everywhere, turn off "Show star rating" in the settings or use `show_rating="false"`.
+
+= What card styles are available? =
+
+Six: classic (the original card), modern, speech bubble, elegant, glass (frosted, with its own gradient backdrop) and dark (for dark sections). Choose one in the Shortcode Builder or the settings (Style tab), or use `card_style`, for example `[uts card_style="elegant"]`.
+
 = Does loop work with only a few testimonials? =
 
 Yes. With only a few testimonials, the slider repeats them so it can keep going round, and the dots still show one per testimonial.
@@ -179,6 +194,8 @@ Please visit the plugin support forum on WordPress.org.
 * **New:** Shortcode Builder: design sliders with a live preview, save them (or keep them as drafts) and place them with `[uts id="5"]`; duplicate, trash and "Where is this used?"
 * **New:** Settings page for the default layout, count, excerpt length, image size, slider effect, autoplay, loop, speed, arrows, dots, visibility of image/name/designation, columns, colors and corner radius
 * **New:** Masonry and ticker layouts
+* **New:** Card styles: modern, speech bubble, elegant, glass and dark, next to the classic card
+* **New:** Star ratings (1-5) per testimonial, with a Rating column in the testimonials list; shown only for testimonials that have one
 * **New:** Slide, fade, cards, cube, flip and creative slider effects, autoplay, loop (works with any number of testimonials) and navigation arrows
 * **New:** Every setting can be overridden as a shortcode attribute
 * **New:** Getting Started dashboard with a video tutorial, a live preview of your testimonials, a setup checklist, a step-by-step "How to use" guide and a full shortcode reference

@@ -139,6 +139,10 @@ class Settings {
 				'type'    => 'boolean',
 				'default' => true,
 			),
+			'show_rating'       => array(
+				'type'    => 'boolean',
+				'default' => true, // Only testimonials with a rating show stars.
+			),
 			'grid_columns'      => array(
 				'type'    => 'integer',
 				'minimum' => 1,
@@ -153,6 +157,11 @@ class Settings {
 			),
 
 			// Style (empty color = theme/plugin CSS default).
+			'card_style'        => array(
+				'type'    => 'string',
+				'enum'    => array( 'classic', 'modern', 'bubble', 'elegant', 'glass', 'dark' ),
+				'default' => 'classic',
+			),
 			'accent_color'      => array(
 				'type'    => 'string',
 				'default' => '',
@@ -170,6 +179,10 @@ class Settings {
 				'minimum' => 0,
 				'maximum' => 50,
 				'default' => 0,
+			),
+			'star_color'        => array(
+				'type'    => 'string',
+				'default' => '',
 			),
 		);
 

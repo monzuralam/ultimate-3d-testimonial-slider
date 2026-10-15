@@ -256,3 +256,389 @@
 		grid-template-columns: repeat(1, 1fr);
 	}
 }
+
+/* star rating (only output for testimonials that have one) */
+.ucs-container .ucs-rating {
+	display: flex;
+	justify-content: center;
+	gap: 3px;
+	margin: 12px 0 0;
+}
+
+.ucs-container .ucs-star {
+	width: 18px;
+	height: 18px;
+	fill: currentcolor;
+	opacity: 0.22;
+}
+
+.ucs-container .ucs-star.is-on {
+	fill: var(--uts-star, #f5b301);
+	opacity: 1;
+}
+
+.ucs-container.list .ucs-rating {
+	justify-content: flex-start;
+}
+
+/*
+ * Card styles (`card_style`). Classic is the rules above. The others
+ * restyle the same markup; `.details-content` becomes `display: contents`
+ * so the photo, stars, text, name and position can be placed freely.
+ */
+.ucs-container.ucs-card-modern .ucs-item,
+.ucs-container.ucs-card-bubble .ucs-item,
+.ucs-container.ucs-card-elegant .ucs-item,
+.ucs-container.ucs-card-glass .ucs-item,
+.ucs-container.ucs-card-dark .ucs-item {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0;
+	text-align: center;
+	border: 0;
+}
+
+.ucs-container.ucs-card-modern .ucs-item .details-content,
+.ucs-container.ucs-card-bubble .ucs-item .details-content,
+.ucs-container.ucs-card-elegant .ucs-item .details-content,
+.ucs-container.ucs-card-glass .ucs-item .details-content,
+.ucs-container.ucs-card-dark .ucs-item .details-content {
+	display: contents;
+}
+
+.ucs-container.ucs-card-modern .details-content h3,
+.ucs-container.ucs-card-modern .details-content h4,
+.ucs-container.ucs-card-bubble .details-content h3,
+.ucs-container.ucs-card-bubble .details-content h4,
+.ucs-container.ucs-card-elegant .details-content h3,
+.ucs-container.ucs-card-elegant .details-content h4,
+.ucs-container.ucs-card-glass .details-content h3,
+.ucs-container.ucs-card-glass .details-content h4,
+.ucs-container.ucs-card-dark .details-content h3,
+.ucs-container.ucs-card-dark .details-content h4 {
+	color: inherit;
+	margin: 0;
+	letter-spacing: normal;
+}
+
+/* modern: soft layered shadow, quote mark, photo beside the name */
+.ucs-container.ucs-card-modern .ucs-item {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	grid-template-areas:
+		"rating rating"
+		"text text"
+		"photo name"
+		"photo role";
+	column-gap: 14px;
+	align-items: center;
+	text-align: left;
+	padding: 30px 28px 26px;
+	background: var(--uts-bg, #fff);
+	color: var(--uts-text, #334155);
+	border-radius: var(--uts-radius, 20px);
+	border: 1px solid rgba(15, 23, 42, 0.06);
+	box-shadow:
+		0 1px 2px rgba(15, 23, 42, 0.06),
+		0 14px 36px -10px rgba(15, 23, 42, 0.22);
+}
+
+.ucs-container.ucs-card-modern .ucs-item::before {
+	content: "\201C";
+	position: absolute;
+	top: 6px;
+	right: 22px;
+	font: 700 84px/1 Georgia, "Times New Roman", serif;
+	color: var(--swiper-theme-color, #4f46e5);
+	opacity: 0.16;
+	pointer-events: none;
+}
+
+.ucs-container.ucs-card-modern .ucs-item img {
+	grid-area: photo;
+	width: 52px !important;
+	height: 52px;
+	margin: 0;
+	object-fit: cover;
+}
+
+.ucs-container.ucs-card-modern .ucs-rating {
+	grid-area: rating;
+	justify-content: flex-start;
+	margin: 0 0 12px;
+}
+
+.ucs-container.ucs-card-modern .details-content p {
+	grid-area: text;
+	margin: 0 0 22px;
+	font-size: 16px;
+	line-height: 1.7;
+}
+
+.ucs-container.ucs-card-modern .details-content h3 {
+	grid-area: name;
+	align-self: end;
+	font-size: 17px;
+	color: var(--uts-text, #0f172a);
+}
+
+.ucs-container.ucs-card-modern .details-content h4 {
+	grid-area: role;
+	align-self: start;
+	margin-top: 2px;
+	font-size: 14px;
+	font-weight: 500;
+	opacity: 0.7;
+}
+
+/* bubble: the quote in a speech bubble, the person underneath */
+.ucs-container.ucs-card-bubble .ucs-item {
+	padding: 4px 4px 12px;
+	background: transparent;
+	color: var(--uts-text, #334155);
+	box-shadow: none;
+}
+
+.ucs-container.ucs-card-bubble .details-content p {
+	order: -2;
+	position: relative;
+	width: 100%;
+	margin: 0 0 28px;
+	padding: 26px 28px;
+	background: var(--uts-bg, #fff);
+	border-radius: var(--uts-radius, 18px);
+	box-shadow: 0 12px 30px -12px rgba(15, 23, 42, 0.3);
+	font-size: 16px;
+	line-height: 1.7;
+}
+
+.ucs-container.ucs-card-bubble .details-content p::after {
+	content: "";
+	position: absolute;
+	left: 50%;
+	bottom: -10px;
+	width: 22px;
+	height: 22px;
+	background: inherit;
+	border-radius: 0 0 5px;
+	transform: translateX(-50%) rotate(45deg);
+	box-shadow: 8px 8px 12px -6px rgba(15, 23, 42, 0.18);
+}
+
+.ucs-container.ucs-card-bubble .ucs-item img {
+	order: -1;
+	width: 64px !important;
+	height: 64px;
+	margin: 0 auto 10px;
+	object-fit: cover;
+	border: 3px solid #fff;
+	box-shadow: 0 6px 14px rgba(15, 23, 42, 0.18);
+}
+
+.ucs-container.ucs-card-bubble .details-content h3 {
+	font-size: 18px;
+}
+
+.ucs-container.ucs-card-bubble .details-content h4 {
+	margin-top: 2px;
+	font-size: 14px;
+	opacity: 0.7;
+}
+
+.ucs-container.ucs-card-bubble .ucs-rating {
+	order: 5;
+	margin-top: 8px;
+}
+
+/* elegant: serif italic quote, accent line, small caps name */
+.ucs-container.ucs-card-elegant .ucs-item {
+	padding: 34px 32px 30px;
+	background: var(--uts-bg, #fffdf8);
+	color: var(--uts-text, #1f2937);
+	border-radius: var(--uts-radius, 4px);
+	border: 1px solid rgba(17, 24, 39, 0.07);
+	box-shadow: 0 22px 44px -22px rgba(17, 24, 39, 0.35);
+}
+
+.ucs-container.ucs-card-elegant .ucs-item::before {
+	content: "\201C";
+	order: -3;
+	height: 40px;
+	font: 400 88px/0.9 Georgia, "Times New Roman", serif;
+	color: var(--swiper-theme-color, #b45309);
+}
+
+.ucs-container.ucs-card-elegant .ucs-rating {
+	order: -2;
+	margin: 4px 0 0;
+}
+
+.ucs-container.ucs-card-elegant .details-content p {
+	order: -1;
+	margin: 14px 0 0;
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: 19px;
+	font-style: italic;
+	line-height: 1.6;
+}
+
+.ucs-container.ucs-card-elegant .details-content p::after {
+	content: "";
+	display: block;
+	width: 44px;
+	height: 2px;
+	margin: 22px auto 20px;
+	background: var(--swiper-theme-color, #b45309);
+}
+
+.ucs-container.ucs-card-elegant .ucs-item img {
+	width: 56px !important;
+	height: 56px;
+	margin: 0 auto 10px;
+	object-fit: cover;
+}
+
+.ucs-container.ucs-card-elegant .details-content h3 {
+	font-size: 14px;
+	font-weight: 700;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+}
+
+.ucs-container.ucs-card-elegant .details-content h4 {
+	margin-top: 6px;
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: 14px;
+	font-style: italic;
+	opacity: 0.65;
+}
+
+/* glass: frosted cards on their own gradient backdrop */
+.ucs-container.ucs-card-glass {
+	--swiper-theme-color: #fff;
+	--swiper-pagination-bullet-inactive-color: #fff;
+	padding: 36px 28px 48px;
+	background:
+		radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.25), transparent 40%),
+		linear-gradient(135deg, #4f46e5, #9333ea 55%, #db2777);
+	border-radius: 24px;
+}
+
+.ucs-container.ucs-card-glass .ucs-item {
+	padding: 30px 26px;
+	background: var(--uts-bg, rgba(255, 255, 255, 0.14));
+	color: var(--uts-text, #fff);
+	border: 1px solid rgba(255, 255, 255, 0.35);
+	border-radius: var(--uts-radius, 22px);
+	box-shadow:
+		0 10px 34px rgba(15, 23, 42, 0.22),
+		inset 0 1px 0 rgba(255, 255, 255, 0.45);
+	-webkit-backdrop-filter: blur(14px) saturate(140%);
+	backdrop-filter: blur(14px) saturate(140%);
+}
+
+.ucs-container.ucs-card-glass .ucs-item img {
+	width: 68px !important;
+	height: 68px;
+	object-fit: cover;
+	border: 3px solid rgba(255, 255, 255, 0.65);
+}
+
+.ucs-container.ucs-card-glass .details-content p {
+	margin: 14px 0 18px;
+	font-size: 16px;
+	line-height: 1.7;
+}
+
+.ucs-container.ucs-card-glass .details-content h4 {
+	margin-top: 2px;
+	font-size: 14px;
+	opacity: 0.8;
+}
+
+.ucs-container.ucs-card-glass .ucs-star {
+	fill: #fff;
+}
+
+.ucs-container.ucs-card-glass .ucs-star.is-on {
+	fill: var(--uts-star, #fde047);
+}
+
+/* dark: deep card with an accent glow and photo ring */
+.ucs-container.ucs-card-dark {
+	--swiper-pagination-bullet-inactive-color: #94a3b8;
+}
+
+.ucs-container.ucs-card-dark .ucs-item {
+	overflow: hidden;
+	padding: 32px 28px 28px;
+	background: var(--uts-bg, #0f172a);
+	color: var(--uts-text, #cbd5e1);
+	border: 1px solid rgba(148, 163, 184, 0.16);
+	border-radius: var(--uts-radius, 18px);
+	box-shadow: 0 22px 44px -14px rgba(2, 6, 23, 0.6);
+}
+
+.ucs-container.ucs-card-dark .ucs-item::before {
+	content: "";
+	position: absolute;
+	top: -120px;
+	left: 50%;
+	width: 260px;
+	height: 220px;
+	transform: translateX(-50%);
+	background: radial-gradient(closest-side, var(--swiper-theme-color, #6366f1), transparent);
+	opacity: 0.35;
+	pointer-events: none;
+}
+
+.ucs-container.ucs-card-dark .ucs-item > *,
+.ucs-container.ucs-card-dark .details-content > * {
+	position: relative;
+}
+
+.ucs-container.ucs-card-dark .ucs-item img {
+	width: 64px !important;
+	height: 64px;
+	object-fit: cover;
+	box-shadow:
+		0 0 0 3px #0f172a,
+		0 0 0 5px var(--swiper-theme-color, #6366f1),
+		0 0 26px var(--swiper-theme-color, #6366f1);
+}
+
+.ucs-container.ucs-card-dark .details-content p {
+	margin: 16px 0 18px;
+	font-size: 16px;
+	line-height: 1.7;
+}
+
+.ucs-container.ucs-card-dark .details-content h3 {
+	font-size: 18px;
+	color: var(--uts-text, #f8fafc);
+}
+
+.ucs-container.ucs-card-dark .details-content h4 {
+	margin-top: 2px;
+	font-size: 14px;
+	color: #94a3b8;
+}
+
+/* The "no photo" quote icon is black on transparent: give it a light disc. */
+.ucs-container.ucs-card-glass .ucs-item img.img-fluid,
+.ucs-container.ucs-card-dark .ucs-item img.img-fluid {
+	padding: 8px;
+	background: #fff;
+}
+
+/* Ticker cards are narrower: smaller text. */
+.ucs-container.ticker[class*="ucs-card-"] .details-content p {
+	font-size: 15px;
+}
+
+/* Glass in the ticker: the backdrop is the moving row's track area. */
+.ucs-container.ticker.ucs-card-glass {
+	padding: 30px 0;
+}
