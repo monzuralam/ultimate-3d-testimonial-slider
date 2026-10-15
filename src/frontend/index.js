@@ -113,6 +113,60 @@ const prefersReducedMotion = () =>
 	!! window.matchMedia &&
 	window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches;
 
+// Swiper 11's loop mode needs more slides than are visible at once (about
+// 3 visible + 2 for the centered coverflow/slide effects; cards needs about
+// 9 in practice) and does not duplicate them itself. With fewer testimonials, the whole set is
+// repeated; the copies are hidden from screen readers and the dots still
+// show one per testimonial.
+const LOOP_MIN_SLIDES = { auto: 9, cards: 9, single: 5 };
+
+const addLoopCopies = ( element, config ) => {
+	const wrapper = element.querySelector( '.swiper-wrapper' );
+	wrapper
+		.querySelectorAll( '.ucs-loop-copy' )
+		.forEach( ( copy ) => copy.remove() );
+
+	const originals = Array.from( wrapper.children );
+	if ( ! config.loop || ! originals.length ) {
+		return originals.length;
+	}
+
+	let min = LOOP_MIN_SLIDES.single;
+	if ( 'cards' === config.effect ) {
+		min = LOOP_MIN_SLIDES.cards;
+	} else if ( 'auto' === effectOptions( config ).slidesPerView ) {
+		min = LOOP_MIN_SLIDES.auto;
+	}
+	const sets = Math.ceil( min / originals.length );
+	for ( let set = 1; set < sets; set++ ) {
+		originals.forEach( ( slide ) => {
+			const copy = slide.cloneNode( true );
+			copy.classList.add( 'ucs-loop-copy' );
+			copy.setAttribute( 'aria-hidden', 'true' );
+			wrapper.appendChild( copy );
+		} );
+	}
+
+	return originals.length;
+};
+
+// One dot per testimonial when the slides were repeated for the loop.
+const syncLoopDots = ( swiper, count ) => {
+	const el = swiper.pagination && swiper.pagination.el;
+	if ( ! el || ! count ) {
+		return;
+	}
+	el.querySelectorAll( '.swiper-pagination-bullet' ).forEach(
+		( bullet, index ) => {
+			bullet.hidden = index >= count;
+			bullet.classList.toggle(
+				'swiper-pagination-bullet-active',
+				index === swiper.realIndex % count
+			);
+		}
+	);
+};
+
 const initSlider = ( element ) => {
 	const config = readConfig( element );
 
@@ -124,6 +178,9 @@ const initSlider = ( element ) => {
 	if ( prefersReducedMotion() ) {
 		config.autoplay = false;
 	}
+
+	const count = addLoopCopies( element, config );
+	const dots = ( swiper ) => syncLoopDots( swiper, count );
 
 	return new Swiper( element, {
 		modules: [
@@ -157,6 +214,10 @@ const initSlider = ( element ) => {
 					nextEl: element.querySelector( '.swiper-button-next' ),
 				}
 			: false,
+		on: {
+			paginationRender: dots,
+			paginationUpdate: dots,
+		},
 	} );
 };
 
