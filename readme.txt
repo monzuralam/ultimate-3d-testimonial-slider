@@ -62,7 +62,7 @@ All attributes are optional. Their defaults come from **Ultimate 3D Testimonial 
 * `speed`: transition speed in milliseconds (100-5000). Default: `300`
 * `autoplay`: move to the next slide automatically, `true` or `false`. Default: `false`
 * `autoplay_delay`: time between slides with autoplay on, in milliseconds (1000-20000). Default: `3000`. Example: `[uts autoplay="true" autoplay_delay="5000"]`
-* `loop`: go back to the first slide after the last one, `true` or `false`. Default: `false`
+* `loop`: go back to the first slide after the last one, `true` or `false`. Works with any number of testimonials. Default: `false`
 * `pagination`: show dots, `true` or `false`. Default: `true`
 * `navigation`: show previous/next arrows, `true` or `false`. Default: `false`
 * `coverflow_rotate`: coverflow only, how far side slides turn in degrees (0-90). Default: `50`
@@ -150,6 +150,10 @@ Five: slider, grid, list, masonry (cards keep their own height) and ticker (an e
 
 In **Ultimate 3D Testimonial Slider > Settings** for every shortcode, or in the Shortcode Builder for one saved slider. You can also use the setting name as a shortcode attribute, for example `[uts effect="fade" autoplay="true"]`.
 
+= Does loop work with only a few testimonials? =
+
+Yes. With only a few testimonials, the slider repeats them so it can keep going round, and the dots still show one per testimonial.
+
 = Can I show more than one slider on a page? =
 
 Yes. Each `[uts]` shortcode works on its own, with its own options.
@@ -175,7 +179,7 @@ Please visit the plugin support forum on WordPress.org.
 * **New:** Shortcode Builder: design sliders with a live preview, save them (or keep them as drafts) and place them with `[uts id="5"]`; duplicate, trash and "Where is this used?"
 * **New:** Settings page for the default layout, count, excerpt length, image size, slider effect, autoplay, loop, speed, arrows, dots, visibility of image/name/designation, columns, colors and corner radius
 * **New:** Masonry and ticker layouts
-* **New:** Slide, fade, cards, cube, flip and creative slider effects, autoplay, loop and navigation arrows
+* **New:** Slide, fade, cards, cube, flip and creative slider effects, autoplay, loop (works with any number of testimonials) and navigation arrows
 * **New:** Every setting can be overridden as a shortcode attribute
 * **New:** Getting Started dashboard with a video tutorial, a live preview of your testimonials, a setup checklist, a step-by-step "How to use" guide and a full shortcode reference
 * **New:** Option to keep or remove the plugin data when the plugin is deleted

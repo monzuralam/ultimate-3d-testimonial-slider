@@ -91,7 +91,7 @@ class Getting_Started {
 			'speed'             => __('Transition speed in milliseconds.', 'ultimate-3d-testimonial-slider'),
 			'autoplay'          => __('Move to the next slide automatically: true or false.', 'ultimate-3d-testimonial-slider'),
 			'autoplay_delay'    => __('Time between slides when autoplay is on, in milliseconds.', 'ultimate-3d-testimonial-slider'),
-			'loop'              => __('Go back to the first slide after the last one: true or false.', 'ultimate-3d-testimonial-slider'),
+			'loop'              => __('Go back to the first slide after the last one: true or false. Works with any number of testimonials.', 'ultimate-3d-testimonial-slider'),
 			'pagination'        => __('Show dots under the slider: true or false.', 'ultimate-3d-testimonial-slider'),
 			'navigation'        => __('Show previous/next arrows: true or false.', 'ultimate-3d-testimonial-slider'),
 			'coverflow_rotate'  => __('Coverflow only: how far side slides turn, in degrees.', 'ultimate-3d-testimonial-slider'),

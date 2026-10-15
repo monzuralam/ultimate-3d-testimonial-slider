@@ -587,11 +587,11 @@ const TIPS = [
 	],
 	[
 		__(
-			'Autoplay or loop looks odd with few testimonials',
+			'Loop with only a few testimonials',
 			'ultimate-3d-testimonial-slider'
 		),
 		__(
-			'Loop needs at least 3 testimonials to look smooth; add more or turn loop off.',
+			'Loop works with any number of testimonials. With only a few, the slider repeats them so it can keep going round; the dots still show one per testimonial.',
 			'ultimate-3d-testimonial-slider'
 		),
 	],
