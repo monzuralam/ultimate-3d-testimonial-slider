@@ -55,11 +55,19 @@ class Getting_Started {
 			)));
 		}
 
-		// First published post/page containing the shortcode.
-		$page_id = (int) $wpdb->get_var($wpdb->prepare(
-			"SELECT ID FROM {$wpdb->posts} WHERE post_status = 'publish' AND post_type NOT IN ('revision', 'uts') AND post_content LIKE %s ORDER BY post_modified DESC LIMIT 1",
-			'%' . $wpdb->esc_like('[uts') . '%'
-		));
+		// Most recently modified published post/page containing the shortcode.
+		// Cached until any post changes ('posts' last_changed is bumped by core on every save/delete).
+		$cache_key = 'shortcode_page_' . wp_cache_get_last_changed('posts');
+		$page_id   = wp_cache_get($cache_key, DB::CACHE_GROUP);
+		if (false === $page_id) {
+			// Direct query: WP_Query can only search post content alone from WP 6.2 (search_columns).
+			$page_id = (int) $wpdb->get_var($wpdb->prepare( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+				"SELECT ID FROM {$wpdb->posts} WHERE post_status = 'publish' AND post_type NOT IN ('revision', 'uts') AND post_content LIKE %s ORDER BY post_modified DESC LIMIT 1",
+				'%' . $wpdb->esc_like('[uts') . '%'
+			));
+			wp_cache_set($cache_key, $page_id, DB::CACHE_GROUP);
+		}
+		$page_id = (int) $page_id;
 
 		return array(
 			'published'      => $published,
