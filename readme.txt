@@ -22,7 +22,7 @@ Ultimate 3D Testimonial Slider shows what your clients say about you, on any pag
 * Five layouts: 3D slider, grid, list, masonry and ticker (an endless scrolling row)
 * Seven slider effects: 3D coverflow, slide, fade, cards, 3D cube, flip and creative
 * Autoplay, loop, speed, arrows and dots
-* Seven card styles: classic, modern, speech bubble, elegant, glass, dark and split
+* Eight card styles: classic, modern, speech bubble, elegant, glass, dark, split and soft tint
 * Star ratings (1-5) per testimonial, shown only when set
 * Colors, corner radius, columns, excerpt length and image size
 * Settings page for the defaults; every setting can be overridden per slider or per shortcode
@@ -82,7 +82,7 @@ All attributes are optional. Their defaults come from **Ultimate 3D Testimonial 
 
 **Style**
 
-* `card_style`: `classic`, `modern`, `bubble`, `elegant`, `glass`, `dark` or `split`. Default: `classic`. Example: `[uts card_style="modern"]`
+* `card_style`: `classic`, `modern`, `bubble`, `elegant`, `glass`, `dark`, `split` or `soft`. Default: `classic`. Example: `[uts card_style="modern"]`
 * `accent_color`: color of the dots and arrows, e.g. `#2271b1`. Default: blue
 * `text_color`: text color of the cards. Default: theme default
 * `background_color`: background color of the cards. Default: white
@@ -163,7 +163,7 @@ Edit a testimonial and choose 1 to 5 stars under "Star rating" in the "Client Ad
 
 = What card styles are available? =
 
-Seven: classic (the original card), modern, speech bubble, elegant, glass (frosted, with its own gradient backdrop), dark (for dark sections) and split (an accent panel with the photo on top). Choose one in the Shortcode Builder or the settings (Style tab), or use `card_style`, for example `[uts card_style="elegant"]`.
+Eight: classic (the original card), modern, speech bubble, elegant, glass (frosted, with its own gradient backdrop), dark (for dark sections), split (an accent panel with the photo on top) and soft tint (a light tint of your accent color with a quote badge). Choose one in the Shortcode Builder or the settings (Style tab), or use `card_style`, for example `[uts card_style="elegant"]`.
 
 = Does loop work with only a few testimonials? =
 
@@ -194,7 +194,7 @@ Please visit the plugin support forum on WordPress.org.
 * **New:** Shortcode Builder: design sliders with a live preview, save them (or keep them as drafts) and place them with `[uts id="5"]`; duplicate, trash and "Where is this used?"
 * **New:** Settings page for the default layout, count, excerpt length, image size, slider effect, autoplay, loop, speed, arrows, dots, visibility of image/name/designation, columns, colors and corner radius
 * **New:** Masonry and ticker layouts
-* **New:** Card styles: modern, speech bubble, elegant, glass, dark and split, next to the classic card
+* **New:** Card styles: modern, speech bubble, elegant, glass, dark, split and soft tint, next to the classic card
 * **New:** Star ratings (1-5) per testimonial, with a Rating column in the testimonials list; shown only for testimonials that have one
 * **New:** Slide, fade, cards, cube, flip and creative slider effects, autoplay, loop (works with any number of testimonials) and navigation arrows
 * **New:** Every setting can be overridden as a shortcode attribute

@@ -159,7 +159,7 @@ class Settings {
 			// Style (empty color = theme/plugin CSS default).
 			'card_style'        => array(
 				'type'    => 'string',
-				'enum'    => array( 'classic', 'modern', 'bubble', 'elegant', 'glass', 'dark', 'split' ),
+				'enum'    => array( 'classic', 'modern', 'bubble', 'elegant', 'glass', 'dark', 'split', 'soft' ),
 				'default' => 'classic',
 			),
 			'accent_color'      => array(

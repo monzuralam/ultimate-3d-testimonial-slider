@@ -268,6 +268,10 @@ export const TABS = [
 						'Split (accent panel, photo on top)',
 						'ultimate-3d-testimonial-slider'
 					),
+					soft: __(
+						'Soft tint (accent tint, quote badge)',
+						'ultimate-3d-testimonial-slider'
+					),
 				},
 			},
 			{

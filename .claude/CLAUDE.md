@@ -42,7 +42,7 @@ WordPress plugin (published on wordpress.org) that adds a Testimonial custom pos
 - Every `.ucs-container.slider` initializes, so multiple sliders per page work. The first instance of each type keeps the ID `ucs-container-{type}`, later ones get `-2`, `-3`, ...
 - If a testimonial has no featured image, `assets/images/quotation.png` is used instead.
 - Star rating: `Shortcode::rating_html( $rating )` outputs `.ucs-rating` (5 inline SVG `.ucs-star`, filled ones `.is-on`, `role="img"` + "Rated N out of 5") as the first child of `.details-content`, only when the testimonial has a rating and `show_rating` is on; nothing at all otherwise. Color: `star_color` → `--uts-star`.
-- Card styles (`card_style`): `classic` adds no class (the original markup, byte-identical); `modern`, `bubble`, `elegant`, `glass`, `dark`, `split` add `ucs-card-{style}` to the section and are CSS-only (end of `src/frontend/main.scss`): `.details-content` becomes `display: contents` so its children can be reordered/placed with flex `order` / grid areas. They work in every layout and use `--uts-bg`/`--uts-text`/`--uts-radius`/`--swiper-theme-color` with their own fallbacks. Glass gives the section its own gradient backdrop.
+- Card styles (`card_style`): `classic` adds no class (the original markup, byte-identical); `modern`, `bubble`, `elegant`, `glass`, `dark`, `split`, `soft` add `ucs-card-{style}` to the section and are CSS-only (end of `src/frontend/main.scss`): `.details-content` becomes `display: contents` so its children can be reordered/placed with flex `order` / grid areas. They work in every layout and use `--uts-bg`/`--uts-text`/`--uts-radius`/`--swiper-theme-color` with their own fallbacks. Glass gives the section its own gradient backdrop.
 
 
 ## Conventions

@@ -111,7 +111,7 @@ class Getting_Started {
 			'show_rating'       => __('Show the star rating of testimonials that have one: true or false.', 'ultimate-3d-testimonial-slider'),
 			'grid_columns'      => __('Grid and masonry only: columns on desktop, 1 to 6.', 'ultimate-3d-testimonial-slider'),
 			'ticker_duration'   => __('Ticker only: seconds each testimonial takes to scroll past (higher is slower).', 'ultimate-3d-testimonial-slider'),
-			'card_style'        => __('Card style: classic, modern, bubble, elegant, glass, dark or split.', 'ultimate-3d-testimonial-slider'),
+			'card_style'        => __('Card style: classic, modern, bubble, elegant, glass, dark, split or soft.', 'ultimate-3d-testimonial-slider'),
 			'accent_color'      => __('Color of the dots and arrows, e.g. #2271b1.', 'ultimate-3d-testimonial-slider'),
 			'text_color'        => __('Text color of the cards.', 'ultimate-3d-testimonial-slider'),
 			'background_color'  => __('Background color of the cards.', 'ultimate-3d-testimonial-slider'),

@@ -287,6 +287,7 @@
  * so the photo, stars, text, name and position can be placed freely.
  */
 .ucs-container.ucs-card-modern .ucs-item,
+.ucs-container.ucs-card-soft .ucs-item,
 .ucs-container.ucs-card-bubble .ucs-item,
 .ucs-container.ucs-card-elegant .ucs-item,
 .ucs-container.ucs-card-glass .ucs-item,
@@ -302,6 +303,7 @@
 }
 
 .ucs-container.ucs-card-modern .ucs-item .details-content,
+.ucs-container.ucs-card-soft .ucs-item .details-content,
 .ucs-container.ucs-card-bubble .ucs-item .details-content,
 .ucs-container.ucs-card-elegant .ucs-item .details-content,
 .ucs-container.ucs-card-glass .ucs-item .details-content,
@@ -312,6 +314,8 @@
 
 .ucs-container.ucs-card-modern .details-content h3,
 .ucs-container.ucs-card-modern .details-content h4,
+.ucs-container.ucs-card-soft .details-content h3,
+.ucs-container.ucs-card-soft .details-content h4,
 .ucs-container.ucs-card-bubble .details-content h3,
 .ucs-container.ucs-card-bubble .details-content h4,
 .ucs-container.ucs-card-elegant .details-content h3,
@@ -328,7 +332,8 @@
 }
 
 /* modern: soft layered shadow, quote mark, photo beside the name */
-.ucs-container.ucs-card-modern .ucs-item {
+.ucs-container.ucs-card-modern .ucs-item,
+.ucs-container.ucs-card-soft .ucs-item {
 	display: grid;
 	grid-template-columns: auto 1fr;
 	grid-template-areas:
@@ -360,7 +365,8 @@
 	pointer-events: none;
 }
 
-.ucs-container.ucs-card-modern .ucs-item img {
+.ucs-container.ucs-card-modern .ucs-item img,
+.ucs-container.ucs-card-soft .ucs-item img {
 	grid-area: photo;
 	width: 52px !important;
 	height: 52px;
@@ -368,33 +374,93 @@
 	object-fit: cover;
 }
 
-.ucs-container.ucs-card-modern .ucs-rating {
+.ucs-container.ucs-card-modern .ucs-rating,
+.ucs-container.ucs-card-soft .ucs-rating {
 	grid-area: rating;
 	justify-content: flex-start;
 	margin: 0 0 12px;
 }
 
-.ucs-container.ucs-card-modern .details-content p {
+.ucs-container.ucs-card-modern .details-content p,
+.ucs-container.ucs-card-soft .details-content p {
 	grid-area: text;
 	margin: 0 0 22px;
 	font-size: 16px;
 	line-height: 1.7;
 }
 
-.ucs-container.ucs-card-modern .details-content h3 {
+.ucs-container.ucs-card-modern .details-content h3,
+.ucs-container.ucs-card-soft .details-content h3 {
 	grid-area: name;
 	align-self: end;
 	font-size: 17px;
 	color: var(--uts-text, #0f172a);
 }
 
-.ucs-container.ucs-card-modern .details-content h4 {
+.ucs-container.ucs-card-modern .details-content h4,
+.ucs-container.ucs-card-soft .details-content h4 {
 	grid-area: role;
 	align-self: start;
 	margin-top: 2px;
 	font-size: 14px;
 	font-weight: 500;
 	opacity: 0.7;
+}
+
+/* No photo (show_image off): no gap before the name. */
+.ucs-container.ucs-card-modern .ucs-item:not(:has(img)),
+.ucs-container.ucs-card-soft .ucs-item:not(:has(img)) {
+	column-gap: 0;
+}
+
+/* soft: modern layout on an accent tint, quote in a solid circle */
+.ucs-container.ucs-card-soft .ucs-item {
+	padding: 30px 28px 26px;
+	background: var(--uts-bg, #eef2ff);
+	background: var(--uts-bg, color-mix(in srgb, var(--swiper-theme-color, #4f46e5) 9%, #fff));
+	border: 0;
+	border-radius: var(--uts-radius, 22px);
+	box-shadow: 0 14px 32px -16px rgba(79, 70, 229, 0.45);
+	box-shadow: 0 14px 32px -16px color-mix(in srgb, var(--swiper-theme-color, #4f46e5) 55%, transparent);
+}
+
+.ucs-container.ucs-card-soft .ucs-item::before {
+	content: "\201C";
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	width: 42px;
+	height: 42px;
+	padding-top: 8px;
+	border-radius: 50%;
+	background: var(--swiper-theme-color, #4f46e5);
+	color: #fff;
+	font: 700 36px/1 Georgia, "Times New Roman", serif;
+	text-align: center;
+	box-shadow: 0 6px 14px -4px rgba(15, 23, 42, 0.35);
+	pointer-events: none;
+}
+
+/* Keep the first row clear of the quote circle. */
+.ucs-container.ucs-card-soft .ucs-rating {
+	min-height: 42px;
+	align-items: center;
+	padding-right: 52px;
+	margin-bottom: 4px;
+}
+
+.ucs-container.ucs-card-soft .ucs-item:not(:has(.ucs-rating)) .details-content p {
+	padding-right: 52px;
+}
+
+.ucs-container.ucs-card-soft .ucs-item img {
+	border: 3px solid #fff;
+	box-shadow: 0 4px 10px rgba(15, 23, 42, 0.15);
+}
+
+.ucs-container.ucs-card-soft .ucs-item img.img-fluid {
+	padding: 8px;
+	background: #fff;
 }
 
 /* bubble: the quote in a speech bubble, the person underneath */

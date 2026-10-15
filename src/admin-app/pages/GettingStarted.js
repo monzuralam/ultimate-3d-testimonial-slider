@@ -602,7 +602,7 @@ const TIPS = [
 	[
 		__( 'Card styles', 'ultimate-3d-testimonial-slider' ),
 		__(
-			'Pick Classic, Modern, Speech bubble, Elegant, Glass, Dark or Split under Card style (Style tab), or use card_style="modern". Your colors and corner radius still apply on top.',
+			'Pick Classic, Modern, Speech bubble, Elegant, Glass, Dark, Split or Soft tint under Card style (Style tab), or use card_style="modern". Your colors and corner radius still apply on top.',
 			'ultimate-3d-testimonial-slider'
 		),
 	],
