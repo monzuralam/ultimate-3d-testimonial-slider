@@ -289,7 +289,7 @@ $( 's2slider' ).innerHTML = uts( 'slider', { style: 'modern' } );
 
 const MASONRY = PEOPLE.map( ( person, i ) => ( { ...person, t: person.t + [ ' We tried three other plugins first, and none came close to this.', '', ' Support answered within hours, too.', ' It took me ten minutes to move all our reviews over, and the result looks custom-built.', '', ' Our clients notice it, and they tell us.' ][ i ] } ) );
 const LAYOUTS = [ [ 'Slider', uts( 'slider' ) ], [ 'Grid', uts( 'grid', { count: 3 } ) ], [ 'List', uts( 'list', { count: 3 } ) ], [ 'Masonry', uts( 'masonry', { count: 6, people: MASONRY } ) ], [ 'Ticker', uts( 'ticker' ) ] ];
-const STYLES = [ [ 'Classic', 'classic' ], [ 'Modern', 'modern' ], [ 'Speech bubble', 'bubble' ], [ 'Elegant', 'elegant' ], [ 'Glass', 'glass' ], [ 'Dark', 'dark' ], [ 'Split', 'split' ] ];
+const STYLES = [ [ 'Classic', 'classic' ], [ 'Modern', 'modern' ], [ 'Soft tint', 'soft' ], [ 'Speech bubble', 'bubble' ], [ 'Elegant', 'elegant' ], [ 'Glass', 'glass' ], [ 'Dark', 'dark' ], [ 'Split', 'split' ] ];
 const page = $( 's34page' );
 const names = $( 's34names' );
 const panels = [];
@@ -313,7 +313,7 @@ $( 'b-prevA' ).innerHTML = uts( 'slider', { people: SHORT } );
 $( 'b-prevB' ).innerHTML = uts( 'slider', { style: 'split', people: SHORT } );
 $( 'siteSlider' ).innerHTML = uts( 'slider', { style: 'split' } );
 
-const TILES = [ [ '5', 'Layouts', 'Slider, grid, list, masonry, ticker' ], [ '7', 'Card styles', 'From classic to glass and dark' ], [ '7', 'Slider effects', 'Coverflow, cards, cube, flip…' ], [ '★', 'Star ratings', 'Shown only when you set them' ], [ '1', 'Shortcode', 'Works with any theme or builder' ], [ '0', 'jQuery', 'Lightweight, loads only where used' ], [ '∞', 'Loop & autoplay', 'Even with a few testimonials' ], [ 'A11y', 'Accessible', 'Respects reduced motion' ] ];
+const TILES = [ [ '5', 'Layouts', 'Slider, grid, list, masonry, ticker' ], [ '8', 'Card styles', 'From classic to glass and soft tint' ], [ '7', 'Slider effects', 'Coverflow, cards, cube, flip…' ], [ '★', 'Star ratings', 'Shown only when you set them' ], [ '1', 'Shortcode', 'Works with any theme or builder' ], [ '0', 'jQuery', 'Lightweight, loads only where used' ], [ '∞', 'Loop & autoplay', 'Even with a few testimonials' ], [ 'A11y', 'Accessible', 'Respects reduced motion' ] ];
 $( 'tiles' ).innerHTML = TILES.map( ( [ n, t, d ] ) => `<div class="tile"><div class="n">${ n }</div><div class="t">${ t }</div><div class="d">${ d }</div></div>` ).join( '' );
 
 const swipers = window.utsSlider.init( document );
@@ -449,9 +449,10 @@ window.seek = ( t ) => {
 		const l = t - 10;
 		const isStyles = l >= 10;
 		show( $( 's34k' ), 1 );
-		$( 's34k' ).textContent = isStyles ? '7 card styles · star ratings' : '5 layouts';
-		const slot = isStyles ? 5 + Math.min( 6, Math.floor( ( l - 10 ) / ( 10 / 7 ) ) ) : Math.min( 4, Math.floor( l / 2 ) );
-		const slotStart = isStyles ? 10 + ( slot - 5 ) * ( 10 / 7 ) : slot * 2;
+		$( 's34k' ).textContent = isStyles ? STYLES.length + ' card styles · star ratings' : '5 layouts';
+		const per = 10 / STYLES.length;
+		const slot = isStyles ? 5 + Math.min( STYLES.length - 1, Math.floor( ( l - 10 ) / per ) ) : Math.min( 4, Math.floor( l / 2 ) );
+		const slotStart = isStyles ? 10 + ( slot - 5 ) * per : slot * 2;
 		const k = out( p( l, slotStart, slotStart + 0.45 ) );
 		panels.forEach( ( panel, i ) => {
 			let op = 0;
@@ -464,7 +465,7 @@ window.seek = ( t ) => {
 			rise( panel.label, op, 24 );
 		} );
 		// The page goes dark for the Dark style.
-		const darkIdx = 10;
+		const darkIdx = 5 + STYLES.findIndex( ( style ) => 'dark' === style[ 1 ] );
 		const dk = slot === darkIdx ? k : ( slot === darkIdx + 1 ? 1 - k : 0 );
 		page.style.background = `rgb(${ lerp( 248, 2, dk ) },${ lerp( 250, 6, dk ) },${ lerp( 252, 23, dk ) })`;
 		drive( SW.lay, steps( l - 0.3, 1, 0.5, 0.6 ) );
