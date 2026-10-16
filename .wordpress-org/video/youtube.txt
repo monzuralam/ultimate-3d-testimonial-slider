@@ -1,0 +1,78 @@
+YOUTUBE UPLOAD – Ultimate 3D Testimonial Slider promo
+Upload: promo-final.mp4    Subtitles: promo.srt (Subtitles > Upload file > With timing, English)
+
+==================================================================
+TITLE (copy one line)
+==================================================================
+
+Ultimate 3D Testimonial Slider for WordPress – Free Plugin Overview (Sliders, Grid, Masonry & Star Ratings)
+
+Alternatives:
+Show Client Testimonials in 3D – Free WordPress Testimonial Slider Plugin
+Free WordPress Testimonial Slider: 5 Layouts, 8 Card Styles & Shortcode Builder
+
+==================================================================
+DESCRIPTION (copy everything between the lines)
+==================================================================
+------------------------------------------------------------------
+Turn plain client reviews into a beautiful 3D testimonial showcase on your WordPress site – free.
+
+Ultimate 3D Testimonial Slider lets you add testimonials, design a slider visually in the Shortcode Builder with a live preview, and place it anywhere with one shortcode. Works with any theme and page builder that supports shortcodes.
+
+⬇️ Download free on WordPress.org:
+https://wordpress.org/plugins/ultimate-3d-testimonial-slider/
+
+✨ FEATURES
+• 5 layouts: 3D slider, grid, list, masonry and an endless scrolling ticker
+• 8 card styles: Classic, Modern, Soft tint, Speech bubble, Elegant, Glass, Dark and Split
+• 7 slider effects: 3D coverflow, slide, fade, cards, 3D cube, flip and creative
+• Star ratings (1–5) – shown only on testimonials where you set them
+• Shortcode Builder with live preview – save sliders and reuse them with [uts id="1"]
+• Autoplay, loop, speed, arrows and dots – loop works even with a few testimonials
+• Colors, corner radius, columns, excerpt length and image size
+• Categories, to show different testimonials on different pages
+• Lightweight: no jQuery, CSS and JS load only on pages that use the shortcode
+• Accessible: respects visitors who prefer reduced motion
+
+⏱️ CHAPTERS
+0:00 Introduction
+0:10 5 layouts
+0:20 8 card styles & star ratings
+0:30 Shortcode Builder with live preview
+0:42 Paste the shortcode on any page
+0:50 Features overview
+
+🚀 HOW TO USE
+1. Install "Ultimate 3D Testimonial Slider" from Plugins → Add New
+2. Add your testimonials (name, quote, photo, position and an optional star rating)
+3. Create a slider in Ultimate 3D Testimonial Slider → Shortcode Builder
+4. Copy the shortcode and paste it into any page or post
+
+🔗 LINKS
+Plugin page: https://wordpress.org/plugins/ultimate-3d-testimonial-slider/
+Support forum: https://wordpress.org/support/plugin/ultimate-3d-testimonial-slider/
+Source code: https://github.com/monzuralam/ultimate-3d-testimonial-slider
+
+Requires WordPress 5.8+ and PHP 5.6+.
+
+#WordPress #WordPressPlugin #Testimonials
+------------------------------------------------------------------
+
+==================================================================
+TAGS (paste into the Tags field)
+==================================================================
+
+wordpress testimonial slider, testimonial plugin wordpress, 3d slider wordpress, wordpress testimonials, client reviews wordpress, testimonial carousel, free wordpress plugin, shortcode builder, star ratings wordpress, masonry testimonials, wordpress slider plugin, customer reviews slider, ultimate 3d testimonial slider
+
+==================================================================
+OTHER SETTINGS
+==================================================================
+
+Category:   Science & Technology
+Audience:   No, it's not made for kids
+Language:   English (video and caption language)
+Thumbnail:  frame at 0:08 (3D coverflow under the title) or 0:56 (end card)
+End screen: "Subscribe" element + a link over the end card (0:56–1:02)
+
+Before publishing: open the three links once to check they work.
+After publishing: put the video URL in uts_link( 'video' ) and readme.txt.
