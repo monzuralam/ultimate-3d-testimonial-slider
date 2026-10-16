@@ -158,7 +158,8 @@ const syncLoopDots = ( swiper, count ) => {
 	}
 	el.querySelectorAll( '.swiper-pagination-bullet' ).forEach(
 		( bullet, index ) => {
-			bullet.hidden = index >= count;
+			// Inline style: Swiper's CSS (display: inline-block) would override [hidden].
+			bullet.style.display = index >= count ? 'none' : '';
 			bullet.classList.toggle(
 				'swiper-pagination-bullet-active',
 				index === swiper.realIndex % count
