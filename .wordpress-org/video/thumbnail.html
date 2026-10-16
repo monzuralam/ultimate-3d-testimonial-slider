@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Ultimate 3D Testimonial Slider — YouTube thumbnail</title>
+<!-- 1280×720 YouTube thumbnail. Rendered by: node render.js --thumbnail -->
+<link rel="stylesheet" href="../../build/frontend.css">
+<style>
+	html, body { margin: 0; width: 1280px; height: 720px; overflow: hidden; }
+	body { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; background: linear-gradient(135deg, #1e40af 0%, #3730a3 55%, #6d28d9 100%); position: relative; }
+	.blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .5; }
+	.copy { position: absolute; left: 64px; top: 92px; width: 600px; color: #fff; z-index: 2; }
+	.badge { display: inline-block; background: #facc15; color: #1e1b4b; font-weight: 900; font-size: 40px; letter-spacing: .04em; padding: 6px 22px 8px; border-radius: 14px; transform: rotate(-3deg); box-shadow: 0 10px 24px rgba(0, 0, 0, .3); }
+	.title { font-size: 92px; font-weight: 900; line-height: .95; letter-spacing: -3px; margin: 26px 0 0; text-shadow: 0 6px 24px rgba(15, 23, 42, .45); }
+	.title .accent { color: #fde68a; }
+	.sub { margin-top: 26px; font-size: 34px; font-weight: 700; color: #e0e7ff; }
+	.sub b { color: #fff; }
+	.cards { position: absolute; right: -230px; top: 170px; width: 820px; transform: scale(1.08) rotate(-6deg); transform-origin: 50% 0; z-index: 1; }
+	.ucs-container .ucs-item img.wp-post-image { object-fit: cover; }
+	.wp { position: absolute; right: 40px; bottom: 34px; z-index: 2; display: flex; align-items: center; color: #fff; font-size: 26px; font-weight: 700; background: rgba(15, 23, 42, .35); padding: 10px 24px; border-radius: 999px; }
+</style>
+</head>
+<body>
+<div class="blob" style="width:520px;height:520px;background:#818cf8;left:-140px;top:-160px"></div>
+<div class="blob" style="width:520px;height:520px;background:#c026d3;right:-120px;bottom:-200px"></div>
+
+<div class="copy">
+	<span class="badge">FREE PLUGIN</span>
+	<div class="title">3D <span class="accent">Testimonial</span> Slider</div>
+	<div class="sub"><b>5 layouts</b> · <b>8 styles</b> · ★ ratings</div>
+</div>
+<div class="cards" id="cards"></div>
+<div class="wp">for WordPress</div>
+
+<script src="../../build/frontend.js"></script>
+<script>
+const PEOPLE = [
+	{ n: 'Sarah Mitchell', r: 'Marketing Director', s: 5, c: [ '#6366f1', '#a855f7' ], t: 'Our conversion rate jumped the week we added these sliders.' },
+	{ n: 'David Chen', r: 'Founder, Northpeak', s: 5, c: [ '#0ea5e9', '#6366f1' ], t: 'Looks like something we paid an agency for.' },
+	{ n: 'Amira Hassan', r: 'Product Lead', s: 5, c: [ '#f43f5e', '#f97316' ], t: 'Gorgeous card styles. Instant trust.' },
+	{ n: 'James Carter', r: 'Owner, Carter & Co.', s: 5, c: [ '#10b981', '#0ea5e9' ], t: 'No code, no stress.' },
+];
+const avatar = ( p ) => 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent( `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${ p.c[ 0 ] }"/><stop offset="1" stop-color="${ p.c[ 1 ] }"/></linearGradient></defs><rect width="100" height="100" fill="url(#g)"/><text x="50" y="62" font-family="Segoe UI, Arial" font-size="38" font-weight="700" fill="#fff" text-anchor="middle">${ p.n.split( ' ' ).map( ( w ) => w[ 0 ] ).join( '' ) }</text></svg>` );
+const STAR = '<path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 14.9l-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/>';
+const rating = ( s ) => `<div class="ucs-rating">${ [ 1, 2, 3, 4, 5 ].map( ( i ) => `<svg class="ucs-star${ i <= s ? ' is-on' : '' }" viewBox="0 0 20 20">${ STAR }</svg>` ).join( '' ) }</div>`;
+const items = PEOPLE.map( ( p ) => `<div class="ucs-item swiper-slide"><img src="${ avatar( p ) }" alt="" class="wp-post-image"><div class="details-content">${ rating( p.s ) }<p>${ p.t }</p><h3>${ p.n }</h3><h4>${ p.r }</h4></div></div>` ).join( '' );
+const config = { effect: 'coverflow', speed: 300, loop: false, autoplay: false, pagination: false, navigation: false, coverflow: { rotate: 50, depth: 100, stretch: 0 } };
+document.getElementById( 'cards' ).innerHTML = `<section class="ucs-container slider swiper uts-effect-coverflow ucs-card-modern" style="--uts-star:#f59e0b" data-uts-config='${ JSON.stringify( config ) }'><div class="swiper-wrapper">${ items }</div></section>`;
+const [ sw ] = window.utsSlider.init( document );
+sw.slideTo( 1, 0 );
+window.thumbReady = true;
+</script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 YOUTUBE UPLOAD – Ultimate 3D Testimonial Slider promo
-Upload: promo-final.mp4    Subtitles: promo.srt (Subtitles > Upload file > With timing, English)
+Upload: promo-final.mp4    Thumbnail: thumbnail.jpg    Subtitles: promo.srt (Subtitles > Upload file > With timing, English)
 
 ==================================================================
 TITLE (copy one line)
@@ -71,7 +71,7 @@ OTHER SETTINGS
 Category:   Science & Technology
 Audience:   No, it's not made for kids
 Language:   English (video and caption language)
-Thumbnail:  frame at 0:08 (3D coverflow under the title) or 0:56 (end card)
+Thumbnail:  thumbnail.jpg (1280x720, in this folder)
 End screen: "Subscribe" element + a link over the end card (0:56–1:02)
 
 Before publishing: open the three links once to check they work.

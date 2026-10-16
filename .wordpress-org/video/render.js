@@ -26,6 +26,20 @@ const out = path.resolve( args.out || path.join( __dirname, 'promo.mp4' ) );
 const url = 'file:///' + path.join( __dirname, 'promo.html' ).replace( /\\/g, '/' );
 
 ( async () => {
+	// YouTube thumbnail (1280×720) from thumbnail.html.
+	if ( args.thumbnail ) {
+		const thumbBrowser = await chromium.launch( { channel: 'chrome' } );
+		const thumb = await thumbBrowser.newPage( { viewport: { width: 1280, height: 720 } } );
+		await thumb.goto( 'file:///' + path.join( __dirname, 'thumbnail.html' ).replace( /\\/g, '/' ) );
+		await thumb.waitForFunction( () => window.thumbReady );
+		await thumb.waitForTimeout( 400 );
+		const file = path.resolve( true === args.thumbnail ? path.join( __dirname, 'thumbnail.jpg' ) : args.thumbnail );
+		await thumb.screenshot( { path: file, type: 'jpeg', quality: 92 } );
+		await thumbBrowser.close();
+		console.log( 'wrote', file );
+		return;
+	}
+
 	const browser = await chromium.launch( { channel: 'chrome' } );
 	const page = await browser.newPage( { viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1 } );
 	page.on( 'pageerror', ( e ) => console.error( 'page error:', e.message ) );
