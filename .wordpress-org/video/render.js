@@ -8,7 +8,7 @@
  *   node .wordpress-org/video/render.js --ffmpeg=path/to/ffmpeg.exe
  *   node .wordpress-org/video/render.js --stills=2,7,15        (PNG frames only, for review)
  *
- * Options: --fps=30 --from=0 --to=60 --out=.wordpress-org/video/promo.mp4
+ * Options: --fps=30 --from=0 --to=<seconds, default: the composition's DURATION> --out=.wordpress-org/video/promo.mp4
  */
 const path = require( 'path' );
 const { spawn } = require( 'child_process' );
@@ -22,7 +22,6 @@ const args = Object.fromEntries(
 );
 const fps = Number( args.fps || 30 );
 const from = Number( args.from || 0 );
-const to = Number( args.to || 60 );
 const out = path.resolve( args.out || path.join( __dirname, 'promo.mp4' ) );
 const url = 'file:///' + path.join( __dirname, 'promo.html' ).replace( /\\/g, '/' );
 
@@ -50,6 +49,7 @@ const url = 'file:///' + path.join( __dirname, 'promo.html' ).replace( /\\/g, '/
 	}
 	const ff = spawn( args.ffmpeg, [ '-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String( fps ), '-c:v', 'mjpeg', '-i', '-', '-c:v', 'libx264', '-preset', 'slow', '-crf', '18', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', out ], { stdio: [ 'pipe', 'inherit', 'inherit' ] } );
 
+	const to = Number( args.to || ( await page.evaluate( () => window.promoDuration ) ) || 60 );
 	const total = Math.round( ( to - from ) * fps );
 	const started = Date.now();
 	for ( let i = 0; i < total; i++ ) {

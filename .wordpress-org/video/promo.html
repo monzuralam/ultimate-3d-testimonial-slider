@@ -400,6 +400,10 @@ const moveCursor = ( t, keys, clicks ) => {
 	}
 };
 
+// Total length: the end card holds until the last voiceover line has finished.
+const DURATION = 62.5;
+window.promoDuration = DURATION;
+
 const SCENES = [
 	{ id: 's1', a: 0, b: 4.3 },
 	{ id: 's2', a: 4, b: 10.3 },
@@ -407,7 +411,7 @@ const SCENES = [
 	{ id: 's5', a: 30, b: 42.3 },
 	{ id: 's6', a: 42, b: 50.3 },
 	{ id: 's7', a: 50, b: 56.3 },
-	{ id: 's8', a: 56, b: 60.01 },
+	{ id: 's8', a: 56, b: DURATION + 0.01 },
 ];
 
 /* ---------- the timeline ---------- */

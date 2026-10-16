@@ -6,3 +6,4 @@ build/
 # Rendered promo video and review stills (source is promo.html + render.js)
 .wordpress-org/video/*.mp4
 .wordpress-org/video/still-*.png
+.wordpress-org/video/*.wav

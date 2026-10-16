@@ -1,0 +1,72 @@
+1
+00:00:00,250 --> 00:00:02,230
+Your clients love your work.
+
+2
+00:00:02,324 --> 00:00:03,800
+Let the world see it.
+
+3
+00:00:03,850 --> 00:00:07,021
+Meet Ultimate 3D Testimonial Slider.
+
+4
+00:00:07,138 --> 00:00:10,888
+It turns plain reviews into a stunning 3D showcase.
+
+5
+00:00:11,000 --> 00:00:14,039
+Pick a layout: a 3D slider, a clean grid,
+
+6
+00:00:14,089 --> 00:00:17,635
+a list, a masonry wall, or an endless scrolling ticker.
+
+7
+00:00:20,350 --> 00:00:24,000
+Choose from eight card styles, from classic to glass and dark,
+
+8
+00:00:24,050 --> 00:00:26,680
+with star ratings that show only where you add them.
+
+9
+00:00:30,500 --> 00:00:32,675
+Build it in the Shortcode Builder.
+
+10
+00:00:32,796 --> 00:00:36,177
+Name your slider, pick a style, turn on autoplay,
+
+11
+00:00:36,227 --> 00:00:38,373
+and watch the live preview update.
+
+12
+00:00:38,468 --> 00:00:41,058
+Save, and copy your shortcode.
+
+13
+00:00:42,500 --> 00:00:45,936
+Paste it on any page, with any theme or page builder,
+
+14
+00:00:45,986 --> 00:00:47,616
+and it's live on your site.
+
+15
+00:00:50,000 --> 00:00:53,518
+Five layouts, eight styles, star ratings.
+
+16
+00:00:53,602 --> 00:00:56,480
+Lightweight, accessible and mobile ready.
+
+17
+00:00:56,600 --> 00:00:59,445
+Ultimate 3D Testimonial Slider.
+
+18
+00:00:59,553 --> 00:01:01,963
+Free on WordPress.org.
+
