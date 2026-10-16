@@ -15,6 +15,8 @@ Show client testimonials as a 3D slider, grid, list, masonry or scrolling ticker
 
 Ultimate 3D Testimonial Slider shows what your clients say about you, on any page or post. Add your testimonials, design a slider in the Shortcode Builder, and paste its shortcode where you want it.
 
+https://youtu.be/KzOUthyMGew
+
 ### Features
 
 * Quick to set up, with a Getting Started guide, a live preview and a setup checklist

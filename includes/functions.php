@@ -30,8 +30,8 @@ if (!function_exists('uts_link')) {
             'support' => 'https://wordpress.org/support/plugin/ultimate-3d-testimonial-slider/',
             'review'  => 'https://wordpress.org/support/plugin/ultimate-3d-testimonial-slider/reviews/#new-post',
             'github'  => 'https://github.com/monzuralam/ultimate-3d-testimonial-slider',
-            // Getting Started tutorial: paste a YouTube URL here (empty = "coming soon" placeholder).
-            'video'   => '',
+            // Getting Started tutorial video (empty = "coming soon" placeholder).
+            'video'   => 'https://youtu.be/KzOUthyMGew',
         );
 
         return isset($links[$key]) ? $links[$key] : '';
