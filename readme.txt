@@ -189,6 +189,15 @@ Please visit the plugin support forum on WordPress.org.
 
 == Screenshots ==
 
+1. 3D coverflow testimonial slider with star ratings.
+2. Eight card styles: Classic, Modern, Soft tint, Speech bubble, Elegant, Glass, Dark and Split.
+3. Masonry layout with the Soft tint card style. Grid, list and an endless ticker are available too.
+4. Shortcode Builder: design a slider with a live preview and save it as [uts id="…"].
+5. Saved sliders: copy the shortcode, edit, duplicate, keep drafts and see where each one is used.
+6. Settings: the defaults for every slider, from layout and effect to autoplay, colors and more.
+7. Getting Started: video tutorial, live preview, setup checklist and the full shortcode reference.
+8. Add a testimonial: name, quote, photo, position & company and an optional star rating.
+9. Testimonials list with photo, position & company, rating and order columns.
 
 == Changelog ==
 
